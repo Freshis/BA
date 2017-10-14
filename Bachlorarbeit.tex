@@ -1,0 +1,253 @@
+\documentclass[a4paper,11pt]{article}
+
+% proper umlauts
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% german
+\usepackage[ngerman]{babel}
+
+% AMS math for formulae
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+
+% graphics
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{float} 
+\usepackage{lmodern}
+\usepackage{mathrsfs}
+
+% referieren
+\usepackage{hyperref}
+
+% newcommands
+\newcommand{\col}[2][red]{\textcolor{#1}{#2}}
+\newtheorem{defi}{Definition}[section]
+
+\begin{document}
+  \begin{titlepage}
+\empty
+    \begin{center} \large 
+    {\huge Bachlorarbeit}
+    \vspace*{2cm}
+
+    {\huge \textcolor{red}{Flux Correction Tools für die RBF-FD gelöste Transportgleichung}}
+    \vspace*{2.5cm}
+
+    Alexander Westermann
+    \vspace*{1.5cm}
+
+    \today
+    \vspace*{3.5cm}
+
+
+    Betreuung: Dr. Andriy Sokolov \\[1cm]
+    Fakultät für Mathematik \\[1cm]
+		Technische Universität Dortmund\\[3cm]   
+    \end{center}
+  \end{titlepage}
+\pagebreak
+\pagenumbering{Roman}
+ \tableofcontents
+\pagebreak
+\listoffigures
+\pagebreak
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\section{Einleitung}
+\pagebreak
+\section{Transport-Gleichung}
+In der Mathematik gibt es viele unterschiedliche partielle Differentialgleichung, wobei der Großteil der partiellen Differentialgleichungen zweiter Ordnung sind. Diese sind hauptsächlich in elliptische, parabolische und hyperbolische Gleichungen klassifiziert. Einfache Beispiele wären hierfür die elliptische Laplace-Gleichung, parabolische Wärmegleichung und die hyperbolische Wellengleichung. Zu den Letzteren wird auch die sogenannte Transportgleichung gezählt, obwohl diese nicht exakt die Bedingungen für die hyperbolische Klassifizierung erfüllt. Dieses zeitabhängige Problem beschreibt den \grqq Transport\grqq~einer Funktion in einem bestimmten $n$-dimensionalen Gebiet $\Omega$.\\
+Die allgemeinste Form der Transportgleichung wird \textit{Erhaltungsform} genannt und lautet in einer Dimensionen
+\begin{align}
+ \frac{\partial u}{\partial t}+\frac{\partial f(u)}{\partial x}=g(u,x,t)\label{1d}.
+\end{align}
+Hierbei stellen $u:\Omega\subset\mathbb{R}^d\to\mathbb{R}$ die zu transportierende Funktion und $f$ den sogenannten $Flussvektor$ dar. Die Funktion $g$ ist abhängig von der Funktion $u$, dem Standort $x$, und der Zeit $t$. Wenn die Abhängigkeit zum Standort und zur Zeit nicht vorhanden ist, nennt mann dieses Problem \textit{autonom}. Desweiteren bezeichnet man das Problem als \textit{homogen}, wenn $g(u,x,t)=0$ ist.\\
+Betrachtet man nun die mehrdimensionale, homogene $Erhaltungsgleichung$ der Art
+\begin{align}
+ \frac{\partial u}{\partial t}+div~\textbf{f}(u)=0,
+\end{align}
+so kann man nun für den $Flussvektor$ $\textbf{f}(u)=\textbf{v} u$ einsetzen und somit folgt die Gleichung
+\begin{align}
+ \frac{\partial u}{\partial t}+\nabla \cdot (\textbf{v}u)=0.\label{2d}
+\end{align}
+$\textbf{v}$ repräsentiert hier nun den, nicht notwendig kontsanten, Geschwindigkeitsvektor und u die zu transportierende, skalare Lösung. Nun kann \eqref{2d} durch die Produktregel, bezüglich der Divergenz, geschrieben werden als
+\begin{align}
+  \frac{\partial u}{\partial t}+\textbf{v}\cdot\nabla u + u \cdot \nabla \cdot\textbf{v}=0.
+\end{align}
+Wenn nun noch das Vektorfeld inkrompressibel ist (also $\nabla \cdot \textbf{v}=0$), folgt die Gleichung
+\begin{align}
+ \frac{\partial u}{\partial t}+\textbf{v}\cdot\nabla u=0,
+\end{align}
+welche auch \textit{Advektions- oder Konvektions-Gleichung} genannt wird.\\
+Eine weitere nennenswerte Form, welche sich aus der \textit{Erhaltungsgleichung} ableiten lässt, ist die \textit{Kovenktions-Diffusions-Gleichung}:
+\begin{align}
+ \frac{\partial u}{\partial t}+\nabla \cdot \textbf{v}u = \epsilon\Delta u\label{diffusionsgleichung}
+\end{align}
+Im Gegensatz zu der \textit{Konvektions-Gleichung} tritt in \eqref{diffusionsgleichung} auch Diffusion mit einem Diffusionskoeffizienten $\epsilon$ auf. Wenn nun $\epsilon$ sehr klein wird, dominiert das erste-Ordnung Glied die Gleichung und wird somit schwierig numerisch zu lösen.\\
+\col{Charakteristiken?}
+~\cite{segal2013numerik}
+\pagebreak
+\section{RBF-FD}\label{sec:RBF-FD}
+Die Radiale-Basisfunktion-Finite-Differenzen-Methode(RBF-FDM) behandelt die Approximation gewöhnlicher und partieller Differentialgleichungen ohne Gittergenerierung. \col{blabla}\\
+Als erstes wird nun die Finite-Differenzen-Methode vorgestellt.
+\subsection{Einführung in die Finite-Differenzenmethode}
+Dieses Kapitel liegt den Arbeiten von \cite{burger2006numerik} und \cite{braess2013finite} zu Grunde.\\
+In der numerischen Mathematik ist das Approximieren gewöhnlicher und partieller Differentialgleichung eine der \col{meistentwickelten} Hauptfelder. Hierzu sind im Laufe der Zeit viele verschiedene Verfahren entwickelt und weiterentwickelt worden. Einer der ältesten  und einfachsten Verfahren ist die sogenannte \textit{Finite-Differenzen-Methode} (FDM), welche zu der Klasse der Differenzenverfahren gehört. Bei diesem Verfahren nähert man die Ableitung einer Funktion $u(x)$ mittels Differenzenquotienten an:
+\begin{align}
+ \frac{\partial u(x)}{x}=\lim\limits_{h \rightarrow 0} \frac{u(x+h)-u(x)}{h}
+\end{align}
+Wenn man nun $h$ klein genug wählt($h\ll1$), ist dies eine gute Approximition der Ableitung:
+\begin{align}
+ \frac{\partial u(x)}{x}\approx \frac{u(x+h)-u(x)}{h}\label{eq:vordiff}
+\end{align}
+Die Gleichung \eqref{eq:vordiff} wird in der Literatur als \textit{Vorwärtsdifferenzenquotient} bezeichnet und wird durch das Zeichen $D^+u$ abgekürzt. Bei diesem Operator spricht man von einem Differnzenquotient 1. Ordnung, da dieser die erste Ableitung approximiert. Weitere geläufige Arten 1. Ordnung sind der \textit{Rückwärtsdifferenzenquotient}
+\begin{align}
+ D^-u= \frac{u(x)-u(x-h)}{h}
+\end{align}
+und der \textit{Zentrale Differenzenquotient}, welcher eine Linearkombination des Vorwärts- und Rückwärtsdifferenzenquotienten darstellt:
+\begin{align}
+ D^cu=\frac{1}{2}(D^+u+D^-u)= \frac{u(x+h)-u(x-h)}{2h}
+\end{align}
+Zur Berechnung der Fehlerordnung verwendet man die \textit{Taylor-Entwicklung} (TE), welche allgemein lautet
+\begin{align}
+ u(x\pm h)=u(x)\pm hu^{(1)}(x)+\cdots+\frac{(\pm h)^n}{n!}u^{(n)}(x)+u^{(n+1)}(x+\theta h)
+\end{align}
+mit $\theta\in(0,1)$.
+Wendet man nun die Taylorentwicklung zur Bestimmung der Konsistenzordnung auf den Vorwärtsdifferenzenquotient an, so berechnet man:
+\begin{align}
+ |u^{'}(x)-D^+u(x)|&=|u^{(1)}-\frac{u(x+h)-u(x)}{h}|\nonumber\\&\overset{TE}{=}|-\frac{h}{2}u^{(2)}(x+\theta h)|\le h\|u^{(2)}\|_{\infty}
+\end{align}
+Somit ist der Vorwärtsdifferenzenquotient $\mathcal{O}(h)$ und besitzt eine Fehler von 1. Ordnung. Mit der gleichen Methode berechnet man auch die Fehlerordnungen der anderen beiden Verfahren und bekommt heraus, dass der Fehler des Rückwärtsdifferenzenquotient auch $\mathcal{O}(h)$ und der Fehler vom Zentralen-Differenzenquotienten sogar $\mathcal{O}(h^2)$ und folglich eine Fehlerordnung von 2 besitzt.\col{verfahren 2. ordnung wegen laplaceoperatorapproximation}\\\\
+\textbf{Diskretisierung}\\\\
+Für die FDM benötigt man Auswertungsstellen, um, wie oben gesehen, den Differentialoperator approximieren zu können. Hierbei legt man ein Gitter auf ein Gebiet $\Omega$, auf dem man die PDG lösen möchte. Es werden vor allem äquidistante Gitter verwendet, da sonst die Implementierung sehr aufwändig ist. Der Nachteil eines solchen Gitters ist die Unflexibilität in Gebieten von $\Omega$, in denen eine genauere Auswertung erforderlich ist, um die dort gegebenen Eigenschaften bestmöglich approximieren zu können. Sei nun einfachheitshalber das Gebiet $\Omega\subset\mathbb{R}^2$. Wählt man eine äquidistante Gittergenerierung mit dem Abstand $h$, so erhält man einen diskretisierten Raum:
+\begin{align}
+ \Omega_h&=\{(x,y)\in\Omega|x=kh,~y=lh~\text{mit}~k,l\in\mathbb{Z}\}\nonumber\\
+ \partial\Omega_h&=\{(x,y)\in\partial\Omega|x=kh~\text{oder}~y=lh~\text{mit}~k,l\in\mathbb{Z}\}\nonumber~\cite{braess2013finite}
+\end{align}
+Eine Beispieldiskretisierung mit einem äquidistanten Gitter ist in Abbildung \ref{fig:diskGit} dargestellt.
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.4\textwidth]{figures/Diskretisierung.png}
+	\caption[Diskretiesierung]{äquidistantes Gitter auf einem Rechteck}
+	\label{fig:diskGit}
+\end{figure}
+Durch die Diskretisierung erhält man nun auch einen diskreten Lösungsvektor $u_h$, welcher in der $i$-ten Zeile die skalare Lösung zum Knoten $i$ besitzt. Dieser ist auf dem diskreten Gebiet $\overline{\Omega}_h=\Omega_h\cup\partial\Omega_h$ definiert. Betrachtet man nun ein System mit Dirichlet-Randbedingungen der Art
+\begin{align}
+ L\{u\}&=f~~\text{in}~\Omega\nonumber\\
+ u&=g~~\text{auf}~\partial\Omega\nonumber,
+\end{align}
+so gilt nach der Diskretisierung:
+\begin{align}
+ L_h\{u_h\}&=f_h~~\text{in}~\Omega_h\nonumber\\
+ u_h&=g_h~~\text{auf}~\partial\Omega_h\nonumber
+\end{align}
+Nun sind die Approximationsmethoden, wie zum Beispiel der oben genannte Vorwärtsdifferenzenquotient, anwendbar, und man kann das Lösungssystem in der Form:
+\begin{align}
+ A_hu_h=f_h
+\end{align}
+Dieses Gleichungssystem kann nun durch iterative Verfahren gelöst werden. Mit den ermittellten Lösungsvektor kann nun interpoliert werden und graphisch ausgegeben werden.
+\subsection{RBF-Interpolation}
+Die Aussagen dieses Kapitels führen auf die Arbeit von Grady B. Wright \cite{wright2003radial} zurück.\\
+In der Numerik ist die Interpolation eine wichtige Aufgabe, um aus einzelnen Funktionswerte die Zielfunktion zu approximieren. Hierbei haben sich schon viele Methoden, wie die Polynom- oder Fourier-Interpolation, für die eindimensioanle Interpolation in der Wissenschaft etabliert. Alle Verfahren basieren auf die gleiche Grundidee: Zu einer gegebenen Menge an Stützstellen $\{x_i\}_{i=1}^n$ und deren zugehörigen Funktionsauswertungen $\{f_i\}_{i=1}^n$ werden jeweilige Basisfunktionen $\{\psi_i(x)\}_{i=1}^n$ so gewählt, dass die Interpolierende die lineare Form
+\begin{align}
+ s(x)=\sum_{i=1}^n\lambda_i\psi_i(x)
+\end{align}
+besitzt. Hierbei stellen die $\lambda_i$ die Interpolationskoeffizienten dar, welche errechnet werden müssen. Diese Koeffizienten werden durch die Bedingung definiert, dass $s(x_i)\overset{!}{=}f_i~\forall i$ gelten muss. Aus dieser Bedinigung erhält man ein Gleichungssystem, welches in Gleichung \eqref{eq:Inter} dargestellt ist.
+\begin{align}
+\begin{bmatrix}
+ \psi_1(x_1) & \cdots & \psi_n(x_1) \\ \vdots & \ddots & \vdots \\ \psi_1(x_n) & \cdots & \psi_n(x_n)
+\end{bmatrix}
+\begin{bmatrix}
+ \lambda_1 \\ \vdots \\ \lambda_n
+\end{bmatrix}
+=
+\begin{bmatrix}
+ f_1 \\ \vdots \\ f_n
+\end{bmatrix}\label{eq:Inter}
+\end{align}
+Im eindimensioanlen gilt für viele Basisfunktionen, dass die Basisfunktionsmatrix regulär ist, wenn die einzelnen Knotenpunkte $\{x_i\}_{i=1}^n$ distinkt zueinander sind. Daraus folgt die eindeutige Lösbarkeit des Gleichungssystem und somit die Eindeutigkeit der Koeffenzienten $\lambda_i$. Im mehrdimensionalen ist dies nicht immer der Fall. \cite{de2013four}
+\begin{align}
+ M\frac{\partial u}{\partial t}=K^Hu\label{eq:algTrans}
+\end{align}
+\pagebreak
+\section{Flux Correction Tools - FCT}
+Dieses Kapitel bezieht sich hauptsächlich auf den Artikel~\cite{kuzmin2002flux} und erläutert ein Vorgehen zur Verbesserung von numerischen Approximationsverfahren von partiellen Differentialgleichungen.\\
+Viele Anwendungsbereiche für partielle Differentialgleichungen und somit auch für die Transportgleichung findet man in dem Bereich der Physik wieder. Diesbezüglich muss die Lösung dieser Gleichung aus physikalischen Gründen positiv sein. Somit benötigt man ein Verfahren, welches die Positivitätseigenschaft beibehält. Es gibt sehr viele verschiedene Verfahren, welche ihre Vor- und Nachteile diesbezüglich besitzen. Klassische-UPWIND-Verfahren, welche zur Berechnung der Lösung Knotenwerte aus der Stromaufwärtsrichtung nehmen, erfüllen diese Positivitätsbedingung, sind aber auch diffusiv, welches nicht für alle numerische Probleme erwünscht wird~\cite{kuzmin2002flux}. Im Gegensatz dazu sind die High-order-Methoden\col{Verfahren höherer Ordnung} nicht diffusiv, aber weisen vermehrt oszillierende Ergebnisse auf~\cite{kuzmin2002flux}. Das FCT-Schema verbindet nun Verfahren, welche diese oben genannten Eigenschaften aufweisen, und bekommt so eine nicht-diffusive, nicht-oszillierende Lösung heraus. Allgemein werden drei Hauptschritte druchgeführt:
+\begin{enumerate}
+ \item Diskretiesierung mittels einer High-order-Methode
+ \item Addieren einer künstlichen Diffusion, um die Positivitätseigenschaft zu gewährleisten
+ \item  Addieren und Limitierung der künstlichen Antidiffusion, um wieder eine High-order-Lösung zu bekommen
+\end{enumerate}
+Im folgenden werden alle drei Schritte anhand der in Kapitel \ref{sec:RBF-FD} aufgeführten algebraischen Transportgleichung \eqref{eq:algTrans} genauer erläutert. Zur Erinnerung, $M$ ist die Massenmatrix, $K^H$ die Matrix, welche den diskreten Transport-Operator darstellt und $u$ die Lösung des Verfahrens höherer Ordnung. Die Zeilensumme von $K^H$ ist gleich 0, sodass gilt:
+\begin{align}
+ (K^Hu)_i=\sum_{j\neq i}k_{ij}^H(u_j-ui),~~\forall i
+\end{align}
+  Wie oben schon erwähnt, muss die Lösung $u$ die Positivitätseigenschaften erfüllen. Um dies in jedem Zeitschritt zu gewährleisten, diskretisieren wir die Zeitdifferentation mittels dem \textit{Impliziten-Euler-Verfahren}
+\begin{align}
+ \frac{\partial u}{\partial t}=\frac{u^{n+1}-u^{n}}{\Delta t}
+\end{align}
+und es folgt nach Einsetzen und Sortierung in \eqref{eq:algTrans}:
+\begin{align}
+ [M-\Delta tK^H]u^{n+1}=Mu^n\label{eq:zeitschritt}
+\end{align}
+Hierbei stellen $u^{n+1}$ und $u^n$ jeweils die Lösung $u$ im Zeitschritt $n+1$  und $n$ dar.
+Geht man davon aus, dass die Lösung des vorherigen Zeitschrittes $u^n\ge0$ ist und dass die Massenmatrix $M$ eine Diagonalmatrix mit $m_{ii}>0~\forall i$ ist, so folgt die Positivitätseigenschaft für $u^{n+1}$, wenn $[M-\Delta tK^L]^{-1}>0$ ist. Diese Aussage ist äquivalent zu der Definition einer \textit{M-Matrix}.
+\begin{defi}\label{def:MMatrix}
+ \textbf{(M-Matrix):}\\
+Eine reguläre Matrix $A\in \mathbb{R}^{nxn}$ heißt M-Matrix, falls $A$ folgende Eigenschaften erfüllt:
+\begin{enumerate}
+ \item $A$ ist eine Z-Matrix, also $a_{ij}\le0~\forall i\neq j$
+ \item $\exists v>0:Av>0$~\cite{fiedler2008special}
+\end{enumerate}
+Sind diese Kriterien erfüllt gilt
+\begin{align*}
+ [M-\Delta tK^L]^{-1}>0.
+\end{align*}
+\end{defi}
+ Die Matrix $[M-\Delta tK^H]$ muss somit so modifiziert werden, dass alle Nebendiagonalelemente kleiner gleich Null sind. Hierbei ist zu beachten, dass die Nebendiagonalelemente nur von $K^H$ abhängen, da $M$ eine Diagonalmatrix ist. Somit addieren wir nun zu der Transport-Operator-Matrix eine Matrix so hinzu, dass sichergestellt werden kann, dass alle Nichtdiagonalelemente positiv werden:
+\begin{align}
+ K^L=K^H+D\label{eq:AddDif}
+\end{align}
+Physikalisch betrachtet, fügen wir mit der Matrix $D$ eine künstliche Diffusion hinzu, sodass die Lösung $u$ nun diffusivere Merkmale aufweisen könnte~\cite{kuzmin2002flux}. Somit bezeichnet man diese Lösung als $u_{LOW}$ bzw. $u_L$.\\
+Weiterhin ist zu beachten, dass eine Addition mit zu starker Diffusion die Folge einer Absenkung der Stabilitätsgrenzen hat~\cite{kuzmin2002flux}. Andererseits führt eine zu schwache Diffusionsaddition zu falschen Extrema. Des Weiteren könnte man überall die gleiche Menge an Diffusion hinzuaddieren~\cite{kuzmin2002flux}. Diese Methode ist zwar recheneffizient, aber nicht genauigkeitseffizient~\cite{kuzmin2002flux}. Somit werden die einzelnen Matrixeinträge für jeden Knoten wie folgt definiert:
+\begin{align}
+ d_{ii}=-\sum_{k\neq i}d_{ik},~~d_{ij}=d_{ji}=max\{0,-k_{ij}^H,-k_{ji}^H\},~~\forall i<j
+\end{align}
+Bei dieser Definition fällt auf, dass die Zeilen- und Spaltensumme von $D$ gleich 0 sind. Somit gilt insgesamt für die Zeilensumme von $K^L$, dass diese gleich null ist. Zu beachten ist hier, dass, wenn die nichtdiagonal Elemente von $K^H$ von vornherein positiv sind, dass keine Addition künstlicher Diffusion notwendig ist und $D$ gleich der Nullmatrix ist. So folgt $K^H=K^L$. Dieser Fall tritt auf, wenn die physikalische Diffusion stark genug ist.\\
+Setzt man nun die Matrix $K^L$ in die Gleichung \eqref{eq:zeitschritt} ein, folgt:
+\begin{align}
+ [M-\Delta tK^L]u_L^{n+1}=Mu^n
+\end{align}
+Substituiere nun $\widehat{K}:=[M-\Delta tK^L]$. Durch die Addition der künstlichen Diffusion gilt nun $\widehat{k}_{ij}=-\Delta tk_{ij}^L\le0~\forall i\neq j$. Durch die künstliche Diffusion sind somit auch die Nebendiagonalelemente von $\widehat{K}$ negativ und erfüllt somit Punkt 1 der Definition \ref{def:MMatrix}.\\
+Um den Punkt 2 zu beweisen, wähle den Vektor $v=(1,\dots,1)^T>0$. Somit folgt mit der Zeilsummeneigenschaft von $K^L$:
+\begin{align}
+ \sum_j \widehat{k}_{ij} v_j=m_{ii} - \Delta t\underbrace{\sum_j k_{ij}^L}_{=0}=m_{ii}>0~~\forall i
+\end{align}
+Wenn man nun noch davon ausgehen kann, dass $\widehat{K}$ regulär ist, folgt die Eigenschaft der \textit{M-Matrix}, welche die Positivitätseigenschaft für $u^{n+1}$ impliziert.\\
+Als nächsten Schritt versucht man nun die Addition der künstlichen Diffusion wieder auszugleichen, in dem man eine künstliche \col{antidiffusion} hinzuaddiert. Hierbei wird nun im Gegensatz zu Schritt 2 für jeden Knoten einzelnd die Stärke dieser \col{antidiffusion}  limitiert, sodass keine zu hohe bzw. zu niedrige Diffusionskompensation durchgeführt wird. Diese wird in Gleichung \eqref{eq:Lim} für den Knoten $i$ schemenhaft dargestellt:
+\begin{align}
+ u_{H,i}^{n+1}=u_{L,i}^{n+1} +\alpha_iF(u^n)_i\label{eq:Lim}
+\end{align}
+Die endgültige Lösung nach dem Limitierungsschritt definieren wir als $u_{HIGH}$ oder kurz $u_H$. $F(u^n)_i$ stellt hier den, in Abhängigkeit von der Lösung des letzten Iterationsschrittes, \col{antidiffusionteil} dar. \col{sodass die Positivitätseigenschaft für die endgültige Lösung nicht verletzt wird.} Die Diffusionskoeffizienten $\alpha_i$  besitzen Werte im Intervall $[0,1]$. Wenn also $\alpha_i\approx0$, dann muss die künstliche Diffusion an diesem Knoten nicht ausgegelichen werden und es gilt $u_{H,i}^{n+1}=u_{L,i}^{n+1}$. Im Gegensatz dazu gilt für einen Koeffizienten $\alpha_i\approx1$, dass $u_{H,i}^{n+1}$ gleich der anfänglichen Lösung der algebraischen Gleichung\eqref{eq:algTrans} ist. Zur genaueren Bestimmung nehmen wir den Ansatz, dass der \col{antidiffusion-teil} als Multiplikation einer Matrix $F$ und des Lösungsvektor aus dem letzten Iterationsschrittes $u^n$ dargestellt werden kann. Somit gil für$~\alpha_i=1~\forall i$:
+\begin{align}
+ u_H^{n+1}&=u_L^{n+1} +Fu^n\\
+\Rightarrow [M-\Delta tK^H]^{-1}Mu^n&\overset{!}{=}[M-\Delta tK^L]^{-1}Mu^n+Fu^n\\
+\Rightarrow Fu^n&=([M-\Delta tK^H]^{-1}-[M-\Delta tK^L]^{-1})Mu^n\\
+\Rightarrow F&=([M-\Delta tK^H]^{-1}-[M-\Delta tK^L]^{-1})M
+\end{align}
+Bei dieser Definition von $F$ ist die oben genannte Bedingung für den Fall $\alpha_i=1$ erfüllt.\\
+Die genaue Berechnung der Diffusionskoeffizienten wird hier nicht näher erläutert. Das Vorgehen wäre aber äquivalent zu dem Vorgehen wie im Paper von Prof. Kuzmin und Prof. Turek~\cite{kuzmin2002flux}.\\
+Abschließend bekommt man durch das FCT-Schema eine besser approximierte Lösung heraus. Die FCT-Methoden sind allgemein auf explizite und implizite Zeitdiskretisierungen anwendbar und sind nicht auf die Raumdimension beschränkt~\cite{kuzmin2002flux}. Beispiele finden Sie im folgenden Kapitel~\ref{sec:NumVers}.
+\pagebreak
+\section{Numerische Versuche}\label{sec:NumVers}
+\pagebreak
+\section{Zusammenfassung und Ausblick}
+\pagebreak
+\pagenumbering{Roman}
+\appendix
+\bibliography{Bachlorarbeit}
+\bibliographystyle{unsrt}
+\end{document}
