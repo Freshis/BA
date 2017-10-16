@@ -150,7 +150,7 @@ Nun sind die Approximationsmethoden, wie zum Beispiel der oben genannte Vorwärt
 \end{align}
 Dieses Gleichungssystem kann nun durch iterative Verfahren gelöst werden. Mit den ermittellten Lösungsvektor kann nun interpoliert werden und graphisch ausgegeben werden.
 \subsection{RBF-Interpolation}
-Die Aussagen dieses Kapitels führen auf die Arbeit von Grady B. Wright \cite{wright2003radial} zurück.\\
+Die Aussagen dieses Kapitels führen auf die Arbeit von Grady B. Wright \cite{wright2003radial} zurück. Hierbei wird nur kurz die Thematik der radialen Basisfunktionen angeschnitten.\\
 In der Numerik ist die Interpolation eine wichtige Aufgabe, um aus einzelnen Funktionswerte die Zielfunktion zu approximieren. Hierbei haben sich schon viele Methoden, wie die Polynom- oder Fourier-Interpolation, für die eindimensioanle Interpolation in der Wissenschaft etabliert. Alle Verfahren basieren auf die gleiche Grundidee: Zu einer gegebenen Menge an Stützstellen $\{x_i\}_{i=1}^n$ und deren zugehörigen Funktionsauswertungen $\{f_i\}_{i=1}^n$ werden jeweilige Basisfunktionen $\{\psi_i(x)\}_{i=1}^n$ so gewählt, dass die Interpolierende die lineare Form
 \begin{align}
  s(x)=\sum_{i=1}^n\lambda_i\psi_i(x)
@@ -168,7 +168,8 @@ besitzt. Hierbei stellen die $\lambda_i$ die Interpolationskoeffizienten dar, we
  f_1 \\ \vdots \\ f_n
 \end{bmatrix}\label{eq:Inter}
 \end{align}
-Im eindimensioanlen gilt für viele Basisfunktionen, dass die Basisfunktionsmatrix regulär ist, wenn die einzelnen Knotenpunkte $\{x_i\}_{i=1}^n$ distinkt zueinander sind. Daraus folgt die eindeutige Lösbarkeit des Gleichungssystem und somit die Eindeutigkeit der Koeffenzienten $\lambda_i$. Im mehrdimensionalen ist dies nicht immer der Fall. \cite{de2013four}
+Im eindimensioanlen gilt für viele Basisfunktionen, dass die Basisfunktionsmatrix regulär ist, wenn die einzelnen Knotenpunkte $\{x_i\}_{i=1}^n$ distinkt zueinander sind. Daraus folgt die eindeutige Lösbarkeit des Gleichungssystem und somit die Eindeutigkeit der Koeffenzienten $\lambda_i$. Im mehrdimensionalen Fall verliert die Koeffenzientenmatrix ihre Regularitätseigenschaft. Der Beweis der Nicht-Regularität liefert das \textit{Haar-Mairhuber-Curtis-Theorem}, welches in \cite{de2013four} beschrieben und bewiesen wird.\\
+Um die Regularität auch im Mehrdimensionialen zu gewährleisten, nutzt man die sogenannten radialen Basisfunktionen (RBF). Genauer wird, anstelle einer Linearkombination von einer Menge von Basisfunktion, welche unabhängig von ihren Stützstellen sind, eine Linearkombination von Translationen einer festvorgegebenen RBF verwendet. Diese RBF haben die Eigenschaften, dass sie (radial) symmetrisch zu ihren Zentren sind, welches bedeutet, dass sie invariant bezüglichen Rotationen sind. Das heißt, eine Funktion $\phi:\mathbb{R}^n\rightarrow\mathbb{R}$ ist eine RBF genau dann, wenn sie die Bedingung $\phi(x)=\phi(\|x\|)$ erfüllt. Einige Beispiele für radiale Basisfunktionen sind:
 \begin{align}
  M\frac{\partial u}{\partial t}=K^Hu\label{eq:algTrans}
 \end{align}
