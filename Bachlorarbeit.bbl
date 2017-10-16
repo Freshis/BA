@@ -1,0 +1,42 @@
+\begin{thebibliography}{1}
+
+\bibitem{segal2013numerik}
+August Segal.
+\newblock {\em Numerik partieller Differentialgleichungen f{\"u}r Ingenieure}.
+\newblock Springer-Verlag, 2013.
+
+\bibitem{burger2006numerik}
+Martin Burger.
+\newblock Numerik partieller differentialgleichungen.
+\newblock {\em Westf{\"a}lische Wilhelms-Universit{\"a}t M{\"u}nster, WS}, 7,
+  2006.
+
+\bibitem{braess2013finite}
+Dietrich Braess.
+\newblock {\em Finite Elemente: Theorie, schnelle L{\"o}ser und Anwendungen in
+  der Elastizit{\"a}tstheorie}.
+\newblock Springer-Verlag, 2013.
+
+\bibitem{wright2003radial}
+Grady~Barrett Wright.
+\newblock Radial basis function interpolation: numerical and analytical
+  developments.
+\newblock 2003.
+
+\bibitem{de2013four}
+Stefano De~Marchi.
+\newblock Four lectures on radial basis functions.
+\newblock 2013.
+
+\bibitem{kuzmin2002flux}
+Dmitri Kuzmin and Stefan Turek.
+\newblock Flux correction tools for finite elements.
+\newblock {\em Journal of Computational Physics}, 175(2):525--558, 2002.
+
+\bibitem{fiedler2008special}
+Miroslav Fiedler.
+\newblock {\em Special matrices and their applications in numerical
+  mathematics}.
+\newblock Courier Corporation, 2008.
+
+\end{thebibliography}

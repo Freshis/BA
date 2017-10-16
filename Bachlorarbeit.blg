@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: Bachlorarbeit.aux
+The style file: unsrt.bst
+Database file #1: Bachlorarbeit.bib
+Warning--empty journal in wright2003radial
+Warning--empty journal in de2013four
+You've used 7 entries,
+            1791 wiz_defined-function locations,
+            479 strings with 4370 characters,
+and the built_in function-call counts, 1087 in all, are:
+= -- 92
+> -- 32
+< -- 0
++ -- 15
+- -- 8
+* -- 40
+:= -- 186
+add.period$ -- 21
+call.type$ -- 7
+change.case$ -- 4
+chr.to.int$ -- 0
+cite$ -- 9
+duplicate$ -- 63
+empty$ -- 124
+format.name$ -- 8
+if$ -- 241
+int.to.chr$ -- 0
+int.to.str$ -- 7
+missing$ -- 10
+newline$ -- 38
+num.names$ -- 7
+pop$ -- 33
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 20
+stack$ -- 0
+substring$ -- 25
+swap$ -- 5
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 2
+while$ -- 9
+width$ -- 8
+write$ -- 72
+(There were 2 warnings)
