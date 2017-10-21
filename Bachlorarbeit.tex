@@ -18,6 +18,7 @@
 \usepackage{float} 
 \usepackage{lmodern}
 \usepackage{mathrsfs}
+\usepackage{caption}
 
 % referieren
 \usepackage{hyperref}
@@ -176,7 +177,7 @@ Um die Regularität auch im Mehrdimensionialen zu gewährleisten, nutzt man die 
 \hline
 \textbf{unendlich glatte RBF}  & \textbf{$\psi(x), k>0$} \\
 \hline
-\rule{0pt}{15pt}Gauß-Funktion&~~~~~~$e^{-kx}$\\
+\rule{0pt}{15pt}Gauß-Funktion&~~~~~~$e^{-(kx)^2}$\\
 \rule{0pt}{15pt}Multiquadratische-Funktion& $\sqrt{1+(kx)^2}$\\
 \rule{0pt}{15pt}Invers-Multiquadratische-Funktion&~~$\frac{1}{\sqrt{1+(kx)^2}}$\\
 \hline
@@ -184,6 +185,32 @@ Um die Regularität auch im Mehrdimensionialen zu gewährleisten, nutzt man die 
 \caption{Beispieltabelle für radiale Basisfunktionen}
 \label{tbl:funktionstabelle}
 \end{table}
+\begin{figure}[ht]
+	\centering
+\begin{minipage}{0.45\textwidth}
+	\includegraphics[width=1.1\textwidth]{figures/1_dim_gauss.png}
+	\caption*{(i)Gauß-Funktion}
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+	\includegraphics[width=1.1\textwidth]{figures/1_dim_multi.png}
+	\caption*{(ii)Multiquadratische-Funktion}
+\end{minipage}
+	\caption{1-dimensionale radiale Basisfunktionen}
+	\label{fig:RBF}
+\end{figure}
+\begin{figure}[ht]
+	\centering
+\begin{minipage}{0.45\textwidth}
+	\includegraphics[width=1.1\textwidth]{figures/2_dim_gauss.png}
+	\caption*{(i)Gauß-Funktion}
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+	\includegraphics[width=1.1\textwidth]{figures/2_dim_multi.png}
+	\caption*{(ii)Multiquadratische-Funktion}
+\end{minipage}
+	\caption{2-dimensionale radiale Basisfunktionen}
+	\label{fig:RBF}
+\end{figure}
 Nun erhält man nach einer Wahl der RBF die neue Interpolationsfunktion
 \begin{align}
  s(x)=\sum_{i=1}^n\lambda_i\psi_i(\|x-x_i\|).
