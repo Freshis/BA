@@ -92,8 +92,7 @@ Im Gegensatz zu der \textit{Konvektions-Gleichung} tritt in \eqref{diffusionsgle
 ~\cite{segal2013numerik}
 \pagebreak
 \section{RBF-FD}\label{sec:RBF-FD}
-Die Radiale-Basisfunktion-Finite-Differenzen-Methode(RBF-FDM) behandelt die Approximation gewöhnlicher und partieller Differentialgleichungen ohne Gittergenerierung. \col{blabla}\\
-Als erstes wird nun die Finite-Differenzen-Methode vorgestellt.
+Die Radiale-Basisfunktion-Finite-Differenzen-Methode(RBF-FDM) behandelt die Approximation gewöhnlicher und partieller Differentialgleichungen. Im Gegensatz zu den klasischen Verfahren, wie zum Beispiel der allgemeinen Finite-Differenzen-Methode oder der Finiten-Elemente-Methode, wird bei dieser Methodik kein vorgeschriebenes Gitter benötigt und ist somit unabhängig von dem gegebenen Raum. Allgemein werden in diesem Kapitel die radialen Basisfunktionen vorgestellt und dann im Zusammenhang mit dem Finiten-Differenzenverfahren gebracht. Als erstes wird nun die Finite-Differenzen-Methode vorgestellt.
 \subsection{Einführung in die Finite-Differenzenmethode}
 Dieses Kapitel liegt den Arbeiten von \cite{burger2006numerik} und \cite{braess2013finite} zu Grunde.\\
 In der numerischen Mathematik ist das Approximieren gewöhnlicher und partieller Differentialgleichung eine der \col{meistentwickelten} Hauptfelder. Hierzu sind im Laufe der Zeit viele verschiedene Verfahren entwickelt und weiterentwickelt worden. Einer der ältesten  und einfachsten Verfahren ist die sogenannte \textit{Finite-Differenzen-Methode} (FDM), welche zu der Klasse der Differenzenverfahren gehört. Bei diesem Verfahren nähert man die Ableitung einer Funktion $u(x)$ mittels Differenzenquotienten an:
@@ -116,12 +115,11 @@ Zur Berechnung der Fehlerordnung verwendet man die \textit{Taylor-Entwicklung} (
 \begin{align}
  u(x\pm h)=u(x)\pm hu^{(1)}(x)+\cdots+\frac{(\pm h)^n}{n!}u^{(n)}(x)+u^{(n+1)}(x+\theta h)
 \end{align}
-mit $\theta\in(0,1)$.
-Wendet man nun die Taylorentwicklung zur Bestimmung der Konsistenzordnung auf den Vorwärtsdifferenzenquotient an, so berechnet man:
+mit $\theta\in(0,1)$. Wendet man nun die Taylorentwicklung zur Bestimmung der Konsistenzordnung auf den Vorwärtsdifferenzenquotient an, so berechnet man:
 \begin{align}
  |u^{'}(x)-D^+u(x)|&=|u^{(1)}-\frac{u(x+h)-u(x)}{h}|\nonumber\\&\overset{TE}{=}|-\frac{h}{2}u^{(2)}(x+\theta h)|\le h\|u^{(2)}\|_{\infty}
 \end{align}
-Somit ist der Vorwärtsdifferenzenquotient $\mathcal{O}(h)$ und besitzt eine Fehler von 1. Ordnung. Mit der gleichen Methode berechnet man auch die Fehlerordnungen der anderen beiden Verfahren und bekommt heraus, dass der Fehler des Rückwärtsdifferenzenquotient auch $\mathcal{O}(h)$ und der Fehler vom Zentralen-Differenzenquotienten sogar $\mathcal{O}(h^2)$ und folglich eine Fehlerordnung von 2 besitzt.\col{verfahren 2. ordnung wegen laplaceoperatorapproximation}\\\\
+Somit ist der Vorwärtsdifferenzenquotient $\mathcal{O}(h)$ und besitzt eine Fehler von 1. Ordnung. Mit der gleichen Methode berechnet man auch die Fehlerordnungen der anderen beiden Verfahren und bekommt heraus, dass der Fehler des Rückwärtsdifferenzenquotient auch $\mathcal{O}(h)$ und der Fehler vom Zentralen-Differenzenquotienten sogar $\mathcal{O}(h^2)$ und folglich eine Fehlerordnung von 2 besitzt.\\\\
 \textbf{Diskretisierung}\\\\
 Für die FDM benötigt man Auswertungsstellen, um, wie oben gesehen, den Differentialoperator approximieren zu können. Hierbei legt man ein Gitter auf ein Gebiet $\Omega$, auf dem man die PDG lösen möchte. Es werden vor allem äquidistante Gitter verwendet, da sonst die Implementierung sehr aufwändig ist. Der Nachteil eines solchen Gitters ist die Unflexibilität in Gebieten von $\Omega$, in denen eine genauere Auswertung erforderlich ist, um die dort gegebenen Eigenschaften bestmöglich approximieren zu können. Sei nun einfachheitshalber das Gebiet $\Omega\subset\mathbb{R}^2$. Wählt man eine äquidistante Gittergenerierung mit dem Abstand $h$, so erhält man einen diskretisierten Raum:
 \begin{align}
@@ -170,14 +168,14 @@ besitzt. In diesem Zusammenhang stellen die $\lambda_i$ die Interpolationskoeffi
 \end{bmatrix}\label{eq:Intermatrix}
 \end{align}
 Im eindimensioanlen Fall gilt für viele Basisfunktionen, dass die Basisfunktionsmatrix regulär ist, wenn die einzelnen Knotenpunkte $\{x_i\}_{i=1}^n$ disjunkt zueinander sind. Daraus folgt die eindeutige Lösbarkeit des Gleichungssystems und somit die Eindeutigkeit der Koeffenzienten $\lambda_i$. Im mehrdimensionalen Fall kann die Koeffenzientenmatrix ihre Regularitätseigenschaft verlieren. Der Beweis der Nicht-Regularität liefert das \textit{Haar-Mairhuber-Curtis-Theorem}, welches in \cite{de2013four} beschrieben und bewiesen wird, sodass es hier nicht näher erläutert wird.\\
-Um die Regularität auch im Mehrdimensionialen zu gewährleisten, nutzt man die sogenannten radialen Basisfunktionen (RBF). Genauer wird, anstelle einer Linearkombination von einer Menge von Basisfunktion, welche unabhängig von ihren Stützstellen sind, eine Linearkombination von Translationen einer festvorgegebenen RBF verwendet. Diese RBF haben die Eigenschaften, dass sie (radial) symmetrisch zu ihren Zentren sind, welches bedeutet, dass sie invariant bezüglichen Rotationen sind. Das heißt, eine Funktion $\psi:\mathbb{R}^n\rightarrow\mathbb{R}$ ist genau dann eine RBF, wenn sie die Bedingung $\psi(x)=\psi(\|x\|)$ erfüllt. Einige Beispiele für unendlich glatte, radiale Basisfunktionen sind in Tabelle \ref{tbl:funktionstabelle} wiederzufinden.
-\begin{table}
+Um die Regularität auch im Mehrdimensionialen zu gewährleisten, nutzt man die sogenannten radialen Basisfunktionen (RBF). Genauer wird, anstelle einer Linearkombination von einer Menge von Basisfunktion, welche unabhängig von ihren Stützstellen sind, eine Linearkombination von Translationen einer festvorgegebenen RBF verwendet. Diese RBF haben die Eigenschaften, dass sie (radial) symmetrisch zu ihren Zentren sind, welches bedeutet, dass sie invariant bezüglichen Rotationen sind. Das heißt, eine Funktion $\psi:\mathbb{R}^n\rightarrow\mathbb{R}$ ist genau dann eine RBF, wenn sie die Bedingung $\psi(x)=\psi(\|x\|)$ erfüllt. Einige Beispiele für unendlich glatte, radiale Basisfunktionen sind in Tabelle \ref{tbl:funktionstabelle} wiederzufinden. Zur besseren Veranschaulichung der radialen Symmetrie sind die radial-symmetrischen Gauß- und Multiquadratische-Funktion in Abbildung \ref{fig:RBF_1dim} im eindimensionalen und in Abbildung \ref{fig:RBF_2dim} im zweidimensionalen Fall dargestellt.
+\begin{table}[H]
 \centering
 \begin{tabular}{|l|l|}
 \hline
 \textbf{unendlich glatte RBF}  & \textbf{$\psi(x), k>0$} \\
 \hline
-\rule{0pt}{15pt}Gauß-Funktion&~~~~~~$e^{-(kx)^2}$\\
+\rule{0pt}{15pt}Gauß-Funktion&~~~~~$e^{-(kx)^2}$\\
 \rule{0pt}{15pt}Multiquadratische-Funktion& $\sqrt{1+(kx)^2}$\\
 \rule{0pt}{15pt}Invers-Multiquadratische-Funktion&~~$\frac{1}{\sqrt{1+(kx)^2}}$\\
 \hline
@@ -187,30 +185,35 @@ Um die Regularität auch im Mehrdimensionialen zu gewährleisten, nutzt man die 
 \end{table}
 \begin{figure}[ht]
 	\centering
+\hspace{-1.4cm}
 \begin{minipage}{0.45\textwidth}
-	\includegraphics[width=1.1\textwidth]{figures/1_dim_gauss.png}
+	\includegraphics[width=1.25\textwidth]{figures/1_dim_gauss.png}
 	\caption*{(i)Gauß-Funktion}
 \end{minipage}
+\hspace{0.5cm}
 \begin{minipage}{0.45\textwidth}
-	\includegraphics[width=1.1\textwidth]{figures/1_dim_multi.png}
+	\includegraphics[width=1.25\textwidth]{figures/1_dim_multi.png}
 	\caption*{(ii)Multiquadratische-Funktion}
 \end{minipage}
 	\caption{1-dimensionale radiale Basisfunktionen}
-	\label{fig:RBF}
+	\label{fig:RBF_1dim}
 \end{figure}
 \begin{figure}[ht]
 	\centering
+\hspace{-1.4cm}
 \begin{minipage}{0.45\textwidth}
-	\includegraphics[width=1.1\textwidth]{figures/2_dim_gauss.png}
+	\includegraphics[width=1.25\textwidth]{figures/2_dim_gauss.png}
 	\caption*{(i)Gauß-Funktion}
 \end{minipage}
+\hspace{0.5cm}
 \begin{minipage}{0.45\textwidth}
-	\includegraphics[width=1.1\textwidth]{figures/2_dim_multi.png}
+	\includegraphics[width=1.25\textwidth]{figures/2_dim_multi.png}
 	\caption*{(ii)Multiquadratische-Funktion}
 \end{minipage}
 	\caption{2-dimensionale radiale Basisfunktionen}
-	\label{fig:RBF}
+	\label{fig:RBF_2dim}
 \end{figure}
+\noindent
 Nun erhält man nach einer Wahl der RBF die neue Interpolationsfunktion
 \begin{align}
  s(x)=\sum_{i=1}^n\lambda_i\psi_i(\|x-x_i\|).
@@ -237,6 +240,7 @@ Somit erhält man eine Erweiterung zum Gleichungssystem aus Gleichung \eqref{eq:
 \end{bmatrix}\label{eq:Inter}
 \end{align}
 In diesem Zusammenhang ist die Matrix $P\in\mathbb{R}^{nxM}$ so definiert, sodass für ihre Elemente $p_{ij}=p_i(x_j)$ gilt. Der Beweis der Regularität für die erweiterte Koeffizientenmatrix liefert C.A.Micchellini in seiner Ausarbeitung~\cite{micchelli1984interpolation}.
+\subsection{Einführung in das RBF-FD-Verfahren}
 \begin{align}
  M\frac{\partial u}{\partial t}=K^Hu\label{eq:algTrans}
 \end{align}
