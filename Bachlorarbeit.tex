@@ -168,7 +168,7 @@ besitzt. In diesem Zusammenhang stellen die $\lambda_i$ die Interpolationskoeffi
 \end{bmatrix}\label{eq:Intermatrix}
 \end{align}
 Im eindimensioanlen Fall gilt für viele Basisfunktionen, dass die Basisfunktionsmatrix regulär ist, wenn die einzelnen Knotenpunkte $\{x_i\}_{i=1}^n$ disjunkt zueinander sind. Daraus folgt die eindeutige Lösbarkeit des Gleichungssystems und somit die Eindeutigkeit der Koeffenzienten $\lambda_i$. Im mehrdimensionalen Fall kann die Koeffenzientenmatrix ihre Regularitätseigenschaft verlieren. Der Beweis der Nicht-Regularität liefert das \textit{Haar-Mairhuber-Curtis-Theorem}, welches in \cite{de2013four} beschrieben und bewiesen wird, sodass es hier nicht näher erläutert wird.\\
-Um die Regularität auch im Mehrdimensionialen zu gewährleisten, nutzt man die sogenannten radialen Basisfunktionen (RBF). Genauer wird, anstelle einer Linearkombination von einer Menge von Basisfunktion, welche unabhängig von ihren Stützstellen sind, eine Linearkombination von Translationen einer festvorgegebenen RBF verwendet. Diese RBF haben die Eigenschaften, dass sie (radial) symmetrisch zu ihren Zentren sind, welches bedeutet, dass sie invariant bezüglichen Rotationen sind. Das heißt, eine Funktion $\psi:\mathbb{R}^n\rightarrow\mathbb{R}$ ist genau dann eine RBF, wenn sie die Bedingung $\psi(x)=\psi(\|x\|)$ erfüllt. Einige Beispiele für unendlich glatte, radiale Basisfunktionen sind in Tabelle \ref{tbl:funktionstabelle} wiederzufinden. Zur besseren Veranschaulichung der radialen Symmetrie sind die radial-symmetrischen Gauß- und Multiquadratische-Funktion in Abbildung \ref{fig:RBF_1dim} im eindimensionalen und in Abbildung \ref{fig:RBF_2dim} im zweidimensionalen Fall dargestellt.
+Um die Regularität auch im Mehrdimensionialen zu gewährleisten, nutzt man die sogenannten radialen Basisfunktionen (RBF). Genauer wird, anstelle einer Linearkombination von einer Menge von Basisfunktion, welche unabhängig von ihren Stützstellen sind, eine Linearkombination von Translationen einer festvorgegebenen RBF verwendet. Diese RBF haben die Eigenschaften, dass sie (radial) symmetrisch zu ihren Zentren sind, welches bedeutet, dass sie invariant bezüglichen Rotationen sind. Das heißt, eine Funktion $\psi:\mathbb{R}^n\rightarrow\mathbb{R}$ ist genau dann eine RBF, wenn sie die Bedingung $\psi(x)=\psi(\|x\|)$ erfüllt. Einige Beispiele für unendlich glatte, radiale Basisfunktionen sind in Tabelle \ref{tbl:funktionstabelle} wiederzufinden.Zur besseren Veranschaulichung der radialen Symmetrie sind die radial-symmetrischen Gauß- und Multiquadratische-Funktion in Abbildung \ref{fig:RBF_1dim} im eindimensionalen und in Abbildung \ref{fig:RBF_2dim} im zweidimensionalen Fall dargestellt.
 \begin{table}[H]
 \centering
 \begin{tabular}{|l|l|}
@@ -183,7 +183,9 @@ Um die Regularität auch im Mehrdimensionialen zu gewährleisten, nutzt man die 
 \caption{Beispieltabelle für radiale Basisfunktionen}
 \label{tbl:funktionstabelle}
 \end{table}
-\begin{figure}[ht]
+\noindent
+Zur besseren Veranschaulichung der radialen Symmetrie sind die radial-symmetrischen Gauß- und Multiquadratische-Funktion in Abbildung \ref{fig:RBF_1dim} im eindimensionalen und in Abbildung \ref{fig:RBF_2dim} im zweidimensionalen Fall dargestellt.
+\begin{figure}[H]
 	\centering
 \hspace{-1.4cm}
 \begin{minipage}{0.45\textwidth}
@@ -198,7 +200,7 @@ Um die Regularität auch im Mehrdimensionialen zu gewährleisten, nutzt man die 
 	\caption{1-dimensionale radiale Basisfunktionen}
 	\label{fig:RBF_1dim}
 \end{figure}
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 \hspace{-1.4cm}
 \begin{minipage}{0.45\textwidth}
