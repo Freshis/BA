@@ -92,10 +92,10 @@ Im Gegensatz zu der \textit{Konvektions-Gleichung} tritt in \eqref{diffusionsgle
 ~\cite{segal2013numerik}
 \pagebreak
 \section{RBF-FD}\label{sec:RBF-FD}
-Die Radiale-Basisfunktion-Finite-Differenzen-Methode(RBF-FDM) behandelt die Approximation gewöhnlicher und partieller Differentialgleichungen. Im Gegensatz zu den klasischen Verfahren, wie zum Beispiel der allgemeinen Finite-Differenzen-Methode oder der Finiten-Elemente-Methode, wird bei dieser Methodik kein vorgeschriebenes Gitter benötigt und ist somit unabhängig von dem gegebenen Raum. Allgemein werden in diesem Kapitel die radialen Basisfunktionen vorgestellt und dann im Zusammenhang mit dem Finiten-Differenzenverfahren gebracht. Als erstes wird nun die Finite-Differenzen-Methode vorgestellt.
+Die Radiale-Basisfunktion-Finite-Differenzen-Methode(RBF-FDM) behandelt die Approximation gewöhnlicher und partieller Differentialgleichungen. Im Gegensatz zu den klasischen Verfahren, wie zum Beispiel der allgemeinen Finite-Differenzen-Methode oder der Finiten-Elemente-Methode, wird bei dieser Methodik kein vorgeschriebenes Gitter benötigt und ist somit unabhängig von dem gegebenen Raum. Allgemein werden in diesem Kapitel die radialen Basisfunktionen vorgestellt und anhand der Interpolationsaufgabe mittels radialen Basisfunktionen näher erläutert. Abschließend wird das Verfahren erläutert, indem die Basisfunktionen im Zusammenhang mit dem Finiten-Differenzenverfahren gebracht werden. Als erstes wird nun die Finite-Differenzen-Methode vorgestellt.
 \subsection{Einführung in die Finite-Differenzenmethode}
-Dieses Kapitel liegt den Arbeiten von \cite{burger2006numerik} und \cite{braess2013finite} zu Grunde.\\
-In der numerischen Mathematik ist das Approximieren gewöhnlicher und partieller Differentialgleichung eine der \col{meistentwickelten} Hauptfelder. Hierzu sind im Laufe der Zeit viele verschiedene Verfahren entwickelt und weiterentwickelt worden. Einer der ältesten  und einfachsten Verfahren ist die sogenannte \textit{Finite-Differenzen-Methode} (FDM), welche zu der Klasse der Differenzenverfahren gehört. Bei diesem Verfahren nähert man die Ableitung einer Funktion $u(x)$ mittels Differenzenquotienten an:
+Dieses Kapitel liegt den Arbeiten von Martin Burger \cite{burger2006numerik} und Dietrich Braess \cite{braess2013finite} zu Grunde.\\
+In der numerischen Mathematik ist das Approximieren gewöhnlicher und partieller Differentialgleichung ein Hauptforschungsgebiet. Hierzu sind im Laufe der Zeit viele verschiedene Verfahren entwickelt und weiterentwickelt worden. Einer der ältesten  und einfachsten Verfahren ist die sogenannte \textit{Finite-Differenzen-Methode} (FDM), welche zu der Klasse der Differenzenverfahren gehört. Bei diesem Verfahren nähert man die Ableitung einer Funktion $u(x)$ mittels Differenzenquotienten an:
 \begin{align}
  \frac{\partial u(x)}{x}=\lim\limits_{h \rightarrow 0} \frac{u(x+h)-u(x)}{h}
 \end{align}
@@ -184,7 +184,7 @@ Um die Regularität auch im Mehrdimensionialen zu gewährleisten, nutzt man die 
 \label{tbl:funktionstabelle}
 \end{table}
 \noindent
-Zur besseren Veranschaulichung der radialen Symmetrie sind die radial-symmetrischen Gauß- und Multiquadratische-Funktion in Abbildung \ref{fig:RBF_1dim} im eindimensionalen und in Abbildung \ref{fig:RBF_2dim} im zweidimensionalen Fall dargestellt.
+\col{Glättungsoperator}Zur besseren Veranschaulichung der radialen Symmetrie sind die radial-symmetrischen Gauß- und Multiquadratische-Funktion in Abbildung \ref{fig:RBF_1dim} im eindimensionalen und in Abbildung \ref{fig:RBF_2dim} im zweidimensionalen Fall dargestellt.
 \begin{figure}[H]
 	\centering
 \hspace{-1.4cm}
@@ -220,7 +220,7 @@ Nun erhält man nach einer Wahl der RBF die neue Interpolationsfunktion
 \begin{align}
  s(x)=\sum_{i=1}^n\lambda_i\psi_i(\|x-x_i\|).
 \end{align}
-Hierbei ist zu beachten, dass die Regularität der Koeffizientenmatrix nicht für alle RBF gewährleistet ist. Um diese Eigenschaft für alle RBF zu erhalten, wird die Interpolierende mit einer Linearkombination von Polynomen erweitert:
+\col{Gleichungssystem nochmal schön machen}Hierbei ist zu beachten, dass die Regularität der Koeffizientenmatrix nicht für alle RBF gewährleistet ist. Um diese Eigenschaft für alle RBF zu erhalten, wird die Interpolierende mit einer Linearkombination von Polynomen erweitert:
 \begin{align}
  s(x)=\sum_{i=1}^n\lambda_i\psi_i(\|x-x_i\|)+\sum_{j=1}^M\gamma_jp_j(x)
 \end{align}
