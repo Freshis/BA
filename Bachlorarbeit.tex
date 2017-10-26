@@ -147,32 +147,32 @@ Nun sind die Approximationsmethoden, wie zum Beispiel der oben vorgestellte Vorw
 \begin{align}
  \sum_{i\in I}w_iu_{ij}=f_j~~~~\forall j\in I
 \end{align}
-In dieser Linearkombination beschreibt $I$ die Indexmenge der Knoten, $u_{ij}$ die Knotenauswertungen und $f_j$ die Auswertung der rechten Seite. Mit $w_i$ werden die jeweiligen Gewichte beschrieben, welche sich aus dem FD-Verfahren bestimmen lässt. Dies kann man nun in ein lineares Gleichungssystem der Form
+In dieser Linearkombination beschreibt $I$ die Indexmenge der Knoten, $u_{ij}$ die Knotenauswertungen und $f_j$ die Auswertung der rechten Seite. Mit $w_i$ werden die jeweiligen Gewichte beschrieben, welche sich aus dem FD-Verfahren bestimmen lassen. Dies kann man nun in ein lineares Gleichungssystem der Form
 \begin{align}
  A_hu_h=f_h
 \end{align}
-schreiben. Dieses System kann nun durch iterative Verfahren gelöst werden. Mit den ermittellten Lösungsvektor kann nun interpoliert werden und graphisch ausgegeben werden.
+schreiben. Dieses System kann nun durch klassische iterative Verfahren, wie das \textit{Gauß-Seidel-} oder \textit{Jacobi-Verfahren}, oder durch Lösungsalgorithmen, welche speziell auf das Lösen partieller Differentialgleichungen entwickelt wurden, wie das \textit{Mehrgitter-Verfahren}, gelöst werden. Durch eine Interpolation des ermittellten Lösungsvektors kann nun eine Lösungsfunktion angegeben werden, welche somit auch graphisch anzeigbar wäre.
 \subsection{RBF-Interpolation}
 Die Aussagen dieses Kapitels führen auf die Arbeit von Grady B. Wright \cite{wright2003radial} zurück, sodass  hier nur kurz die Thematik der radialen Basisfunktionen angeschnitten wird.\\
-In der Numerik ist die Interpolation eine wichtige Aufgabe, um aus einzelnen Funktionswerte die Zielfunktion zu approximieren. Hierbei haben sich schon viele Methoden, wie die Polynom- oder Fourier-Interpolation, für die eindimensioanle Interpolationsaufgabe in der Wissenschaft etabliert. Alle Verfahren basieren auf die gleiche Grundidee: Zu einer gegebenen Menge an Stützstellen $\{x_i\}_{i=1}^n$ und deren zugehörigen Funktionsauswertungen $\{f_i\}_{i=1}^n$ werden jeweilige Basisfunktionen $\{\psi_i(x)\}_{i=1}^n$ so gewählt, dass die Interpolierende die lineare Form
+In der Numerik ist die Interpolation eine wichtige Aufgabe, um aus einzelnen Funktionswerte die Zielfunktion zu approximieren. Hierbei haben sich schon viele Methoden, wie die \textit{Polynom-} oder \textit{Fourier-Interpolation}, für die eindimensioanle Interpolationsaufgabe in der Wissenschaft etabliert. Alle Verfahren basieren auf die gleiche Grundidee: Zu einer gegebenen Menge an Stützstellen $\{x_i\}_{i=1}^n$ und deren zugehörigen Funktionsauswertungen $\{f_i\}_{i=1}^n$ werden jeweilige Basisfunktionen $\{\phi_i(x)\}_{i=1}^n$ so gewählt, dass die Interpolierende die lineare Form
 \begin{align}
- s(x)=\sum_{i=1}^n\lambda_i\psi_i(x)
+ s(x)=\sum_{i=1}^n\lambda_i\phi_i(x)
 \end{align}
 besitzt. In diesem Zusammenhang stellen die $\lambda_i$ die Interpolationskoeffizienten dar, welche errechnet werden müssen. Diese Koeffizienten werden durch die Bedingung definiert, dass $s(x_i)\overset{!}{=}f_i~\forall i$ gelten muss. Aus dieser Bedingung erhält man ein zu lösendes Gleichungssystem, welches in der folgenden Gleichung dargestellt ist.
 \begin{align}
-\begin{bmatrix}
- \psi_1(x_1) & \cdots & \psi_n(x_1) \\ \vdots & \ddots & \vdots \\ \psi_1(x_n) & \cdots & \psi_n(x_n)
-\end{bmatrix}
-\begin{bmatrix}
+\underbrace{\begin{bmatrix}
+ \phi_1(x_1) & \cdots & \phi_n(x_1) \\ \vdots & \ddots & \vdots \\ \phi_1(x_n) & \cdots & \phi_n(x_n)
+\end{bmatrix}}_{A}
+\underbrace{\begin{bmatrix}
  \lambda_1 \\ \vdots \\ \lambda_n
-\end{bmatrix}
+\end{bmatrix}}_{\lambda}
 =
-\begin{bmatrix}
+\underbrace{\begin{bmatrix}
  f_1 \\ \vdots \\ f_n
-\end{bmatrix}\label{eq:Intermatrix}
+\end{bmatrix}}_{f}\label{eq:Intermatrix}
 \end{align}
 Im eindimensioanlen Fall gilt für viele Basisfunktionen, dass die Basisfunktionsmatrix regulär ist, wenn die einzelnen Knotenpunkte $\{x_i\}_{i=1}^n$ disjunkt zueinander sind. Daraus folgt die eindeutige Lösbarkeit des Gleichungssystems und somit die Eindeutigkeit der Koeffenzienten $\lambda_i$. Im mehrdimensionalen Fall kann die Koeffenzientenmatrix ihre Regularitätseigenschaft verlieren. Der Beweis der Nicht-Regularität liefert das \textit{Haar-Mairhuber-Curtis-Theorem}, welches in \cite{de2013four} beschrieben und bewiesen wird, sodass es hier nicht näher erläutert wird.\\
-Um die Regularität auch im Mehrdimensionialen zu gewährleisten, nutzt man die sogenannten radialen Basisfunktionen (RBF). Genauer wird, anstelle einer Linearkombination von einer Menge von Basisfunktion, welche unabhängig von ihren Stützstellen sind, eine Linearkombination von Translationen einer festvorgegebenen RBF verwendet. Diese RBF haben die Eigenschaften, dass sie (radial) symmetrisch zu ihren Zentren sind, welches bedeutet, dass sie invariant bezüglichen Rotationen sind. Das heißt, eine Funktion $\psi:\mathbb{R}^n\rightarrow\mathbb{R}$ ist genau dann eine RBF, wenn sie die Bedingung $\psi(x)=\psi(\|x\|)$ erfüllt. Einige Beispiele für unendlich glatte, radiale Basisfunktionen sind in Tabelle \ref{tbl:funktionstabelle} wiederzufinden.Zur besseren Veranschaulichung der radialen Symmetrie sind die radial-symmetrischen Gauß- und Multiquadratische-Funktion in Abbildung \ref{fig:RBF_1dim} im eindimensionalen und in Abbildung \ref{fig:RBF_2dim} im zweidimensionalen Fall dargestellt.
+Um die Regularität auch im Mehrdimensionialen zu gewährleisten, nutzt man die sogenannten radialen Basisfunktionen (RBF). Genauer wird, anstelle einer Linearkombination von einer Menge von Basisfunktion, welche unabhängig von ihren Stützstellen sind, eine Linearkombination von Translationen einer festvorgegebenen RBF verwendet. Diese RBF haben die Eigenschaften, dass sie (radial) symmetrisch zu ihren Zentren sind, welches bedeutet, dass sie invariant bezüglichen Rotationen sind. Das heißt, eine Funktion $\psi:\mathbb{R}^n\rightarrow\mathbb{R}$ ist genau dann eine RBF, wenn sie die Bedingung $\psi(x)=\psi(\|x\|)$ erfüllt. Einige Beispiele für unendlich glatte, radiale Basisfunktionen sind in Tabelle \ref{tbl:funktionstabelle} wiederzufinden.
 \begin{table}[H]
 \centering
 \begin{tabular}{|l|l|}
@@ -188,7 +188,7 @@ Um die Regularität auch im Mehrdimensionialen zu gewährleisten, nutzt man die 
 \label{tbl:funktionstabelle}
 \end{table}
 \noindent
-\col{Glättungsoperator}Zur besseren Veranschaulichung der radialen Symmetrie sind die radial-symmetrischen Gauß- und Multiquadratische-Funktion in Abbildung \ref{fig:RBF_1dim} im eindimensionalen und in Abbildung \ref{fig:RBF_2dim} im zweidimensionalen Fall dargestellt.
+Der freiwählbare Faktor $k$ stellt in den Funktionen den Glättungsparameter dar. Zur besseren Veranschaulichung der radialen Symmetrie ist die Gauß-Funktion und die Multiquadratische-Funktion in Abbildung \ref{fig:RBF_1dim} im eindimensionalen und in Abbildung \ref{fig:RBF_2dim} im zweidimensionalen Fall dargestellt.
 \begin{figure}[H]
 	\centering
 \hspace{-1.4cm}
@@ -222,11 +222,11 @@ Um die Regularität auch im Mehrdimensionialen zu gewährleisten, nutzt man die 
 \noindent
 Nun erhält man nach einer Wahl der RBF die neue Interpolationsfunktion
 \begin{align}
- s(x)=\sum_{i=1}^n\lambda_i\psi_i(\|x-x_i\|).
+ s(x)=\sum_{i=1}^n\lambda_i\psi(\|x-x_i\|).
 \end{align}
-\col{Gleichungssystem nochmal schön machen}Hierbei ist zu beachten, dass die Regularität der Koeffizientenmatrix nicht für alle RBF gewährleistet ist. Um diese Eigenschaft für alle RBF zu erhalten, wird die Interpolierende mit einer Linearkombination von Polynomen erweitert:
+Hierbei ist zu beachten, dass die Regularität der Koeffizientenmatrix nicht für alle RBF gewährleistet ist. Um diese Eigenschaft für alle RBF zu erhalten, wird die Interpolierende mit einer Linearkombination von Polynomen erweitert:
 \begin{align}
- s(x)=\sum_{i=1}^n\lambda_i\psi_i(\|x-x_i\|)+\sum_{j=1}^M\gamma_jp_j(x)
+ s(x)=\sum_{i=1}^n\lambda_i\psi(\|x-x_i\|)+\sum_{j=1}^M\gamma_jp_j(x)
 \end{align}
 Hierbei stellen die Polynome $\{p_k\}_{k=1}^M$ eine Basis des Raums $\mathbb{P}_m^d$ und $M=dim\{\mathbb{P}_m^d\}$ die obere Grenze der zweiten Summe dar. Dabei repräsentiert $\mathbb{P}_m^d$ den Raum aller d-variaten Polynome vom Grad kleiner als m. Durch diese Erweiterung treten nun weitere Freiheitsgrade auf, welche durch die folgende Bedingung definiert werden:
 \begin{align}
@@ -234,18 +234,18 @@ Hierbei stellen die Polynome $\{p_k\}_{k=1}^M$ eine Basis des Raums $\mathbb{P}_
 \end{align}
 Somit erhält man eine Erweiterung zum Gleichungssystem aus Gleichung \eqref{eq:Intermatrix}:
 \begin{align}
-\begin{bmatrix}
+\underbrace{\begin{bmatrix}
  A & P \\ P^T & 0
-\end{bmatrix}
-\begin{bmatrix}
+\end{bmatrix}}_{\tilde A}
+\underbrace{\begin{bmatrix}
  \lambda  \\ \gamma
-\end{bmatrix}
+\end{bmatrix}}_{\tilde\lambda}
 =
-\begin{bmatrix}
+\underbrace{\begin{bmatrix}
  f  \\ 0
-\end{bmatrix}\label{eq:Inter}
+\end{bmatrix}}_{\tilde f}\label{eq:Inter}
 \end{align}
-In diesem Zusammenhang ist die Matrix $P\in\mathbb{R}^{nxM}$ so definiert, sodass für ihre Elemente $p_{ij}=p_i(x_j)$ gilt. Der Beweis der Regularität für die erweiterte Koeffizientenmatrix liefert C.A.Micchellini in seiner Ausarbeitung~\cite{micchelli1984interpolation}.
+In diesem Zusammenhang sind die Matrizen $A\in\mathbb{R}^{n\times n}$ und $P\in\mathbb{R}^{n\times M}$. Die Elemente der Matrix $A$ und $P$ lauten $a_{ij}=\psi(\|x_i-x_j\|)$ und $p_{kl}=p_k(x_l)$ für $1\le i,j,l\le n$ und $1\le k\le M$. Der Beweis der Regularität für die erweiterte Koeffizientenmatrix $\tilde A$ liefert C.A.Micchellini in seiner Ausarbeitung~\cite{micchelli1984interpolation}.
 \subsection{Einführung in das RBF-FD-Verfahren}
 $\mathcal{Z}$
 \begin{align}
@@ -276,7 +276,7 @@ Hierbei stellen $u^{n+1}$ und $u^n$ jeweils die Lösung $u$ im Zeitschritt $n+1$
 Geht man davon aus, dass die Lösung des vorherigen Zeitschrittes $u^n\ge0$ ist und dass die Massenmatrix $M$ eine Diagonalmatrix mit $m_{ii}>0~\forall i$ ist, so folgt die Positivitätseigenschaft für $u^{n+1}$, wenn $[M-\Delta tK^L]^{-1}>0$ ist. Diese Aussage ist äquivalent zu der Definition einer \textit{M-Matrix}.
 \begin{defi}\label{def:MMatrix}
  \textbf{(M-Matrix):}\\
-Eine reguläre Matrix $A\in \mathbb{R}^{nxn}$ heißt M-Matrix, falls $A$ folgende Eigenschaften erfüllt:
+Eine reguläre Matrix $A\in \mathbb{R}^{n\times n}$ heißt M-Matrix, falls $A$ folgende Eigenschaften erfüllt:
 \begin{enumerate}
  \item $A$ ist eine Z-Matrix, also $a_{ij}\le0~\forall i\neq j$
  \item $\exists v>0:Av>0$~\cite{fiedler2008special}
