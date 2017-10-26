@@ -141,13 +141,17 @@ Durch die Diskretisierung erhält man nun auch einen diskreten Lösungsvektor $u
 so gilt nach der Diskretisierung:
 \begin{align}
  L_h\{u_h\}&=f_h~~\text{in}~\Omega_h\nonumber\\
- u_h&=g_h~~\text{auf}~\partial\Omega_h\nonumber
+ u_h&=g_h~~\text{auf}~\partial\Omega_h\label{eq:allgGleich}
 \end{align}
-Nun sind die Approximationsmethoden, wie zum Beispiel der oben genannte Vorwärtsdifferenzenquotient, anwendbar, und man kann das Lösungssystem in der Form:
+Nun sind die Approximationsmethoden, wie zum Beispiel der oben vorgestellte Vorwärtsdifferenzenquotient, anwendbar, und man kann das Gleichungssystem \eqref{eq:allgGleich} schreiben als Linearkombination der Auswertungsstellen der Art:
+\begin{align}
+ \sum_{i\in I}w_iu_{ij}=f_j~~~~\forall j\in I
+\end{align}
+In dieser Linearkombination beschreibt $I$ die Indexmenge der Knoten, $u_{ij}$ die Knotenauswertungen und $f_j$ die Auswertung der rechten Seite. Mit $w_i$ werden die jeweiligen Gewichte beschrieben, welche sich aus dem FD-Verfahren bestimmen lässt. Dies kann man nun in ein lineares Gleichungssystem der Form
 \begin{align}
  A_hu_h=f_h
 \end{align}
-Dieses Gleichungssystem kann nun durch iterative Verfahren gelöst werden. Mit den ermittellten Lösungsvektor kann nun interpoliert werden und graphisch ausgegeben werden.
+schreiben. Dieses System kann nun durch iterative Verfahren gelöst werden. Mit den ermittellten Lösungsvektor kann nun interpoliert werden und graphisch ausgegeben werden.
 \subsection{RBF-Interpolation}
 Die Aussagen dieses Kapitels führen auf die Arbeit von Grady B. Wright \cite{wright2003radial} zurück, sodass  hier nur kurz die Thematik der radialen Basisfunktionen angeschnitten wird.\\
 In der Numerik ist die Interpolation eine wichtige Aufgabe, um aus einzelnen Funktionswerte die Zielfunktion zu approximieren. Hierbei haben sich schon viele Methoden, wie die Polynom- oder Fourier-Interpolation, für die eindimensioanle Interpolationsaufgabe in der Wissenschaft etabliert. Alle Verfahren basieren auf die gleiche Grundidee: Zu einer gegebenen Menge an Stützstellen $\{x_i\}_{i=1}^n$ und deren zugehörigen Funktionsauswertungen $\{f_i\}_{i=1}^n$ werden jeweilige Basisfunktionen $\{\psi_i(x)\}_{i=1}^n$ so gewählt, dass die Interpolierende die lineare Form
@@ -243,6 +247,7 @@ Somit erhält man eine Erweiterung zum Gleichungssystem aus Gleichung \eqref{eq:
 \end{align}
 In diesem Zusammenhang ist die Matrix $P\in\mathbb{R}^{nxM}$ so definiert, sodass für ihre Elemente $p_{ij}=p_i(x_j)$ gilt. Der Beweis der Regularität für die erweiterte Koeffizientenmatrix liefert C.A.Micchellini in seiner Ausarbeitung~\cite{micchelli1984interpolation}.
 \subsection{Einführung in das RBF-FD-Verfahren}
+$\mathcal{Z}$
 \begin{align}
  M\frac{\partial u}{\partial t}=K^Hu\label{eq:algTrans}
 \end{align}
