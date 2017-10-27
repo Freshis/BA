@@ -59,7 +59,7 @@
 \setcounter{page}{1}
 \section{Einleitung}
 \pagebreak
-\section{Transport-Gleichung}
+\section{Transport-Gleichung}\label{sec:transglei}
 In der Mathematik gibt es viele unterschiedliche partielle Differentialgleichung, wobei der Großteil der partiellen Differentialgleichungen zweiter Ordnung sind. Diese sind hauptsächlich in elliptische, parabolische und hyperbolische Gleichungen klassifiziert. Einfache Beispiele wären hierfür die elliptische Laplace-Gleichung, parabolische Wärmegleichung und die hyperbolische Wellengleichung. Zu den Letzteren wird auch die sogenannte Transportgleichung gezählt, obwohl diese nicht exakt die Bedingungen für die hyperbolische Klassifizierung erfüllt. Dieses zeitabhängige Problem beschreibt den \grqq Transport\grqq~einer Funktion in einem bestimmten $n$-dimensionalen Gebiet $\Omega$.\\
 Die allgemeinste Form der Transportgleichung wird \textit{Erhaltungsform} genannt und lautet in einer Dimensionen
 \begin{align}
@@ -119,9 +119,19 @@ mit $\theta\in(0,1)$. Wendet man nun die Taylorentwicklung zur Bestimmung der Ko
 \begin{align}
  |u^{'}(x)-D^+u(x)|&=|u^{(1)}-\frac{u(x+h)-u(x)}{h}|\nonumber\\&\overset{TE}{=}|-\frac{h}{2}u^{(2)}(x+\theta h)|\le h\|u^{(2)}\|_{\infty}
 \end{align}
-Somit ist der Vorwärtsdifferenzenquotient $\mathcal{O}(h)$ und besitzt eine Fehler von 1. Ordnung. Mit der gleichen Methode berechnet man auch die Fehlerordnungen der anderen beiden Verfahren und bekommt heraus, dass der Fehler des Rückwärtsdifferenzenquotient auch $\mathcal{O}(h)$ und der Fehler vom Zentralen-Differenzenquotienten sogar $\mathcal{O}(h^2)$ und folglich eine Fehlerordnung von 2 besitzt.\\\\
+Somit ist der Vorwärtsdifferenzenquotient $\mathcal{O}(h)$ und besitzt eine Fehler von 1. Ordnung. Mit der gleichen Methode berechnet man auch die Fehlerordnungen der anderen beiden Verfahren und bekommt heraus, dass der Fehler des Rückwärtsdifferenzenquotient auch $\mathcal{O}(h)$ und der Fehler vom Zentralen-Differenzenquotienten sogar $\mathcal{O}(h^2)$ und folglich eine Fehlerordnung von 2 besitzt.\\
+Im mehrdimensionalen Fall werden somit Ableitungen in jeder Dimension durch solche Differenzenquotienten angenähert. Ein Beispiel im Zweidimensionalen ist die Approximation des zweidimensionalen Laplace-Operators
+\begin{align}
+ \Delta u(x,y)=\frac{\partial^2u}{\partial x^2}+\frac{\partial^2u}{\partial y^2},
+\end{align}
+welcher bei elliptischen Problemen häufig vorkommt. Dieser wird zum Beispiel durch den folgenden Differenzenquotienten mit äquidistanter Gitterweite in beiden Richtungen angenähert:
+\begin{align}
+ \Delta u\approx\frac{u(x+h,y)+u(x-h,y)+u(x,y+h)+u(x,y-h)-4u(x,y)}{h^2}
+\end{align}
+Dieser Operator setzt sich zusammen aus den zentralen Differnzenquotient zweiter Ordnung für beide Raumrichtungen und hat bezüglich dem Laplace-Operator eine Fehlerordnung von 2. Bei diesem Operator werden für die Berechnung eines einzelnen Funktionwertes fünf Auswertungen benötigt, somit spricht man hier auch von einem 5-Punkte-Stern-Operator.\\\\
 \textbf{Diskretisierung}\\\\
-Für die FDM benötigt man Auswertungsstellen, um, wie oben gesehen, den Differentialoperator approximieren zu können. Hierbei legt man ein Gitter auf ein Gebiet $\Omega$, auf dem man die PDG lösen möchte. Es werden vor allem äquidistante Gitter verwendet, da sonst die Implementierung sehr aufwändig ist. Der Nachteil eines solchen Gitters ist die Unflexibilität in Gebieten von $\Omega$, in denen eine genauere Auswertung erforderlich ist, um die dort gegebenen Eigenschaften bestmöglich approximieren zu können. Sei nun einfachheitshalber das Gebiet $\Omega\subset\mathbb{R}^2$. Wählt man eine äquidistante Gittergenerierung mit dem Abstand $h$, so erhält man einen diskretisierten Raum:
+Für die FDM benötigt man Auswertungsstellen, um, wie oben gesehen, den Differentialoperator approximieren zu können. Hierbei legt man ein Gitter auf ein Gebiet $\Omega$, auf dem man die PDG lösen möchte. Verwendet man ein äquidistantes Gitter ist der Umgang der Differenzenquotienten leicht handhabbar und die Implementierung ist nicht sehr aufwändig. Der Nachteil einer solchen Gitterierung ist die Unflexibilität in Gebieten von $\Omega$, in denen eine genauere Auswertung erforderlich ist, um die dort gegebenen Eigenschaften bestmöglich approximieren zu können.\\
+Sei nun einfachheitshalber das Gebiet $\Omega\subset\mathbb{R}^2$. Wählt man eine äquidistante Gittergenerierung mit dem Abstand $h$, so erhält man einen diskretisierten Raum:
 \begin{align}
  \Omega_h&=\{(x,y)\in\Omega|x=kh,~y=lh~\text{mit}~k,l\in\mathbb{Z}\}\nonumber\\
  \partial\Omega_h&=\{(x,y)\in\partial\Omega|x=kh~\text{oder}~y=lh~\text{mit}~k,l\in\mathbb{Z}\}\nonumber~\cite{braess2013finite}
@@ -143,7 +153,7 @@ so gilt nach der Diskretisierung:
  L_h\{u_h\}&=f_h~~\text{in}~\Omega_h\nonumber\\
  u_h&=g_h~~\text{auf}~\partial\Omega_h\label{eq:allgGleich}
 \end{align}
-Nun sind die Approximationsmethoden, wie zum Beispiel der oben vorgestellte Vorwärtsdifferenzenquotient, anwendbar, und man kann das Gleichungssystem \eqref{eq:allgGleich} schreiben als Linearkombination der Auswertungsstellen der Art:
+Nun sind die Approximationsmethoden, wie zum Beispiel der oben vorgestellte Vorwärtsdifferenzenquotient, anwendbar und man kann das Gleichungssystem \eqref{eq:allgGleich} schreiben als Linearkombination der Auswertungsstellen der Art:
 \begin{align}
  \sum_{i\in I}w_iu_{ij}=f_j~~~~\forall j\in I
 \end{align}
@@ -246,8 +256,25 @@ Somit erhält man eine Erweiterung zum Gleichungssystem aus Gleichung \eqref{eq:
 \end{bmatrix}}_{\tilde f}\label{eq:Inter}
 \end{align}
 In diesem Zusammenhang sind die Matrizen $A\in\mathbb{R}^{n\times n}$ und $P\in\mathbb{R}^{n\times M}$. Die Elemente der Matrix $A$ und $P$ lauten $a_{ij}=\psi(\|x_i-x_j\|)$ und $p_{kl}=p_k(x_l)$ für $1\le i,j,l\le n$ und $1\le k\le M$. Der Beweis der Regularität für die erweiterte Koeffizientenmatrix $\tilde A$ liefert C.A.Micchellini in seiner Ausarbeitung~\cite{micchelli1984interpolation}.
-\subsection{Einführung in das RBF-FD-Verfahren}
-$\mathcal{Z}$
+\subsection{Das RBF-FD-Verfahren}
+In diesem Kapitel werden die Erkenntnisse der letzten beiden Kapitel zusammengebracht, um ein Verfahren zu erschaffen, welches die Simplizität des FD-Verfahrens und die Gitter-Unabhängigkeit der RBF-Interpolation verbindet und somit das RBF-FD-Verfahren formt. Einfachheitshalber wird hier diese Methodik für ein allgemeines Dirichlet-Randwertproblem erläutert. Die Aussagen dieses Abschnittes beziehen sich auf die Überlegungen von Dang Thi Oanh $\&$ co~\cite{oanh2017adaptive}.\\
+Sei nun die folgende Randwertaufgabe für eine Funktion $u:\Omega\rightarrow\mathbb{R}$ mit einem offenem Gebiet $\Omega$ gegeben:
+\begin{align}
+ L\{u\}&=f~~\text{in}~\Omega\nonumber\\
+ u&=g~~\text{auf}~\partial\Omega\nonumber
+\end{align}
+Hierbei sei $L$ der Differentialoperator, $f$ eine Funktion in $\Omega$ und $g$ eine Funktion, welche auf $\partial\Omega$ definiert ist. Wendet man nun eine Diskretisierung des Gebietes an, bei der lediglich einzelne Punkte gewählt werden, so erhält man eine gitterfreie Diskretiesierung mit 
+\begin{align}
+\overline{\Omega}_h=\{z_i\in\overline{\Omega}|i=1,\dots,N~\text{und}~z_i\neq z_j~\forall~i\neq j\}.
+\end{align}
+Hierbei stellen die paarweise verschiedenen Punkte die Zentren der radialen Basisfunktion dar, welche für die RBF-Interpolation gewählt wurden. Wendet man nun eine geeignete Finite-Differenzen-Methode an, so erhält man für jeden Auswertungsknoten
+\begin{align}
+ \sum_{\zeta\in\overline{\mathcal{Z}}}w_{z,\zeta}u_h(\zeta)=f(z)~~\text{für}~\forall z\in\Omega_h~\text{und}~u_h(z)=g(z)~\text{für}~z\in\partial\Omega_h\label{eq:rfsum}
+\end{align}
+In dieser Summe stellt $\mathcal{\overline{Z}}\subset\overline{\Omega}_h$ die Stern-Menge des Differentialoperators dar. Folglich sind die Gewichte $w$ nur für Punkte aus $\mathcal{\overline{Z}}$ ungleich Null und somit kann die Summe über alle Auswertungsstellen auf eine Summe, welche nur über die Elemente $\zeta\in\mathcal{\overline{Z}}$ geht, reduziert werden.\\
+Angenommen die RBF-Interpolierende $s(x)$ ist eine gute Approximation der Funktion $u(x)$, so werden die Gewichte $w_{z,\zeta}$ aus Gleichung \eqref{eq:rfsum} durch die Interpolation definiert.
+\subsection{RBF-FD angewandt auf die Transportgleichung}
+Wendet man nun die Überlegungen aus dem vorherigen Kapitel auf die Transportgleichung aus dem Kapitel \ref{sec:transglei} an, so erhält man das folgende algebraische Gleichungssystem:
 \begin{align}
  M\frac{\partial u}{\partial t}=K^Hu\label{eq:algTrans}
 \end{align}
