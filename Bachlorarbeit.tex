@@ -287,31 +287,47 @@ Wendet man nun die Überlegungen aus dem vorherigen Kapitel auf die Transportgle
 \begin{align}
  M\frac{\partial u}{\partial t}=K^Hu\label{eq:algTrans}
 \end{align}
+Hierbei stellt M die Einheitsmatrix dar.
 \pagebreak
 \section{Flux Correction Tools - FCT}
 Dieses Kapitel bezieht sich hauptsächlich auf den Artikel~\cite{kuzmin2002flux} und erläutert ein Vorgehen zur Verbesserung von numerischen Approximationsverfahren von partiellen Differentialgleichungen.\\
-Viele Anwendungsbereiche für partielle Differentialgleichungen und somit auch für die Transportgleichung findet man in dem Bereich der Physik wieder. Diesbezüglich muss die Lösung dieser Gleichung aus physikalischen Gründen positiv sein. Somit benötigt man ein Verfahren, welches die Positivitätseigenschaft beibehält. Es gibt sehr viele verschiedene Verfahren, welche ihre Vor- und Nachteile diesbezüglich besitzen. Klassische-Upwind-Verfahren, welche zur Berechnung der Lösung Knotenwerte aus der Stromaufwärtsrichtung nehmen, erfüllen diese Positivitätsbedingung, sind aber auch diffusiv, welches nicht für alle numerische Probleme erwünscht wird~\cite{kuzmin2002flux}. Im Gegensatz dazu sind die Verfahren höherer Ordnung(High-order-Methode) nicht diffusiv, aber weisen vermehrt oszillierende Ergebnisse auf~\cite{kuzmin2002flux}. Das FCT-Schema verbindet nun Verfahren, welche diese oben genannten Eigenschaften aufweisen, und bekommt so eine nicht-diffusive, nicht-oszillierende Lösung heraus. Allgemein werden drei Hauptschritte druchgeführt:
+Viele Anwendungsbereiche für partielle Differentialgleichungen und somit auch für die Transportgleichung findet man in dem Bereich der Physik wieder. Diesbezüglich muss die Lösung dieser Gleichung aus physikalischen Gründen positiv sein. Somit benötigt man ein Verfahren, welches die Positivitätseigenschaft beibehält. Es gibt sehr viele verschiedene Verfahren, welche ihre Vor- und Nachteile diesbezüglich besitzen. Klassische-Upwind-Verfahren, welche zur Berechnung der Lösung Knotenwerte aus der Stromaufwärtsrichtung nehmen, erfüllen diese Positivitätsbedingung, sind aber auch diffusiv, welches nicht für alle numerische Probleme erwünscht wird~\cite{kuzmin2002flux}. Im Gegensatz dazu sind die Verfahren höherer Ordnung(High-order-Methoden) nicht diffusiv, aber weisen vermehrt oszillierende Ergebnisse auf~\cite{kuzmin2002flux}. Das FCT-Schema verbindet nun Verfahren, welche diese oben genannten Eigenschaften aufweisen, und bekommt so eine nicht-diffusive, nicht-oszillierende Lösung heraus. Allgemein werden drei Hauptschritte druchgeführt:
 \begin{enumerate}
  \item Diskretisierung mittels einer High-order-Methode
  \item Addieren einer künstlichen Diffusion, um die Positivitätseigenschaft zu gewährleisten
  \item  Addieren und Limitierung der künstlichen Antidiffusion, um wieder eine High-order-Lösung zu bekommen
 \end{enumerate}
-Im folgenden werden alle drei Schritte anhand der in Kapitel \ref{sec:RBF-FD} aufgeführten algebraischen Transportgleichung \eqref{eq:algTrans} genauer erläutert. Zur Erinnerung, $M$ ist die Massenmatrix, $K^H$ die Matrix, welche den diskreten Transport-Operator darstellt und $u$ die Lösung des Verfahrens höherer Ordnung. Die Zeilensumme von $K^H$ ist gleich 0, sodass gilt:
+Im folgenden werden alle drei Schritte anhand der in Kapitel \ref{sec:RBF-FD} aufgeführten algebraischen Transportgleichung \eqref{eq:algTrans} genauer erläutert. Zur Erinnerung, $M$ ist die Massenmatrix, $K^H$ die Matrix, welche den diskreten Transport-Operator darstellt und $u$ die Lösung des Verfahrens höherer Ordnung. Wie oben schon erwähnt, muss die Lösung $u$ die Positivitätseigenschaften erfüllen. Um dies in jedem Zeitschritt zu gewährleisten, diskretisieren wir die Zeitdifferentation mittels dem allgemeinen \textit{Theta-Schema}
 \begin{align}
- (K^Hu)_i=\sum_{j}k_{ij}^Hu_j&=0\nonumber\\
- \Rightarrow\sum_{j\neq i}k_{ij}^Hu_j&=-k_{ii}^Hu_i\nonumber\\
- \Rightarrow(K^Hu)_i&=\sum_{j\neq i}k_{ij}^H(u_j-u_i),~~\forall i\nonumber
+ \frac{u^{n+1}-u^n}{\Delta t}=(1-\Theta)F(t_n,u^n)+\Theta F(t_{n+1},u^{n+1})~~~,0\le\Theta\le1.
 \end{align}
-  Wie oben schon erwähnt, muss die Lösung $u$ die Positivitätseigenschaften erfüllen. Um dies in jedem Zeitschritt zu gewährleisten, diskretisieren wir die Zeitdifferentation mittels dem \textit{Impliziten-Euler-Verfahren}
+Hierbei bezeichnet $F(t_n,u^n)$ die rechte Seite der Differentialgleichung. Im Fall der Transportgleichung ist $F(t_n,u^n)=K^Hu^n$, sodass nun die Gleichung \eqref{eq:algTrans} geschrieben werden kann als:
 \begin{align}
- \frac{\partial u}{\partial t}=\frac{u^{n+1}-u^{n}}{\Delta t}
+ M(\frac{u^{n+1}-u^n}{\Delta t})=(1-\Theta)K^Hu^n+\Theta K^Hu^{n+1}\nonumber\\
+\Rightarrow [M-\Theta\Delta tK^H]u^{n+1}=[M+(1-\Theta)\Delta tK^H]u^n
 \end{align}
-und es folgt nach Einsetzen und Sortierung in \eqref{eq:algTrans}:
+Hierbei stellen $u^{n+1}$ und $u^n$ jeweils die Lösung $u$ im Zeitschritt $n+1$  und $n$ dar. Das \textit{Theta-Schema} gehört zu den Einschrittverfahren und verbindet durch den Paramter $\Theta$ explizite und implizite Methoden. Somit definieren die Fälle
+\begin{enumerate}
+ \item $\theta=0$: das \textit{explizite Eulerverfahren}
+ \begin{enumerate}
+  \item[$\Rightarrow$] $Mu^{n+1}=[M+\Delta tK]u^n$
+ \end{enumerate}
+ \item $\theta=1$:    das \textit{imlizite Eulerverfahren}
+ \begin{enumerate}
+  \item[$\Rightarrow$] $[M-\Delta tK^H]u^{n+1}=Mu^n$
+ \end{enumerate}
+ \item $\theta=\frac{1}{2}$:  das \textit{Crank-Nicolson-Verfahren}
+ \begin{enumerate}
+  \item[$\Rightarrow$] $[M-\frac{1}{2}\Delta tK^H]u^{n+1}=[M+\frac{1}{2}\Delta tK^H]u^n$
+ \end{enumerate}
+\end{enumerate}
+drei Spezialfälle von Einschrittverfahren.\\
+Im Folgendem wird der Beweis der Positivität der Lösung $u$ für den Fall des \textit{imlizite Eulerverfahrens}
 \begin{align}
- [M-\Delta tK^H]u^{n+1}=Mu^n\label{eq:zeitschritt}
+ [M-\Delta tK^H]u^{n+1}=Mu^n\label{eq:LGS_H}
 \end{align}
-Hierbei stellen $u^{n+1}$ und $u^n$ jeweils die Lösung $u$ im Zeitschritt $n+1$  und $n$ dar.
-Geht man davon aus, dass die Lösung des vorherigen Zeitschrittes $u^n\ge0$ ist und dass die Massenmatrix $M$ eine Diagonalmatrix mit $m_{ii}>0~\forall i$ ist, so folgt die Positivitätseigenschaft für $u^{n+1}$, wenn $[M-\Delta tK^L]^{-1}>0$ ist. Diese Aussage ist äquivalent zu der Definition einer \textit{M-Matrix}.
+vorgestellt. Für die Verfahren für $0\le\Theta<1$ wird auf den Beweisen des zugrundeliegenden Artikels~\cite{kuzmin2002flux} verwiesen, indem .\\
+Sei nun angenommen, dass die Lösung des vorherigen Zeitschrittes $u^n\ge0$ ist und dass die Massenmatrix $M$ eine Diagonalmatrix mit $m_{ii}>0~\forall i$ ist, so folgt die Positivitätseigenschaft für $u^{n+1}$, wenn $[M-\Delta tK^H]^{-1}>0$ ist. Diese Aussage ist äquivalent zu der Definition einer \textit{M-Matrix}.
 \begin{defi}\label{def:MMatrix}
  \textbf{(M-Matrix~\cite{fiedler2008special}):}\\
 Eine reguläre Matrix $A\in \mathbb{R}^{n\times n}$ heißt M-Matrix, falls $A$ folgende Eigenschaften erfüllt:
@@ -321,7 +337,7 @@ Eine reguläre Matrix $A\in \mathbb{R}^{n\times n}$ heißt M-Matrix, falls $A$ f
 \end{enumerate}
 Sind diese Kriterien erfüllt gilt
 \begin{align*}
- [M-\Delta tK^L]^{-1}>0.
+ A^{-1}>0.
 \end{align*}
 \end{defi}
  Die Matrix $[M-\Delta tK^H]$ muss somit so modifiziert werden, dass alle Nebendiagonalelemente kleiner gleich Null sind. Hierbei ist zu beachten, dass die Nebendiagonalelemente nur von $K^H$ abhängen, da $M$ eine Diagonalmatrix ist. Somit addieren wir nun zu der Transport-Operator-Matrix eine Matrix so hinzu, dass sichergestellt werden kann, dass alle Nichtdiagonalelemente positiv werden:
@@ -331,19 +347,23 @@ Sind diese Kriterien erfüllt gilt
 Physikalisch betrachtet, fügen wir mit der Matrix $D$ eine künstliche Diffusion hinzu, sodass die Lösung $u$ nun diffusivere Merkmale aufweisen könnte~\cite{kuzmin2002flux}. Somit bezeichnet man diese Lösung als $u_{Low}$ bzw. $u_L$.\\
 Weiterhin ist zu beachten, dass eine Addition mit zu starker Diffusion die Folge einer Absenkung der Stabilitätsgrenzen hat~\cite{kuzmin2002flux}. Andererseits führt eine zu schwache Diffusionsaddition zu falschen Extrema. Des Weiteren könnte man überall die gleiche Menge an Diffusion hinzuaddieren~\cite{kuzmin2002flux}. Diese Methode ist zwar recheneffizient, aber nicht genauigkeitseffizient~\cite{kuzmin2002flux}. Somit werden die einzelnen Matrixeinträge für jeden Knoten wie folgt definiert:
 \begin{align}
- d_{ii}=-\sum_{k\neq i}d_{ik},~~d_{ij}=d_{ji}=max\{0,-k_{ij}^H,-k_{ji}^H\},~~\forall i<j
+ d_{ii}=-\sum_{k\neq i}d_{ik},~~d_{ij}=d_{ji}=max\{0,-k_{ij}^H,-k_{ji}^H\},~~\forall i<j\label{eq:D}
 \end{align}
 Bei dieser Definition fällt auf, dass die Zeilen- und Spaltensumme von $D$ gleich 0 sind. Somit gilt insgesamt für die Zeilensumme von $K^L$, dass diese gleich null ist. Zu beachten ist hier, dass, wenn die nichtdiagonal Elemente von $K^H$ von vornherein positiv sind, dass keine Addition künstlicher Diffusion notwendig ist und $D$ gleich der Nullmatrix ist. So folgt $K^H=K^L$. Dieser Fall tritt auf, wenn die physikalische Diffusion stark genug ist.\\
-Setzt man nun die Matrix $K^L$ in die Gleichung \eqref{eq:zeitschritt} ein, folgt:
+Setzt man nun die Matrix $K^L$ in die Gleichung \eqref{eq:LGS_H} ein, folgt:
 \begin{align}
  [M-\Delta tK^L]u_L^{n+1}=Mu^n
 \end{align}
 Substituiere nun $\widehat{K}:=[M-\Delta tK^L]$. Durch die Addition der künstlichen Diffusion gilt nun $\widehat{k}_{ij}=-\Delta tk_{ij}^L\le0~\forall i\neq j$. Durch die künstliche Diffusion sind somit auch die Nebendiagonalelemente von $\widehat{K}$ negativ und erfüllt somit Punkt 1 der Definition \ref{def:MMatrix}.\\
-Um den Punkt 2 zu beweisen, wähle den Vektor $v=(1,\dots,1)^T>0$. Somit folgt mit der Zeilsummeneigenschaft von $K^L$:
+Um den Punkt 2 zu beweisen, zeigen wir zunächst, dass die Zeilensumme von $K^L$ gleich 0 ist. Diese Eigenschaft ergibt sich aus den Zeilensummeneigenschaften von $K^H$ und $D$. Durch die Annahme eines inkompressiblen Vektorfeldes gilt für die Koeffenzientenmatrix $K^H$ die Zeilensummeneigenschaften $(K^Hu)_i=\sum_{j}k_{ij}^Hu_j=0$~\cite{kuzmin2005algebraic}. Diese Eigenschaft gilt auch für die Matrix $D$, welches man anhand der Definition in Gleichung~\eqref{eq:D} erkennen kann. Somit gil nun für die Matrix $K^L$:
+\begin{align}
+ (K^Lu)_i=\sum_{j}k_{ij}^Lu_j=[\underbrace{\sum_{j}k_{ij}^H+d_{ij}}_{=0}]u_j=0
+\end{align}
+Wähle nun den Vektor $v=(1,\dots,1)^T>0$. Somit folgt mit der oben gezeigten Zeilsummeneigenschaft von $K^L$:
 \begin{align}
  \sum_j \widehat{k}_{ij} v_j=m_{ii} - \Delta t\underbrace{\sum_j k_{ij}^L}_{=0}=m_{ii}>0~~\forall i
 \end{align}
-Die Regularität der Matrix $\widehat{K}$ folgt aus den Überlegungen aus Kapitel \ref{sec:RBF-FD}. Somit folgt die Eigenschaft der \textit{M-Matrix}, welche die Positivitätseigenschaft für $u^{n+1}$ impliziert.\\
+Die Regularität der Matrix $\widehat{K}$ folgt aus den Überlegungen aus Kapitel \ref{sec:RBF-FD}. Somit folgt die Eigenschaft der \textit{M-Matrix}, welche die Positivitätseigenschaft für $u^{n+1}$ impliziert.\\\\
 Als nächsten Schritt versucht man nun die Addition der künstlichen Diffusion wieder auszugleichen, in dem man eine künstliche Antidiffusion hinzuaddiert. Hierbei wird nun im Gegensatz zu Schritt 2 für jeden Knoten einzeln die Stärke dieser Antidiffusion  limitiert, sodass keine zu hohe bzw. zu niedrige Diffusionskompensation durchgeführt wird. Diese wird in Gleichung \eqref{eq:Lim} für den Knoten $i$ schemenhaft dargestellt:
 \begin{align}
  u_{H,i}^{n+1}=u_{L,i}^{n+1} +\alpha_iF(u^n)_i\label{eq:Lim}
