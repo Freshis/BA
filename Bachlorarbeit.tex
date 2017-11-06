@@ -34,7 +34,7 @@
  \vspace{0.5cm}
  {\LARGE Fakultät Mathematik \par}
  \vspace{1cm}
- {\Large Bachelorarbeit Mathematik: Numerik \par}
+ {\Large Bachelorarbeit Technomathematik: Numerik \par}
  \vspace{2cm}
  {\huge\bfseries \textcolor{red}{Simulation der Radialen-Basisfunktion-Finite-Differenzen-Methode angewendet auf die Transportgleichung und Stabilisierung mittels Flux Correction Tools} \par}
  \vspace{2cm}
@@ -291,20 +291,20 @@ Hierbei stellt M die Einheitsmatrix dar.
 \pagebreak
 \section{Flux Correction Tools - FCT}
 Dieses Kapitel bezieht sich hauptsächlich auf den Artikel~\cite{kuzmin2002flux} und erläutert ein Vorgehen zur Verbesserung von numerischen Approximationsverfahren von partiellen Differentialgleichungen.\\
-Viele Anwendungsbereiche für partielle Differentialgleichungen und somit auch für die Transportgleichung findet man in dem Bereich der Physik wieder. Diesbezüglich muss die Lösung dieser Gleichung aus physikalischen Gründen positiv sein. Somit benötigt man ein Verfahren, welches die Positivitätseigenschaft beibehält. Es gibt sehr viele verschiedene Verfahren, welche ihre Vor- und Nachteile diesbezüglich besitzen. Klassische-Upwind-Verfahren, welche zur Berechnung der Lösung Knotenwerte aus der Stromaufwärtsrichtung nehmen, erfüllen diese Positivitätsbedingung, sind aber auch diffusiv, welches nicht für alle numerische Probleme erwünscht wird~\cite{kuzmin2002flux}. Im Gegensatz dazu sind die Verfahren höherer Ordnung(High-order-Methoden) nicht diffusiv, aber weisen vermehrt oszillierende Ergebnisse auf~\cite{kuzmin2002flux}. Das FCT-Schema verbindet nun Verfahren, welche diese oben genannten Eigenschaften aufweisen, und bekommt so eine nicht-diffusive, nicht-oszillierende Lösung heraus. Allgemein werden drei Hauptschritte druchgeführt:
+Viele Anwendungsbereiche für partielle Differentialgleichungen und somit auch für die Transportgleichung findet man in dem Bereich der Physik wieder. Diesbezüglich muss die Lösung dieser Gleichung aus physikalischen Gründen positiv sein. Somit benötigt man ein Verfahren, welches die Positivitätseigenschaft beibehält. Es gibt sehr viele verschiedene Verfahren, welche ihre Vor- und Nachteile diesbezüglich besitzen. Klassische-Upwind-Verfahren, welche zur Berechnung der Lösung Knotenwerte aus der Stromaufwärtsrichtung nehmen, erfüllen diese Positivitätsbedingung, sind aber auch diffusiv, welches nicht für alle numerischen Probleme erwünscht wird~\cite{kuzmin2002flux}. Im Gegensatz dazu sind die Verfahren höherer Ordnung(High-order-Methoden) nicht diffusiv, aber weisen vermehrt oszillierende Ergebnisse auf~\cite{kuzmin2002flux}. Das FCT-Schema verbindet nun Verfahren, welche diese oben genannten Eigenschaften aufweisen, und bekommt so eine nicht-diffusive, nicht-oszillierende Lösung heraus. Somit ist die Aufgabe des Schemas die Stabilisation der errechneten Lösung. Allgemein werden drei Hauptschritte druchgeführt:
 \begin{enumerate}
  \item Diskretisierung mittels einer High-order-Methode
- \item Addieren einer künstlichen Diffusion, um die Positivitätseigenschaft zu gewährleisten
- \item  Addieren und Limitierung der künstlichen Antidiffusion, um wieder eine High-order-Lösung zu bekommen
+ \item Addition einer künstlichen Diffusion, um die Positivitätseigenschaft zu gewährleisten
+ \item Limitierte Subtraktion der künstlichen Diffusion, um wieder eine high-order-Lösung zu bekommen
 \end{enumerate}
-Im folgenden werden alle drei Schritte anhand der in Kapitel \ref{sec:RBF-FD} aufgeführten algebraischen Transportgleichung \eqref{eq:algTrans} genauer erläutert. Zur Erinnerung, $M$ ist die Massenmatrix, $K^H$ die Matrix, welche den diskreten Transport-Operator darstellt und $u$ die Lösung des Verfahrens höherer Ordnung. Wie oben schon erwähnt, muss die Lösung $u$ die Positivitätseigenschaften erfüllen. Um dies in jedem Zeitschritt zu gewährleisten, diskretisieren wir die Zeitdifferentation mittels dem allgemeinen \textit{Theta-Schema}
+Der erste Schritt kann durch unterschiedliche High-order-Methoden durchgeführt werden. Beispiele hierfür wären die Finite-Elemente-Methode oder der RBF-FD-Methode, welche im Kapitel \ref{sec:RBF-FD} vorgestellt wurde. Im Folgenden werden die letzten beiden Schritte anhand der in Kapitel \ref{sec:RBF-FD} aufgeführten algebraischen Transportgleichung \eqref{eq:algTrans} genauer erläutert. Zur Erinnerung, $M$ ist die Massenmatrix, $K^H$ die Matrix, welche den diskreten Transport-Operator darstellt und $u$ die Lösung des Verfahrens höherer Ordnung. Wie oben schon erwähnt, muss die Lösung $u$ die Positivitätseigenschaften erfüllen. Um dies in jedem Zeitschritt zu gewährleisten, diskretisieren wir die Zeitdifferentation mittels dem allgemeinen \textit{Theta-Schema}
 \begin{align}
  \frac{u^{n+1}-u^n}{\Delta t}=(1-\Theta)F(t_n,u^n)+\Theta F(t_{n+1},u^{n+1})~~~,0\le\Theta\le1.
 \end{align}
 Hierbei bezeichnet $F(t_n,u^n)$ die rechte Seite der Differentialgleichung. Im Fall der Transportgleichung ist $F(t_n,u^n)=K^Hu^n$, sodass nun die Gleichung \eqref{eq:algTrans} geschrieben werden kann als:
 \begin{align}
- M(\frac{u^{n+1}-u^n}{\Delta t})=(1-\Theta)K^Hu^n+\Theta K^Hu^{n+1}\nonumber\\
-\Rightarrow [M-\Theta\Delta tK^H]u^{n+1}=[M+(1-\Theta)\Delta tK^H]u^n
+ M(\frac{u^{n+1}-u^n}{\Delta t})&=(1-\Theta)K^Hu^n+\Theta K^Hu^{n+1}\nonumber\\
+\Rightarrow [M-\Theta\Delta tK^H]u^{n+1}&=[M+(1-\Theta)\Delta tK^H]u^n\label{eq:thetaGleich}
 \end{align}
 Hierbei stellen $u^{n+1}$ und $u^n$ jeweils die Lösung $u$ im Zeitschritt $n+1$  und $n$ dar. Das \textit{Theta-Schema} gehört zu den Einschrittverfahren und verbindet durch den Paramter $\Theta$ explizite und implizite Methoden. Somit definieren die Fälle
 \begin{enumerate}
@@ -364,20 +364,36 @@ Wähle nun den Vektor $v=(1,\dots,1)^T>0$. Somit folgt mit der oben gezeigten Ze
  \sum_j \widehat{k}_{ij} v_j=m_{ii} - \Delta t\underbrace{\sum_j k_{ij}^L}_{=0}=m_{ii}>0~~\forall i
 \end{align}
 Die Regularität der Matrix $\widehat{K}$ folgt aus den Überlegungen aus Kapitel \ref{sec:RBF-FD}. Somit folgt die Eigenschaft der \textit{M-Matrix}, welche die Positivitätseigenschaft für $u^{n+1}$ impliziert.\\\\
-Als nächsten Schritt versucht man nun die Addition der künstlichen Diffusion wieder auszugleichen, in dem man eine künstliche Antidiffusion hinzuaddiert. Hierbei wird nun im Gegensatz zu Schritt 2 für jeden Knoten einzeln die Stärke dieser Antidiffusion  limitiert, sodass keine zu hohe bzw. zu niedrige Diffusionskompensation durchgeführt wird. Diese wird in Gleichung \eqref{eq:Lim} für den Knoten $i$ schemenhaft dargestellt:
+Das Vorgehen der Addition einer künstlichen Diffusion ist auch in den Fällen für $\theta\in[0,1)$ anwendbar. Somit erhalten wir mit den gleichen Überlegungen wie im Beweis der Positivität der Lösung für das \textit{implizite Eulerverfahren} die Gleichung
 \begin{align}
- u_{H,i}^{n+1}=u_{L,i}^{n+1} +\alpha_iF(u^n)_i\label{eq:Lim}
+ [M-\Theta\Delta t\underbrace{K^L}_{\scriptscriptstyle=K^H+D}]u^{n+1}&=[M+(1-\Theta)\Delta t\underbrace{K^L}_{\scriptscriptstyle=K^H+D}]u^n.
 \end{align}
-Die endgültige Lösung nach dem Limitierungsschritt definieren wir als $u_{HIGH}$ oder kurz $u_H$. $F(u^n)_i$ stellt hier den, in Abhängigkeit von der Lösung des letzten Iterationsschrittes, Antidiffusion-Teil dar. Die Diffusionskoeffizienten $\alpha_i$  besitzen Werte im Intervall $[0,1]$. Wenn also $\alpha_i\approx0$ ist, dann muss die künstliche Diffusion an diesem Knoten nicht ausgeglichen werden und es gilt $u_{H,i}^{n+1}=u_{L,i}^{n+1}$. Im Gegensatz dazu gilt für einen Koeffizienten $\alpha_i\approx1$, dass $u_{H,i}^{n+1}$ gleich der anfänglichen Lösung der algebraischen Gleichung\eqref{eq:algTrans} ist. Zur genaueren Bestimmung nehmen wir den Ansatz, dass der Antidiffusions-Teil als Multiplikation einer Matrix $F$ und des Lösungsvektor aus dem letzten Iterationsschrittes $u^n$ dargestellt werden kann. Somit gil für$~\alpha_i=1~\forall i$:
+Als nächsten Schritt muss die Addition der künstlichen Diffusion wieder ausgeglichen werden. Hierzu wird der Additionsschritt auf der rechten Seite wieder abgezogen und man erhält die Gleichung
 \begin{align}
- u_H^{n+1}&=u_L^{n+1} +Fu^n\\
-\Rightarrow [M-\Delta tK^H]^{-1}Mu^n&\overset{!}{=}[M-\Delta tK^L]^{-1}Mu^n+Fu^n\\
-\Rightarrow Fu^n&=([M-\Delta tK^H]^{-1}-[M-\Delta tK^L]^{-1})Mu^n\\
-\Rightarrow F&=([M-\Delta tK^H]^{-1}-[M-\Delta tK^L]^{-1})M
+ [M-\Theta\Delta tK^L]u^{n+1}&=u^{n+\Theta} -(1-\theta)\Delta tDu^n-\Theta\Delta tDu^{n+1}\nonumber\\
+ &=u^{n+\Theta}-\Delta tf(u^n,u^{n+1})\label{eq:zwischGleich}
 \end{align}
-Bei dieser Definition von $F$ ist die oben genannte Bedingung für den Fall $\alpha_i=1$ erfüllt.\\
-Die genaue Berechnung der Diffusionskoeffizienten wird hier nicht näher erläutert. Das Vorgehen wäre aber äquivalent zu dem Vorgehen wie im Paper von Prof. Kuzmin und Prof. Turek~\cite{kuzmin2002flux}.\\
-Abschließend bekommt man durch das FCT-Schema eine besser approximierte Lösung heraus. Die FCT-Methoden sind allgemein auf explizite und implizite Zeitdiskretisierungen anwendbar und sind nicht auf die Raumdimension beschränkt~\cite{kuzmin2002flux}. Beispiele finden Sie im folgenden Kapitel~\ref{sec:NumVers}.
+mit den Substitutionen
+\begin{align}
+ u^{n+\Theta}=[M+(1-\Theta)\Delta tK^L]u^n \text{ und } f(u^n,u^{n+1})=(1-\Theta)Du^n+\Theta Du^{n+1}.\nonumber
+\end{align}
+Die subtrahierte Diffusion $f(u^n,u^{n+1})$ wird im Folgendem als Antidiffusion bezeichnet. Durch die geeignete Wahl der Antidiffusion ist nun die Gleichung~\eqref{eq:zwischGleich} äquivalent zu der Gleichung~\eqref{eq:thetaGleich} und besitzt somit die gleiche analytische Lösung.\col{Positivität dieser Zwischenlösung?} Hierbei wird nun im Gegensatz zu Schritt 2 für jeden Knoten einzeln die Stärke dieser Antidiffusion limitiert, sodass keine zu hohe bzw. zu niedrige Diffusionskompensation durchgeführt wird. Somit folgt mit den Diffusionskoeffizienten $\alpha$ \col{aus $R^n$? und dann in der gleichung punktweise multiplikation mit dem vektor f(,)?} die limitierte Gleichung
+\begin{align}
+  [M-\Theta\Delta tK^L]u^{n+1}=u^{n+\Theta}-\Delta t\alpha f(u^n,u^{n+1})\label{eq:zwischGleich}.
+\end{align}
+Die Diffusionskoeffizienten $\alpha$  besitzen Werte im Intervall $[0,1]$. Wenn beispielsweise die Diffusionskoeffizienten $\alpha_i\approx0~\forall i$ ist, dann muss die künstliche Diffusion nicht ausgeglichen werden und es gilt:
+\begin{align}
+ [M-\Theta\Delta tK^L]u^{n+1}&=[M+(1-\Theta)\Delta tK^L]u^n
+\end{align}
+Im Gegensatz dazu gilt für $\alpha_i\approx1~\forall i$, dass $u^{n+1}$ gleich der anfänglichen Lösung der Gleichung~\eqref{eq:thetaGleich} ist.\\
+Abschließend kann man das FCT-Schema durch folgenden Algorithmus zusammenfassen:
+\begin{enumerate}
+ \item Berechnung der Lösung $u^{n+1}$ aus dem Verfahren höherer Ordnung
+ \item Berechnung der Zwischenlösung $u^{n+\Theta}=[M+(1-\Theta)*\Delta tK^L]u^n$
+ \item Berechnung von $f(u^n,u^{n+1})$ und $\alpha_i~\forall i$
+ \item Berechnung der stabilisierten high-order-Lösung $u_H^{n+1}$ mit der Gleichung $[M-\Theta\Delta tK^L]u_H^{n+1}=u^{n+\Theta}+\Delta t\alpha f(u^n,u^{n+1})$
+\end{enumerate}
+ bekommt man durch das FCT-Schema eine besser approximierte Lösung heraus. Die FCT-Methoden sind allgemein auf explizite und implizite Zeitdiskretisierungen anwendbar und sind nicht auf die Raumdimension beschränkt~\cite{kuzmin2002flux}. Numerische Beispiele finden Sie im folgenden Kapitel~\ref{sec:NumVers}.
 \pagebreak
 \section{Numerische Versuche}\label{sec:NumVers}
 \pagebreak
