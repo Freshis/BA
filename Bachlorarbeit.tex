@@ -390,10 +390,10 @@ Abschließend kann man das FCT-Schema durch folgenden Algorithmus zusammenfassen
 \begin{enumerate}
  \item Berechnung der Lösung $u^{n+1}$ aus dem Verfahren höherer Ordnung
  \item Berechnung der Zwischenlösung $u^{n+\Theta}=[M+(1-\Theta)*\Delta tK^L]u^n$
- \item Berechnung von $f(u^n,u^{n+1})$ und $\alpha_i~\forall i$
+ \item Berechnung von $f(u^n,u^{n+1})$ und der Koeffizienten $\alpha_i~\forall i$
  \item Berechnung der stabilisierten high-order-Lösung $u_H^{n+1}$ mit der Gleichung $[M-\Theta\Delta tK^L]u_H^{n+1}=u^{n+\Theta}+\Delta t\alpha f(u^n,u^{n+1})$
 \end{enumerate}
- bekommt man durch das FCT-Schema eine besser approximierte Lösung heraus. Die FCT-Methoden sind allgemein auf explizite und implizite Zeitdiskretisierungen anwendbar und sind nicht auf die Raumdimension beschränkt~\cite{kuzmin2002flux}. Numerische Beispiele finden Sie im folgenden Kapitel~\ref{sec:NumVers}.
+Zusammenfassend bekommt man durch das FCT-Schema eine stabilisierte Lösung heraus, als das ursprüngliche high-order-Verfharen. Die FCT-Methoden sind allgemein auf explizite und implizite Zeitdiskretisierungen anwendbar und sind nicht auf die Raumdimension beschränkt~\cite{kuzmin2002flux}. Numerische Beispiele finden Sie im folgenden Kapitel~\ref{sec:NumVers}.
 \pagebreak
 \section{Numerische Versuche}\label{sec:NumVers}
 \pagebreak
