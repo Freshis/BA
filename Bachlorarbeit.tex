@@ -1,4 +1,4 @@
-\documentclass[a4paper,11pt]{article}
+\documentclass[12pt,titlepage]{article}
 
 % proper umlauts
 \usepackage[utf8]{inputenc}
@@ -19,6 +19,8 @@
 \usepackage{lmodern}
 \usepackage{mathrsfs}
 \usepackage{caption}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
 
 % referieren
 \usepackage{hyperref}
@@ -29,6 +31,7 @@
 
 \begin{document}
 \begin{titlepage}
+\pagestyle{empty}
  \centering
  {\LARGE Technische Universität Dortmund \par}
  \vspace{0.5cm}
@@ -36,12 +39,12 @@
  \vspace{1cm}
  {\Large Bachelorarbeit Technomathematik: Numerik \par}
  \vspace{2cm}
- {\huge\bfseries \textcolor{red}{Simulation der Radialen-Basisfunktion-Finite-Differenzen-Methode angewendet auf die Transportgleichung und Stabilisierung mittels Flux Correction Tools} \par}
+ {\huge\bfseries \textcolor{red}{Die Radialen-Basisfunktion-Finite-Differenzen-Methode und die Stabilisierung mittels Flux Correction Tools angewendet auf die Transportgleichung} \par}
  \vspace{2cm}
  {\Large Wintersemester 2017/2018 \par}
  \vspace{0.5cm}
  {\large \today\par}
- \vspace{2cm}
+ \vspace{1cm}
  {\Large Professor: Prof. Dr. Stefan Turek \par}
  \vspace{0.5cm}
  {\Large Betreuer: Dr. Andriy Sokolov \par}
@@ -64,6 +67,10 @@
 \pagenumbering{arabic}
 \setcounter{page}{1}
 \section{Einleitung}
+In der heutigen Wissenschaft werden komplexe Algorithmen mit unterschiedlichen Verfahren verwendet. Durch die Komplexität der Verfahren und der Digitalisierung werden zumeist die Lösungen der Methoden numerisch am Computer approximiert. Einige Beispiele dafür sind die numerische Approximation von Integralen durch \textit{Quadraturformeln}, das Annähern der Lösungen von Fixpunktgleichungen durch den \textit{Newton-Algorithmus} oder das iterative Lösen eines Gleichungssystem mittels dem \textit{CG-Verfahren}. Mit solchen grundlegenden Approximationsmethoden lassen sich komplexere Probleme durch die Numerik realisieren. Beispiele für solche Probleme stellen die Approximationsaufgaben von gewöhnlichen und partiellen Differentialgleichungen dar. Einige naturwissenschaftliche Anwendungsbeispiele, welche durch Differentialgleichungen beschrieben werden, sind die \textit{Newtonsche Himmelsmechanik}~\cite{deuflhard2013gewohnliche}, welche zur Bahnberechnung von Satelliten oder Planetoiden verwendet wird, die \textit{chemische Reaktionskinetik}~\cite{deuflhard2013gewohnliche}, welche in der heutigen industriellen Verfahrenstechnik eine wichtige Rolle spielt, oder allgemeine Simulationsvorgänge. Beispiele indenen eine Simulation berechnet wird sind beispielsweise die Simulation der \textit{Flachwassergleichung} oder der \textit{Transportgleichung}, welche in dieser Arbeit in den Fokus gesetzt und simuliert wird. Hierzu wird die \textit{Transportgleichung} im Kapitel \ref{sec:transglei} vorgestellt.\\
+Zur Visualisierung der Lösung der \textit{Transportgleichung} muss diese durch numerische Verfahren approximiert werden. Die klassische \textit{Finite-Differenzen-Methode}(FDM) oder die \textit{Finite-Elemente-Methode}(FEM) können diesbezüglich verwendet werden. Diese Methoden sind in der Industrie als Lösungesverfahren für Differentialgleichungen weit verbreitet. Beide Verfahren haben Vorteile und Nachteile. Die Vorteile der FDM liegt in der Einfachheit der Implementierung, wohingegen der Vorteil der FEM in der Flexibilität der Gittergenerierung des zugrunde liegenden Gebiets liegt. Dennoch sind beide Verfahren nach einer festen Wahl des Gitters stark abhängig von diesem Gitter, welches zu einer sehr langsamen Konvergenzgeschwindigkeit der Verfahren in komplexen Gebieten führen könnte. Um dieses Problem zu umgehen wird in Kapitel \ref{sec:RBF-FD} eine Methode vorgestellt, welche ohne Gittergenerierung ein Differentialgleichungsproblem auf einem beliebigen Gebiet approximieren kann. Diesbezüglich wird durch Kombination der FDM und einer speziell gewählten Wahl von Basisfunktionen eine neue gitterfreie Lösungsmethode hergeleitet.\\
+Die Approximation von Differentialgleichungen kann für unterschiedliche Probleme unterschiedliche Eigenschaften aufweisen. Manche Annäherung sind im Gegensatz zu der analytischen Lösung stark diffusiv, andere stark oszillierend. Um Letzteres entgegenzuwirken wird in Kapitel \ref{sec:FCT} ein Stabilisierungsschema vorgestellt, welches durch eine Addition einer künstlichen Diffusion eine nicht-oszillierende Lösung der Differentialgleichung liefert. Hierzu wird dieses Schemata anhand der in Kapitel \ref{sec:RBF-FD} gelösten \textit{Transportgleichung} vorgestellt, da die Lösung dieses Differentialgleichungsproblem oszillierende Merkmale aufweist.\\
+Abschließend wird in Kapitel \ref{sec:NumVers} die gitterfreie Approximationsmethode und das Stabiliserungsschema durch numerische Versuche analysiert. In den Versuchen wird speziell auf die \textit{Transportgleichung} eingegangen und das Verhalten der Lösung mit und ohne Stabilisierung gegenübergestellt.
 \pagebreak
 \section{Transport-Gleichung}\label{sec:transglei}
 In der Mathematik gibt es viele unterschiedliche partielle Differentialgleichung, wobei der Großteil der partiellen Differentialgleichungen zweiter Ordnung sind. Diese sind hauptsächlich in elliptische, parabolische und hyperbolische Gleichungen klassifiziert. Einfache Beispiele wären hierfür die elliptische Laplace-Gleichung, parabolische Wärmegleichung und die hyperbolische Wellengleichung. Zu den Letzteren wird auch die sogenannte Transportgleichung gezählt, obwohl diese nicht exakt die Bedingungen für die hyperbolische Klassifizierung erfüllt. Dieses zeitabhängige Problem beschreibt den \grqq Transport\grqq~einer Funktion in einem bestimmten $n$-dimensionalen Gebiet $\Omega$.\\
@@ -96,7 +103,7 @@ Eine weitere nennenswerte Form, welche sich aus der \textit{Erhaltungsgleichung}
 Im Gegensatz zu der \textit{Konvektions-Gleichung} tritt in \eqref{diffusionsgleichung} auch Diffusion mit einem Diffusionskoeffizienten $\epsilon$ auf. Wenn nun $\epsilon$ sehr klein wird, dominiert das erste-Ordnung Glied die Gleichung und wird somit schwierig numerisch zu lösen.\cite{segal2013numerik}
 \pagebreak
 \section{RBF-FD}\label{sec:RBF-FD}
-Die Radiale-Basisfunktion-Finite-Differenzen-Methode(RBF-FDM) behandelt die Approximation gewöhnlicher und partieller Differentialgleichungen. Im Gegensatz zu den klasischen Verfahren, wie zum Beispiel der allgemeinen Finite-Differenzen-Methode oder der Finiten-Elemente-Methode, wird bei dieser Methodik kein vorgeschriebenes Gitter benötigt und ist somit unabhängig von dem gegebenen Raum. Allgemein werden in diesem Kapitel die radialen Basisfunktionen vorgestellt und anhand der Interpolationsaufgabe mittels radialen Basisfunktionen näher erläutert. Abschließend wird das Verfahren erläutert, indem die Basisfunktionen im Zusammenhang mit dem Finiten-Differenzenverfahren gebracht werden. Als erstes wird nun die Finite-Differenzen-Methode vorgestellt.
+Die Radiale-Basisfunktion-Finite-Differenzen-Methode (RBF-FDM) behandelt die Approximation gewöhnlicher und partieller Differentialgleichungen. Im Gegensatz zu den klasischen Verfahren, wie zum Beispiel der allgemeinen Finite-Differenzen-Methode oder der Finiten-Elemente-Methode, wird bei dieser Methodik kein vorgeschriebenes Gitter benötigt und ist somit unabhängig von dem gegebenen Raum. Allgemein werden in diesem Kapitel die radialen Basisfunktionen vorgestellt und anhand der Interpolationsaufgabe mittels radialen Basisfunktionen näher erläutert. Abschließend wird das Verfahren erläutert, indem die Basisfunktionen im Zusammenhang mit dem Finiten-Differenzenverfahren gebracht werden. Als erstes wird nun die Finite-Differenzen-Methode vorgestellt.
 \subsection{Einführung in die Finite-Differenzenmethode}
 Dieses Kapitel liegt den Arbeiten von Martin Burger \cite{burger2006numerik} und Dietrich Braess \cite{braess2013finite} zu Grunde.\\
 In der numerischen Mathematik ist das Approximieren gewöhnlicher und partieller Differentialgleichung ein Hauptforschungsgebiet. Hierzu sind im Laufe der Zeit viele verschiedene Verfahren entwickelt und weiterentwickelt worden. Einer der ältesten  und einfachsten Verfahren ist die sogenannte \textit{Finite-Differenzen-Methode} (FDM), welche zu der Klasse der Differenzenverfahren gehört. Bei diesem Verfahren nähert man die Ableitung einer Funktion $u(x)$ mittels Differenzenquotienten an:
@@ -213,12 +220,12 @@ Der freiwählbare Faktor $k$ stellt in den Funktionen den Glättungsparameter da
 	\centering
 \hspace{-1.4cm}
 \begin{minipage}{0.45\textwidth}
-	\includegraphics[width=1.25\textwidth]{figures/1_dim_gauss.png}
+	\includegraphics[width=1.22\textwidth]{figures/1_dim_gauss.png}
 	\caption*{(i)Gauß-Funktion}
 \end{minipage}
 \hspace{0.5cm}
 \begin{minipage}{0.45\textwidth}
-	\includegraphics[width=1.25\textwidth]{figures/1_dim_multi.png}
+	\includegraphics[width=1.22\textwidth]{figures/1_dim_multi.png}
 	\caption*{(ii)Multiquadratische-Funktion}
 \end{minipage}
 	\caption{1-dimensionale radiale Basisfunktionen}
@@ -226,12 +233,12 @@ Der freiwählbare Faktor $k$ stellt in den Funktionen den Glättungsparameter da
 \end{figure}
 \begin{figure}[H]
 	\centering
-\hspace{-1.4cm}
+\hspace{-1.5cm}
 \begin{minipage}{0.45\textwidth}
 	\includegraphics[width=1.25\textwidth]{figures/2_dim_gauss.png}
 	\caption*{(i)Gauß-Funktion}
 \end{minipage}
-\hspace{0.5cm}
+\hspace{0.6cm}
 \begin{minipage}{0.45\textwidth}
 	\includegraphics[width=1.25\textwidth]{figures/2_dim_multi.png}
 	\caption*{(ii)Multiquadratische-Funktion}
@@ -289,19 +296,19 @@ Wendet man nun die Überlegungen aus dem vorherigen Kapitel auf die Transportgle
 \end{align}
 Hierbei stellt M die Einheitsmatrix dar.
 \pagebreak
-\section{Flux Correction Tools - FCT}
-Dieses Kapitel bezieht sich hauptsächlich auf den Artikel~\cite{kuzmin2002flux} und erläutert ein Vorgehen zur Verbesserung von numerischen Approximationsverfahren von partiellen Differentialgleichungen.\\
-Viele Anwendungsbereiche für partielle Differentialgleichungen und somit auch für die Transportgleichung findet man in dem Bereich der Physik wieder. Diesbezüglich muss die Lösung dieser Gleichung aus physikalischen Gründen positiv sein. Somit benötigt man ein Verfahren, welches die Positivitätseigenschaft beibehält. Es gibt sehr viele verschiedene Verfahren, welche ihre Vor- und Nachteile diesbezüglich besitzen. Klassische-Upwind-Verfahren, welche zur Berechnung der Lösung Knotenwerte aus der Stromaufwärtsrichtung nehmen, erfüllen diese Positivitätsbedingung, sind aber auch diffusiv, welches nicht für alle numerischen Probleme erwünscht wird~\cite{kuzmin2002flux}. Im Gegensatz dazu sind die Verfahren höherer Ordnung(High-order-Methoden) nicht diffusiv, aber weisen vermehrt oszillierende Ergebnisse auf~\cite{kuzmin2002flux}. Das FCT-Schema verbindet nun Verfahren, welche diese oben genannten Eigenschaften aufweisen, und bekommt so eine nicht-diffusive, nicht-oszillierende Lösung heraus. Somit ist die Aufgabe des Schemas die Stabilisation der errechneten Lösung. Allgemein werden drei Hauptschritte druchgeführt:
+\section{Flux Correction Tools - FCT}\label{sec:FCT}
+Dieses Kapitel bezieht sich hauptsächlich auf den Artikel~\cite{kuzmin2002flux} und erläutert ein Vorgehen zur Stabilisierung von numerischen Approximationsverfahren von partiellen Differentialgleichungen.\\
+Viele Anwendungsbereiche für partielle Differentialgleichungen und somit auch für die \textit{Transportgleichung} findet man in dem Bereich der Physik wieder. Diesbezüglich muss die Lösung dieser Gleichung aus physikalischen Gründen positiv sein. Somit benötigt man ein Verfahren, welches die Positivitätseigenschaft beibehält. Es gibt sehr viele verschiedene Verfahren, welche ihre Vor- und Nachteile diesbezüglich besitzen. Klassische-Upwind-Verfahren, welche zur Berechnung der Lösung Knotenwerte aus der Stromaufwärtsrichtung nehmen, erfüllen diese Positivitätsbedingung, weisen aber auch diffusive Merkamele auf, welches nicht für alle numerischen Probleme erwünscht wird~\cite{kuzmin2002flux}. Im Gegensatz dazu sind die Verfahren höherer Ordnung(High-order-Methoden) nicht diffusiv, aber weisen vermehrt oszillierende Ergebnisse auf~\cite{kuzmin2002flux}. Das FCT-Schema verbindet nun Verfahren, welche diese oben genannten Eigenschaften aufweisen, und bekommt so eine nicht-diffusive, nicht-oszillierende Lösung heraus. Somit ist die Aufgabe des Schemas die Stabilisation der errechneten Lösung. Allgemein werden drei Hauptschritte druchgeführt:
 \begin{enumerate}
  \item Diskretisierung mittels einer High-order-Methode
  \item Addition einer künstlichen Diffusion, um die Positivitätseigenschaft zu gewährleisten
  \item Limitierte Subtraktion der künstlichen Diffusion, um wieder eine high-order-Lösung zu bekommen
 \end{enumerate}
-Der erste Schritt kann durch unterschiedliche High-order-Methoden durchgeführt werden. Beispiele hierfür wären die Finite-Elemente-Methode oder der RBF-FD-Methode, welche im Kapitel \ref{sec:RBF-FD} vorgestellt wurde. Im Folgenden werden die letzten beiden Schritte anhand der in Kapitel \ref{sec:RBF-FD} aufgeführten algebraischen Transportgleichung \eqref{eq:algTrans} genauer erläutert. Zur Erinnerung, $M$ ist die Massenmatrix, $K^H$ die Matrix, welche den diskreten Transport-Operator darstellt und $u$ die Lösung des Verfahrens höherer Ordnung. Wie oben schon erwähnt, muss die Lösung $u$ die Positivitätseigenschaften erfüllen. Um dies in jedem Zeitschritt zu gewährleisten, diskretisieren wir die Zeitdifferentation mittels dem allgemeinen \textit{Theta-Schema}
+Der erste Schritt kann durch unterschiedliche High-order-Methoden durchgeführt werden. Beispiele hierfür wären die \textit{Finite-Elemente-Methode} oder der \textit{RBF-FD-Methode}, welche im Kapitel \ref{sec:RBF-FD} vorgestellt wurde. Im Folgenden werden die letzten beiden Schritte anhand der in Kapitel \ref{sec:RBF-FD} aufgeführten \textit{algebraischen Transportgleichung} \eqref{eq:algTrans} genauer erläutert. Zur Erinnerung, $M$ ist die Massenmatrix, $K^H$ die Matrix, welche den diskreten Transport-Operator darstellt und $u$ die Lösung des Verfahrens höherer Ordnung. Wie oben schon erwähnt, muss die Lösung $u$ die Positivitätseigenschaften erfüllen. Um dies in jedem Zeitschritt zu gewährleisten, diskretisieren wir die Zeitdifferentation mittels dem allgemeinen \textit{Theta-Schema}:
 \begin{align}
- \frac{u^{n+1}-u^n}{\Delta t}=(1-\Theta)F(t_n,u^n)+\Theta F(t_{n+1},u^{n+1})~~~,0\le\Theta\le1.
+ \frac{u^{n+1}-u^n}{\Delta t}=(1-\Theta)F(t_n,u^n)+\Theta F(t_{n+1},u^{n+1})~~~,0\le\Theta\le1
 \end{align}
-Hierbei bezeichnet $F(t_n,u^n)$ die rechte Seite der Differentialgleichung. Im Fall der Transportgleichung ist $F(t_n,u^n)=K^Hu^n$, sodass nun die Gleichung \eqref{eq:algTrans} geschrieben werden kann als:
+Hierbei bezeichnet $F(t_n,u^n)$ die rechte Seite der Differentialgleichung zum Zeitpunkt $t_n$. Im Fall der Transportgleichung ist $F(t_n,u^n)=K^Hu^n$, sodass nun die Gleichung \eqref{eq:algTrans} geschrieben werden kann als:
 \begin{align}
  M(\frac{u^{n+1}-u^n}{\Delta t})&=(1-\Theta)K^Hu^n+\Theta K^Hu^{n+1}\nonumber\\
 \Rightarrow [M-\Theta\Delta tK^H]u^{n+1}&=[M+(1-\Theta)\Delta tK^H]u^n\label{eq:thetaGleich}
@@ -326,13 +333,13 @@ Im Folgendem wird der Beweis der Positivität der Lösung $u$ für den Fall des 
 \begin{align}
  [M-\Delta tK^H]u^{n+1}=Mu^n\label{eq:LGS_H}
 \end{align}
-vorgestellt. Für die Verfahren für $0\le\Theta<1$ wird auf den Beweisen des zugrundeliegenden Artikels~\cite{kuzmin2002flux} verwiesen, indem .\\
+vorgestellt. Für die Verfahren für $0\le\Theta<1$ wird auf den Beweisen des zugrundeliegenden Artikels~\cite{kuzmin2002flux} verwiesen.\\
 Sei nun angenommen, dass die Lösung des vorherigen Zeitschrittes $u^n\ge0$ ist und dass die Massenmatrix $M$ eine Diagonalmatrix mit $m_{ii}>0~\forall i$ ist, so folgt die Positivitätseigenschaft für $u^{n+1}$, wenn $[M-\Delta tK^H]^{-1}>0$ ist. Diese Aussage ist äquivalent zu der Definition einer \textit{M-Matrix}.
 \begin{defi}\label{def:MMatrix}
  \textbf{(M-Matrix~\cite{fiedler2008special}):}\\
 Eine reguläre Matrix $A\in \mathbb{R}^{n\times n}$ heißt M-Matrix, falls $A$ folgende Eigenschaften erfüllt:
 \begin{enumerate}
- \item $A$ ist eine Z-Matrix, also $a_{ij}\le0~\forall i\neq j$
+ \item $A$ ist eine Z-Matrix, d.h. $a_{ij}\le0~\forall i\neq j$
  \item $\exists v\in\mathbb{R}^n\text{ mit }v_i>0~\forall i:(Av)_i>0~\forall i$
 \end{enumerate}
 Sind diese Kriterien erfüllt gilt
@@ -345,17 +352,17 @@ Sind diese Kriterien erfüllt gilt
  K^L=K^H+D\label{eq:AddDif}
 \end{align}
 Physikalisch betrachtet, fügen wir mit der Matrix $D$ eine künstliche Diffusion hinzu, sodass die Lösung $u$ nun diffusivere Merkmale aufweisen könnte~\cite{kuzmin2002flux}. Somit bezeichnet man diese Lösung als $u_{Low}$ bzw. $u_L$.\\
-Weiterhin ist zu beachten, dass eine Addition mit zu starker Diffusion die Folge einer Absenkung der Stabilitätsgrenzen hat~\cite{kuzmin2002flux}. Andererseits führt eine zu schwache Diffusionsaddition zu falschen Extrema. Des Weiteren könnte man überall die gleiche Menge an Diffusion hinzuaddieren~\cite{kuzmin2002flux}. Diese Methode ist zwar recheneffizient, aber nicht genauigkeitseffizient~\cite{kuzmin2002flux}. Somit werden die einzelnen Matrixeinträge für jeden Knoten wie folgt definiert:
+Weiterhin ist zu beachten, dass eine Addition mit zu starker Diffusion die Folge einer Absenkung der Stabilitätsgrenzen hat~\cite{kuzmin2002flux}. Andererseits führt eine zu schwache Diffusionsaddition zu falschen Extrema. Somit könnte man überall die gleiche Menge an Diffuion hinzuaddieren. Diese Methode ist zwar recheneffizient, aber nicht genauigkeitseffizient~\cite{kuzmin2002flux}. Um die obengenannten Eigenschaften nicht zu erhalten, werden die einzelnen Matrixeinträge für jeden Knoten wie folgt definiert:
 \begin{align}
  d_{ii}=-\sum_{k\neq i}d_{ik},~~d_{ij}=d_{ji}=max\{0,-k_{ij}^H,-k_{ji}^H\},~~\forall i<j\label{eq:D}
 \end{align}
-Bei dieser Definition fällt auf, dass die Zeilen- und Spaltensumme von $D$ gleich 0 sind. Somit gilt insgesamt für die Zeilensumme von $K^L$, dass diese gleich null ist. Zu beachten ist hier, dass, wenn die nichtdiagonal Elemente von $K^H$ von vornherein positiv sind, dass keine Addition künstlicher Diffusion notwendig ist und $D$ gleich der Nullmatrix ist. So folgt $K^H=K^L$. Dieser Fall tritt auf, wenn die physikalische Diffusion stark genug ist.\\
+Bei dieser Definition fällt auf, dass die Zeilen- und Spaltensumme von $D$ gleich Null sind. Somit gilt insgesamt für die Zeilensumme von $K^L$, dass diese gleich Null ist. Zu beachten ist hier, dass, wenn die nichtdiagonal Elemente von $K^H$ von vornherein positiv sind, keine Addition künstlicher Diffusion notwendig ist und $D$ gleich der Nullmatrix ist. So folgt $K^H=K^L$. Dieser Fall tritt auf, wenn die physikalische Diffusion von Anfang an stark genug ist.\\
 Setzt man nun die Matrix $K^L$ in die Gleichung \eqref{eq:LGS_H} ein, folgt:
 \begin{align}
  [M-\Delta tK^L]u_L^{n+1}=Mu^n
 \end{align}
 Substituiere nun $\widehat{K}:=[M-\Delta tK^L]$. Durch die Addition der künstlichen Diffusion gilt nun $\widehat{k}_{ij}=-\Delta tk_{ij}^L\le0~\forall i\neq j$. Durch die künstliche Diffusion sind somit auch die Nebendiagonalelemente von $\widehat{K}$ negativ und erfüllt somit Punkt 1 der Definition \ref{def:MMatrix}.\\
-Um den Punkt 2 zu beweisen, zeigen wir zunächst, dass die Zeilensumme von $K^L$ gleich 0 ist. Diese Eigenschaft ergibt sich aus den Zeilensummeneigenschaften von $K^H$ und $D$. Durch die Annahme eines inkompressiblen Vektorfeldes gilt für die Koeffenzientenmatrix $K^H$ die Zeilensummeneigenschaften $(K^Hu)_i=\sum_{j}k_{ij}^Hu_j=0$~\cite{kuzmin2005algebraic}. Diese Eigenschaft gilt auch für die Matrix $D$, welches man anhand der Definition in Gleichung~\eqref{eq:D} erkennen kann. Somit gil nun für die Matrix $K^L$:
+Um den Punkt 2 zu beweisen, zeigen wir zunächst, dass die Zeilensumme von $K^L$ gleich Null ist. Diese Eigenschaft ergibt sich aus den Zeilensummeneigenschaften von $K^H$ und $D$. Durch die Annahme eines inkompressiblen Vektorfeldes gilt für die Koeffenzientenmatrix $K^H$ die Zeilensummeneigenschaften $(K^Hu)_i=\sum_{j}k_{ij}^Hu_j=0$~\cite{kuzmin2005algebraic}. Diese Eigenschaft gilt auch für die Matrix $D$, welches man anhand der Definition in Gleichung~\eqref{eq:D} erkennen kann. Somit gilt nun für die Matrix $K^L$:
 \begin{align}
  (K^Lu)_i=\sum_{j}k_{ij}^Lu_j=[\underbrace{\sum_{j}k_{ij}^H+d_{ij}}_{=0}]u_j=0
 \end{align}
@@ -377,25 +384,287 @@ mit den Substitutionen
 \begin{align}
  u^{n+\Theta}=[M+(1-\Theta)\Delta tK^L]u^n \text{ und } f(u^n,u^{n+1})=(1-\Theta)Du^n+\Theta Du^{n+1}.\nonumber
 \end{align}
-Die subtrahierte Diffusion $f(u^n,u^{n+1})$ wird im Folgendem als Antidiffusion bezeichnet. Durch die geeignete Wahl der Antidiffusion ist nun die Gleichung~\eqref{eq:zwischGleich} äquivalent zu der Gleichung~\eqref{eq:thetaGleich} und besitzt somit die gleiche analytische Lösung.\col{Positivität dieser Zwischenlösung?} Hierbei wird nun im Gegensatz zu Schritt 2 für jeden Knoten einzeln die Stärke dieser Antidiffusion limitiert, sodass keine zu hohe bzw. zu niedrige Diffusionskompensation durchgeführt wird. Somit folgt mit den Diffusionskoeffizienten $\alpha$ \col{aus $R^n$? und dann in der gleichung punktweise multiplikation mit dem vektor f(,)?} die limitierte Gleichung
+Die subtrahierte Diffusion $f(u^n,u^{n+1})$ wird im Folgendem als Antidiffusion bezeichnet. Der Eintrag $f_i$ des Antidiffuionsvektor kann als Summe der Flüsse, welche den Wert am Knoten $i$ beeinflussen, aufgefassen werden:
 \begin{align}
-  [M-\Theta\Delta tK^L]u^{n+1}=u^{n+\Theta}-\Delta t\alpha f(u^n,u^{n+1})\label{eq:zwischGleich}.
+ f_i=\sum\limits_{j\neq i}f_{ij}\text{ mit }f_{ij}=(1-\Theta)d_{ij}(u_i^n-u_j^n)+\Theta d_{ij}(u_i^{n+1}-u_j^{n+1})=-f_{ji}\nonumber
 \end{align}
-Die Diffusionskoeffizienten $\alpha$  besitzen Werte im Intervall $[0,1]$. Wenn beispielsweise die Diffusionskoeffizienten $\alpha_i\approx0~\forall i$ ist, dann muss die künstliche Diffusion nicht ausgeglichen werden und es gilt:
+Durch die geeignete Wahl der Antidiffusion ist nun die Gleichung~\eqref{eq:zwischGleich} äquivalent zu der Gleichung~\eqref{eq:thetaGleich} und besitzt somit die gleiche analytische Lösung. Hierbei wird nun im Gegensatz zu Schritt 2 für jeden Knoten einzeln die Stärke dieser Antidiffusion limitiert, sodass keine zu hohe bzw. zu niedrige Diffusionskompensation durchgeführt wird. Somit folgt mit den Diffusionskoeffizientenvektor $\alpha$ die limitierte Gleichung
+\begin{align}
+  [M-\Theta\Delta tK^L]u^{n+1}=u^{n+\Theta}-\Delta t\alpha f(u^n,u^{n+1}).\label{eq:alphaGleich}
+\end{align}
+Im Allgemeinen besitzen die Koeffizienten von $\alpha$ Werte im Intervall $[0,1]$. Wenn beispielsweise $\alpha\approx0$ ist, dann muss die künstliche Diffusion nicht ausgeglichen werden und es gilt:
 \begin{align}
  [M-\Theta\Delta tK^L]u^{n+1}&=[M+(1-\Theta)\Delta tK^L]u^n
 \end{align}
-Im Gegensatz dazu gilt für $\alpha_i\approx1~\forall i$, dass $u^{n+1}$ gleich der anfänglichen Lösung der Gleichung~\eqref{eq:thetaGleich} ist.\\
+Im Gegensatz dazu gilt für $\alpha\approx1$, dass $u^{n+1}$ gleich der anfänglichen Lösung der Gleichung~\eqref{eq:thetaGleich} ist.\\
+Im Folgenden wird die genaue Herleitung der Koeffizienten von $\alpha$ erläutert. Hierzu werden die Überlegungen von Zalesaks multidimensionalen FCT-Algorithmus verwendet\cite{zalesak1979fully}. Man betrachte die Gleichung~\eqref{eq:alphaGleich} für einen Knoten $i$. Dann kann die rechte Seite umgeschrieben werden in:
+\begin{align}
+ RHS=m_{ii}u_i^{n+\Theta}+\Delta t\sum\limits_{j\neq i}\alpha_{ij}f_{ij},~~~\alpha_{ij}=\alpha_{ji}
+\end{align}
+Um die Positivitätseigenschaft der limitierten Lösung zu gewährleisten muss die Lösung $u^{n+\Theta}$ positiv sein und die Diffusionskoeffizienten entsprechend gewählt werden. Die Positivitätseigenschaft der Zwischenlösung wird im zugrundeliegenden Artikel~\cite{kuzmin2002flux} bewiesen. Somit hängt die Positivität der Gesamtlösung von der expliziten Wahl der Diffusionskoeffizienten $\alpha_{ij}$ ab. In den Überlegungen von Zalesak wird ein 4 Schritt-Algorithmus zur Berechnung der Diffusionskoeffizienten verwendet, welcher im Folgenden vorgestellt wird:
+\begin{enumerate}
+ \item Berechnung der Flüsse im Knoten $i$ und Aufteilung in positiv und negativ:
+\begin{align}
+P_i^+=\frac{1}{m_{ii}}\sum\limits_{j\neq i}max\{0,f_{ij}\},~~~~P_i^-=\frac{1}{m_{ii}}\sum\limits_{j\neq i}min\{0,f_{ij}\}
+\end{align}
+ \item Berechnung der maximalen Distanz zum lokalen Extremum um den Knoten $i$:
+ \begin{align}
+Q_i^+&=max\left\{0,\smash{\displaystyle\max_{j\neq i}}(u_j^{n+\Theta}-u_i^{n+\Theta})\right\}\nonumber\\
+Q_i^-&=min\left\{0,\smash{\displaystyle\min_{j\neq i}}(u_j^{n+\Theta}-u_i^{n+\Theta})\right\}
+\end{align}
+ \item Berechnung des Knotenfaktors, um die Positivität zu gewährleisten:
+\begin{align}
+R_i^+=min\left\{1,\frac{Q_i^+}{\Delta tP_i^+}\right\},~~~~R_i^-=min\left\{1,\frac{Q_i^+}{\Delta tP_i^+}\right\}
+\end{align}
+ \item Limitierung der Flüssen mittels den Minimum aus $R_i^+$ und $R_i^-$:
+\begin{align}
+\alpha_{ij}=   \begin{cases}
+     min\{R_i^+,R_j^-\}, & \text{wenn } f_{ij}>0 \\
+     min\{R_i^-,R_j^+\}, & \text{sonst} 
+   \end{cases}
+\end{align}
+\end{enumerate}
+Mit dieser Definition der Diffusionskoeffizienten folgt die Beschränktheit der rechten Seite, denn es gilt:
+\begin{align}
+ min\{u_i^{n+\Theta}\}=u_i^{n+\Theta}+Q_i^-\le\frac{RHS}{m_{ii}}\le u_i^{n+\Theta}+Q_i^+=max\{u_i^{n+\Theta}\}
+\end{align}
+Des Weiteren verstärkt die limitierte Antidiffusion nicht lokale Extrema, da in diesem Fall
+\begin{align}
+ Q_i^\pm=0~\Rightarrow~ R_i^\pm=0~\Rightarrow~\alpha_{ij}=0
+\end{align}
+gilt und somit die limitierte Antidiffuion wegfällt.\\
 Abschließend kann man das FCT-Schema durch folgenden Algorithmus zusammenfassen:
 \begin{enumerate}
  \item Berechnung der Lösung $u^{n+1}$ aus dem Verfahren höherer Ordnung
- \item Berechnung der Zwischenlösung $u^{n+\Theta}=[M+(1-\Theta)*\Delta tK^L]u^n$
- \item Berechnung von $f(u^n,u^{n+1})$ und der Koeffizienten $\alpha_i~\forall i$
- \item Berechnung der stabilisierten high-order-Lösung $u_H^{n+1}$ mit der Gleichung $[M-\Theta\Delta tK^L]u_H^{n+1}=u^{n+\Theta}+\Delta t\alpha f(u^n,u^{n+1})$
+ \item Berechnung der Zwischenlösung $u^{n+\Theta}=[M+(1-\Theta)\Delta tK^L]u^n$
+ \item Berechnung von $f(u^n,u^{n+1})$ und der Koeffizienten von $\alpha$
+ \item Berechnung der stabilisierten High-order-Lösung $u_H^{n+1}$ mit der Gleichung $[M-\Theta\Delta tK^L]u_H^{n+1}=u^{n+\Theta}+\Delta t\alpha f(u^n,u^{n+1})$
 \end{enumerate}
-Zusammenfassend bekommt man durch das FCT-Schema eine stabilisierte Lösung heraus, als das ursprüngliche high-order-Verfharen. Die FCT-Methoden sind allgemein auf explizite und implizite Zeitdiskretisierungen anwendbar und sind nicht auf die Raumdimension beschränkt~\cite{kuzmin2002flux}. Numerische Beispiele finden Sie im folgenden Kapitel~\ref{sec:NumVers}.
+Zusammenfassend bekommt man durch das Anwenden des FCT-Schema eine stabilisierte Lösung heraus, als das reine high-order-Verfahren. Die FCT-Methoden sind allgemein auf explizite und implizite Zeitdiskretisierungen anwendbar und sind nicht auf die Raumdimension beschränkt~\cite{kuzmin2002flux}.\\ Numerische Beispiele zur praktischen Analyse werden im folgenden Kapitel~\ref{sec:NumVers} vorgestellt. 
 \pagebreak
 \section{Numerische Versuche}\label{sec:NumVers}
+In diesem Kapitel wird das RBF-FD-Verfahren und die FCT-Stabilisation, welche in den vorherigen Kapiteln vorgestellt wurden, anhand numerischer Beispiele graphisch erläutert. Hierzu werden numerische Fehleranalysen der verschiedenen Lösungen betrachtet und am Ende ein Fazit gezogen. Für die Auswertungen wurde eine Matlab-Implementierung der Version \textit{R2016a} von Herrn Dr. Sokolov verwendet.
+\subsection{Numerische Resultate der RBF-FD-Methode}
+\subsection{Numerische Resultate der FCT-Stabilisation}
+In diesem Unterabschnitt wird ein genauerer Blick auf die FCT-Stabilisation geworfen. Genauer wird erst das vorgegebene Problem mittels der RBF-FD-Methode gelöst und dann durch das FCT-Verfahren stabilisiert. Der allgemeinene Simulationsalgorithmus ist in Abbildung \ref{fig:algorithmus} in einem Pfeildiagramm graphisch dargestellt. Hierbei sei $u_{initial}$  die Anfangsbedingung, $u_{pure}$ die Lösung des Verfahrens höherer Ordnung, $u_{diff}$ die Lösung nach der Addition der künstlichen Diffusion und $u_{stab}$ die stabilisierte Lösung am Ende des FCT-Schema. In der Zeitschleife wird somit pro Zeitschritt die Lösungen $u_{pure}$, $u_{diff}$ und $u_{stab}$ nacheinander errechnet.
+\begin{figure}[H]
+\centering
+   \begin{tikzpicture}[>=stealth]
+    \node (at) at (0,0) {$u_{initial}$};
+    \node[below=2cm of at] (at-high) {$u_{pure}$};
+    \draw[->] (at) -- (at-high) node[midway,right,font=\small] {start};
+    \node[below right=2cm and 1cm of at-high] (at-diff) {$u_{diff}$};
+    \node[below=1.25cm of at-high] (at-loop) {loop};
+    \node[below left=2cm and 1cm of at-high] (at-stab) {$u_{stab}$};
+    \draw[->,shorten >=3pt] (at-high) to[bend left] (at-diff);
+    \draw[->,shorten >=3pt] (at-diff) to[bend left] (at-stab);
+    \draw[->,shorten >=3pt] (at-stab) to[bend left] (at-high);
+  \end{tikzpicture}
+\caption{FCT-Algorithmus}
+\label{fig:algorithmus}
+\end{figure}
+\noindent
+Nach dem Algorithmus ist zu erwarten, dass die stabilisierte Lösung eine bessere Approximation der analytischen Lösung ist, als die Lösungen der RBF-FD-Methode ohne Stabilisation. Um diese Hypothese zu belegen werden im Folgenden die Methoden anhand der Transportgleichung, welche im Kapitel \ref{sec:transglei} vorgestellt wurde,  auf zwei unterschiedliche Probleme angewendet. Hierbei wird als Transport die Rotation einer gegebenen Funktion im Einheitsquadrat $\Omega=[0,1]^2$ um den Punkt $(0.5,0.5)$ simuliert. Als Auswertungspunkte werden in diesem Abschnitt Punkte mit äquidistanten Abständen genommen, welches als ein äquidistantes Gitter interpretiert werden kann. Hierbei sollte zur Kenntnis genommen werden, dass in diesem Unterabschnitt der Vorteil des RBF-FD-Verfahren, das gitterfreie Lösen, nicht im Fokus steht, sodass hier einfachhaltshalber diese Positionierung gewählt wurde.\\\\
+\textbf{1. Versuch}\\\\
+Im ersten Versuch werden die unterschiedlichen Lösungen anhand der in Abbildung \ref{fig:initial1} dargestellten Anfangsbedingung für unterschiedliche Parameter gegenübergestellt.
+\begin{figure}[H]
+\centering
+ \includegraphics[width=0.8\textwidth]{figures/T_pi/initial_solution_n_100.png}
+\caption{Anfangsbedingung}
+\label{fig:initial1}
+\end{figure}
+\noindent
+Es werden die Lösungen für $N=400$ Unbekannten und eine Rotation um $\alpha=\frac{\pi}{2}$ analysiert. Hierbei sind die Lösungen in den Abbildungen \ref{fig:pur_20} - \ref{fig:stab_20} graphisch dargestellt, wobei zu beachten ist, dass durch die graphische Ausgabe die Lösung für einige Beispiele nicht exakt wiedergespiegelt wird. Dies erkennt man beispielsweise an der Abbildung \ref{fig:pur_20}, in der es so aussieht, als ob manche Knotenwerte gleich $-1$ sind, obwohl dies nicht der Fall ist.\\
+Die unterschiedlichen Eigenschaften der drei Lösungen sind in den Abbildungen klar wiederzufinden. Das RBF-FD-Verfahren weist eine stark oszillierende Lösung im ganzen Gebiet $\Omega$ auf, womit die Positivitätsbedingung nicht eingehalten werden kann. Dahingegen ist die Lösung $u_{diff}$ stark diffusiv und die Maximalwerte verringern sich in diesem Beispiel von $1$ auf $311.795635768968e-003$. Die stabilisierte Lösung sieht auf dem ersten Blick als beste Approximation der drei Lösungen aus, da diese nicht oszillierend und nicht zu starke diffusive Eigenschaften ausweist.
+\begin{figure}[H]
+\centering
+ \includegraphics[width=0.8\textwidth]{figures/T_pi_2/numerical_solution_high_n_20.png}
+\caption{Lösung $u_{pure}$ für $N=400$ und $\alpha=\frac{\pi}{2}$}
+\label{fig:pur_20}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{figures/T_pi_2/numerical_solution_diff_n_20.png}
+\caption{Lösung $u_{diff}$ für $N=400$ und $\alpha=\frac{\pi}{2}$}
+\label{fig:diff_20}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{figures/T_pi_2/numerical_solution_stab_high_n_20.png}
+\caption{Lösung $u_{stab}$ für $N=400$ und $\alpha=\frac{\pi}{2}$}
+\label{fig:stab_20}
+\end{figure}
+\noindent
+Um dies zu prüfen, wurden die Fehler der einzelnen Lösungen zu der analytischen Lösung $u_{ana}$ ermittelt und in Tabelle \ref{tab:fehler_20_pi/2} zusammengefasst. Zur Fehlerberechnung wurde die diskrete L2-Norm 
+\begin{align}
+ \|v\|_{l^2(\Omega)}:=\sqrt{\frac{1}{N}\sum\limits_{i=1}^Nv_i^2}\label{eq:discretel2norm}
+\end{align}
+verwendet, da diese das allgemeine Mittel der Fehler auf dem gesamten Gebiet $\Omega$ ermittelt und nicht von Bereichen, welche numerisch schwierig zu approximieren sind, abhängig ist.
+\begin{table}[H]
+\centering
+\begin{tabular}[\textwidth]{|c|c|}
+\hline
+ Fehlerfunktion & Fehlerwerte\\
+\hline
+$\|u_{ana}-u_{pure}\|_{l^2(\Omega)}$ & $205.649439898788e-003$\\
+%\hline
+$\|u_{ana}-u_{diff}\|_{l^2(\Omega)}$ & $199.979489340381e-003$\\
+%\hline
+$\|u_{ana}-u_{stab}\|_{l^2(\Omega)}$ & $144.092770573993e-003$\\
+\hline
+\end{tabular}
+\caption{Fehlerwerte für $N=400$ und $\alpha=\frac{\pi}{2}$}
+\label{tab:fehler_20_pi/2}
+\end{table}
+\noindent
+Man erkennt, dass der Fehler für das Verfahren mit FCT-Stabilisation mit einem Fehlerwert von $144.092770573993e-003$ niedriger ist als der Fehlerwert ohne Stabilisation mit $205.649439898788e-003$. Dies liegt an den Oszillationen der RBF-FD-Lösung, wodurch mehr Summanden in der Normberechnung ungleich Null sind und somit die gesamte Summe größer wird. Des Weiteren erkennt man, das der Fehler der diffusiven Lösung minimal besser ist als der Fehler des Verfahrens höherer Ordnung, obwohl die Maximalwerte in diesem Beispiel mit $N=400$ stark sinken.\\
+Um das allgemeine Verhalten und die allgemeine Konvergenz der stabilisierten Lösung graphisch zu zeigen werden im Folgenden die Parameter $N$ und $\alpha$ jeweils variiert.\\
+Zuerst wird die Anzahl der Unbekannten für eine feste Rotation $\alpha=\pi$ verändert. Hierzu wird die stabilisierte Lösung $u_{stab}$ in den Abbildungen \ref{fig:stab_5_10_pi} - \ref{fig:stab_80_100_pi} für eine Anzahl von Unbekannten $N$ von 25 bis 10000 gegenübergestellt. Man erkennt eine grahische Konvergenz der stabiliserten Lösung ohne Oszillationen. Um diese Hypothese mathematisch zu verifizieren, sind die Fehlerwerte der Fehlerfunktion $u_{ana}-u_{stab}$ in der diskrete L2-Norm~\eqref{eq:discretel2norm} ermittelt und in der Tabelle \ref{tab:fehler_N_pi}  eingetragen worden. Man erkennt ein Konvergenzverhalten des Fehlers gegen 0, welches mit der graphischen Auswertung übereinstimmt.
+\begin{figure}[H]
+\hspace{0.1cm}
+\begin{minipage}{0.4\textwidth}
+\includegraphics[width=1.2\textwidth]{figures/T_pi/numerical_solution_stab_high_n_5.png}
+\end{minipage}
+\hspace{1.4cm}
+\begin{minipage}{0.4\textwidth}
+\includegraphics[width=1.2\textwidth]{figures/T_pi/numerical_solution_stab_high_n_10.png}
+\end{minipage}
+\caption{Lösung $u_{stab}$ für $N=25$ und $N=100$, $\alpha=\pi$}
+\label{fig:stab_5_10_pi}
+\end{figure}
+
+\begin{figure}[H]
+\hspace{0.1cm}
+\begin{minipage}{0.4\textwidth}
+\includegraphics[width=1.2\textwidth]{figures/T_pi/numerical_solution_stab_high_n_20.png}
+\end{minipage}
+\hspace{1.4cm}
+\begin{minipage}{0.4\textwidth}
+\includegraphics[width=1.2\textwidth]{figures/T_pi/numerical_solution_stab_high_n_40.png}
+\end{minipage}
+\caption{Lösung $u_{stab}$ für $N=400$ und $N=3600$, $\alpha=\pi$}
+\label{fig:stab_20_40_pi}
+\end{figure}
+
+\begin{figure}[H]
+\hspace{0.1cm}
+\begin{minipage}{0.4\textwidth}
+\includegraphics[width=1.2\textwidth]{figures/T_pi/numerical_solution_stab_high_n_80_pi.png}
+\end{minipage}
+\hspace{1.4cm}
+\begin{minipage}{0.4\textwidth}
+\includegraphics[width=1.2\textwidth]{figures/T_pi/numerical_solution_stab_high_n_100.png}
+\end{minipage}
+\caption{Lösung $u_{stab}$ für $N=3600$ und $N=1000$, $\alpha=\pi$}
+\label{fig:stab_80_100_pi}
+\end{figure}
+\noindent
+\begin{table}[H]
+\centering
+\begin{tabular}[\textwidth]{|c|c|}
+\hline
+  & $\|u_{ana}-u_{stab}\|_{\infty}$\\
+\hline
+$N=5^2$ & $226.370914354391e-003$\\
+%\hline
+$N=10^2$ & $175.779056969637e-003$\\
+%\hline
+$N=20^2$ & $154.026021594423e-003$\\
+\hline
+$N=40^2$ & $118.716820522281e-003$\\
+%\hline
+$N=80^2$ & $103.237909256097e-003$\\
+%\hline
+$N=100^2$ & $95.2290159199564e-003$\\
+\hline
+\end{tabular}
+\caption{Fehlerwerte für beliebiges $N$ und festem $\alpha=\pi$}
+\label{tab:fehler_N_pi}
+\end{table}
+\noindent
+Betrachtet wird nun der Versuch, indem die Rotation variabel und die Nummer der Unbekannte vorgegeben ist. Die numerischen Ergebnisse wurden in den Abblidungen \ref{fig:stab_80_pi} und \ref{fig:stab_80_2pi} für Rotationen von $\alpha=\frac{\pi}{2}$ bis $\alpha=2\pi$ für $N=6400$ Unbekannten graphisch dargestellt. Man erkennt eine Verschlechterung der stabilisierten Lösung $u_{stab}$, je länger die Rotation und somit die Simulation andauert. Dies ist vor allem an dem Einschnitt im Zylinder zu erkennen, da nach einer einer Rotation um  $2\pi$ der rechte Flügel stark abnimmt. Diese Verschlechterung spiegelt sich auch in den evaluierten, diskreten Fehlern, welche in Tabelle \ref{tab:fehler_N_rotation} notiert sind, dar. Man erkennt eine minimale Anhebung des dikreten $L_2$-Fehlers für längere Simulationen.
+\begin{figure}[H]
+\hspace{0.1cm}
+\begin{minipage}{0.4\textwidth}
+\includegraphics[width=1.2\textwidth]{figures/n_80_pi_variable/T_pi_2/numerical_solution_stab_high.png}
+\end{minipage}
+\hspace{1.4cm}
+\begin{minipage}{0.4\textwidth}
+\includegraphics[width=1.2\textwidth]{figures/n_80_pi_variable/T_pi/numerical_solution_stab_high.png}
+\end{minipage}
+\caption{Lösung $u_{stab}$ für $\alpha=\frac{\pi}{2}$ und $\alpha=\pi$, $N=6400$}
+\label{fig:stab_80_pi}
+\end{figure}
+\begin{figure}[H]
+\hspace{0.1cm}
+\begin{minipage}{0.4\textwidth}
+\includegraphics[width=1.2\textwidth]{figures/n_80_pi_variable/T_3_pi_2/numerical_solution_stab_high.png}
+\end{minipage}
+\hspace{1.4cm}
+\begin{minipage}{0.4\textwidth}
+\includegraphics[width=1.2\textwidth]{figures/n_80_pi_variable/T_2_pi/numerical_solution_stab_high.png}
+\end{minipage}
+\caption{Lösung $u_{stab}$ für $\alpha=\frac{3\pi}{2}$ und $\alpha=2\pi$, $N=6400$}
+\label{fig:stab_80_2pi}
+\end{figure}
+\noindent
+\begin{table}[H]
+\centering
+\begin{tabular}[\textwidth]{|c|c|}
+\hline
+  & $\|u_{ana}-u_{stab}\|_{l^2(\Omega)}$\\
+\hline
+$\frac{\pi}{2}$ & $90.1222673276692e-003$\\
+%\hline
+$\pi$ & $103.237909256097e-003$\\
+\hline
+$\frac{3\pi}{2}$ & $111.479510855035e-003$\\
+%\hline
+$2\pi$ & $117.832000511267e-003$\\
+\hline
+\end{tabular}
+\caption{Fehlerwerte für beliebiges $\alpha$ und festem $N=6400$}
+\label{tab:fehler_N_rotation}
+\end{table}
+\noindent
+Abschließend wird nun ein letzter Tets durchgeführt, um die universelle Anwendbarkeit des Verfahrens hervorzuheben. Bei der RBF-FD-Methode mit FCT-Stabilisation gibt es allgemein keine Anfangswerteinschränkungen. Um dies graphisch zu verifizieren wird im Folgenden das Gesicht von Carl Friedrich Gauß geplottet und dann um den Punkt $(0.5,0.5)$ mittels dem zugrundeliegenden Verfahren rotiert.\\
+Die Anfangsbedingung von vorne und von oben betrachtet sind in Abbildung \ref{fig:init_gauss} für $10000$ Unbekannten visualisiert. Man erkennt keine klare Struktur der Anfangsbedingung und ist somit willkürlich ausgewählt worden. Nun wird das Potrait von Gauß um $2\pi$ rotiert und die Zwischenergebnisse sind in Abbildung \ref{fig:gauss_pi} und \ref{fig:gauss_2pi} abgebildet. Nach der Simulation kann man nicht mehr das komplette Gesicht erkennen, doch signifikante Stellen, wie beispielsweise die Augen oder die Nase, sind noch erkennbar. Dies zeigt nun, dass durch diese stabiliserte Methodik jegliche Probleme beziehungswiese Anfangsbedingungen approximierbar sind. 
+\begin{figure}[H]
+\begin{minipage}{0.4\textwidth}
+\includegraphics[width=1.2\textwidth]{figures/Gesicht/n_100/1_Pi/initial_solution.png}
+\end{minipage}
+\hspace{1.4cm}
+\begin{minipage}{0.4\textwidth}
+\includegraphics[width=1.2\textwidth]{figures/Gesicht/n_100/1_Pi/initial_solution_top.png}
+\end{minipage}
+\caption{Anfangsbedingung $u_{initial}$, $N=1000$}
+\label{fig:init_gauss}
+\end{figure}
+\begin{figure}[H]
+\begin{minipage}{0.45\textwidth}
+ \includegraphics[width=1.2\textwidth]{figures/Gesicht/n_100/Pi_2/numerical_solution_stab_high_top.png}
+\vspace{-0.4cm}
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+ \includegraphics[width=1.2\textwidth]{figures/Gesicht/n_100/1_Pi/numerical_solution_stab_high_top.png}
+\vspace{-0.4cm}
+\end{minipage}
+\caption{Lösung: $u_{stab}$ für $\alpha=\frac{\pi}{2}$ und $\alpha=\pi$, $N=1000$}
+\label{fig:gauss_pi}
+\end{figure}
+\vspace{-0.4cm}
+\begin{figure}[H]
+\begin{minipage}{0.45\textwidth}
+ \includegraphics[width=1.2\textwidth]{figures/Gesicht/n_100/3_Pi_2/numerical_solution_stab_high_top.png}
+\vspace{-0.4cm}
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+ \includegraphics[width=1.2\textwidth]{figures/Gesicht/n_100/2_Pi/numerical_solution_stab_high_top.png}
+\vspace{-0.4cm}
+\end{minipage}
+\caption{Lösung: $u_{stab}$ für $\alpha=\frac{3\pi}{2}$ und $\alpha=2\pi$, $N=1000$}
+\label{fig:gauss_2pi}
+\end{figure}
 \pagebreak
 \section{Zusammenfassung und Ausblick}
 \pagebreak
