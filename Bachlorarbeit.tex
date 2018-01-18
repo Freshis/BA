@@ -39,7 +39,7 @@
  \vspace{1cm}
  {\Large Bachelorarbeit Technomathematik: Numerik \par}
  \vspace{2cm}
- {\huge\bfseries \textcolor{red}{Die Radialen-Basisfunktion-Finite-Differenzen-Methode und die Stabilisierung mittels Flux Correction Tools angewendet auf die Transportgleichung} \par}
+ {\huge\bfseries Die Radialen-Basisfunktion-Finite-Differenzen-Methode und die Stabilisierung mittels Flux-Correction-Tools angewendet auf die Transportgleichung \par}
  \vspace{2cm}
  {\Large Wintersemester 2017/2018 \par}
  \vspace{0.5cm}
@@ -67,14 +67,15 @@
 \pagenumbering{arabic}
 \setcounter{page}{1}
 \section{Einleitung}
-In der heutigen Wissenschaft werden komplexe Algorithmen mit unterschiedlichen Verfahren verwendet. Durch die Komplexität der Verfahren und der Digitalisierung werden zumeist die Lösungen der Methoden numerisch am Computer approximiert. Einige Beispiele dafür sind die numerische Approximation von Integralen durch \textit{Quadraturformeln}, das Annähern der Lösungen von Fixpunktgleichungen durch den \textit{Newton-Algorithmus} oder das iterative Lösen eines Gleichungssystem mittels dem \textit{CG-Verfahren}. Mit solchen grundlegenden Approximationsmethoden lassen sich komplexere Probleme durch die Numerik realisieren. Beispiele für solche Probleme stellen die Approximationsaufgaben von gewöhnlichen und partiellen Differentialgleichungen dar. Einige naturwissenschaftliche Anwendungsbeispiele, welche durch Differentialgleichungen beschrieben werden, sind die \textit{Newtonsche Himmelsmechanik}~\cite{deuflhard2013gewohnliche}, welche zur Bahnberechnung von Satelliten oder Planetoiden verwendet wird, die \textit{chemische Reaktionskinetik}~\cite{deuflhard2013gewohnliche}, welche in der heutigen industriellen Verfahrenstechnik eine wichtige Rolle spielt, oder allgemeine Simulationsvorgänge. Beispiele indenen eine Simulation berechnet wird sind beispielsweise die Simulation der \textit{Flachwassergleichung} oder der \textit{Transportgleichung}, welche in dieser Arbeit in den Fokus gesetzt und simuliert wird. Hierzu wird die \textit{Transportgleichung} im Kapitel \ref{sec:transglei} vorgestellt.\\
-Zur Visualisierung der Lösung der \textit{Transportgleichung} muss diese durch numerische Verfahren approximiert werden. Die klassische \textit{Finite-Differenzen-Methode}(FDM) oder die \textit{Finite-Elemente-Methode}(FEM) können diesbezüglich verwendet werden. Diese Methoden sind in der Industrie als Lösungesverfahren für Differentialgleichungen weit verbreitet. Beide Verfahren haben Vorteile und Nachteile. Die Vorteile der FDM liegt in der Einfachheit der Implementierung, wohingegen der Vorteil der FEM in der Flexibilität der Gittergenerierung des zugrunde liegenden Gebiets liegt. Dennoch sind beide Verfahren nach einer festen Wahl des Gitters stark abhängig von diesem Gitter, welches zu einer sehr langsamen Konvergenzgeschwindigkeit der Verfahren in komplexen Gebieten führen könnte. Um dieses Problem zu umgehen wird in Kapitel \ref{sec:RBF-FD} eine Methode vorgestellt, welche ohne Gittergenerierung ein Differentialgleichungsproblem auf einem beliebigen Gebiet approximieren kann. Diesbezüglich wird durch Kombination der FDM und einer speziell gewählten Wahl von Basisfunktionen eine neue gitterfreie Lösungsmethode hergeleitet.\\
+In der heutigen Wissenschaft werden komplexe Algorithmen mit unterschiedlichen Verfahren verwendet. Durch die Komplexität der Verfahren und der Digitalisierung werden zumeist die Lösungen der Methoden numerisch am Computer approximiert. Einige Beispiele dafür sind die numerische Approximation von Integralen durch \textit{Quadraturformeln}, das Annähern der Lösungen von Fixpunktgleichungen durch den \textit{Newton-Algorithmus} oder das iterative Lösen eines Gleichungssystem mittels dem \textit{CG-Verfahren}. Mit solchen grundlegenden Approximationsmethoden lassen sich komplexere Probleme durch die Numerik realisieren. Beispiele für solche Probleme stellen die Approximationsaufgaben von gewöhnlichen und partiellen Differentialgleichungen dar. Einige naturwissenschaftliche Anwendungsbeispiele, welche durch Differentialgleichungen beschrieben werden, sind die \textit{Newtonsche Himmelsmechanik}~\cite{deuflhard2013gewohnliche}, welche zur Bahnberechnung von Satelliten oder Planetoiden verwendet wird, die \textit{chemische Reaktionskinetik}~\cite{deuflhard2013gewohnliche}, welche in der heutigen industriellen Verfahrenstechnik eine wichtige Rolle spielt, oder allgemeine Simulationsvorgänge. Beispiele, in denen eine Simulation berechnet wird, sind beispielsweise die Simulation der \textit{Flachwassergleichung} oder der \textit{Transportgleichung}, welche in dieser Arbeit in den Fokus gesetzt und simuliert wird. Hierzu wird die \textit{Transportgleichung} im Kapitel \ref{sec:transglei} vorgestellt.\\
+Zur Visualisierung der Lösung der \textit{Transportgleichung} muss diese durch numerische Verfahren approximiert werden. Die klassische \textit{Finite-Differenzen-Methode}(FDM) oder die \textit{Finite-Elemente-Methode}(FEM) können diesbezüglich verwendet werden. Diese Methoden sind in der Industrie als Lösungesverfahren für Differentialgleichungen weit verbreitet, wobei beide Verfahren ihre Vor-/ und Nachteile haben. Die Vorteile der FDM liegt in der Einfachheit der Implementierung, wohingegen der Vorteil der FEM in der Flexibilität der Gittergenerierung des zugrunde liegenden Gebiets liegt. Dennoch sind beide Verfahren nach einer festen Wahl des Gitters stark abhängig von diesem Gitter, welches zu einer sehr langsamen Konvergenzgeschwindigkeit der Verfahren in numerisch instabilen Gebieten führen könnte. Um dieses Problem zu umgehen wird in Kapitel \ref{sec:RBF-FD} eine Methode vorgestellt, welche ohne Gittergenerierung ein Differentialgleichungsproblem auf einem beliebigen Gebiet approximieren kann. Diesbezüglich wird durch Kombination der FDM und einer speziell gewählten Wahl von Basisfunktionen eine neue gitterfreie Lösungsmethode hergeleitet.\\
 Die Approximation von Differentialgleichungen kann für unterschiedliche Probleme unterschiedliche Eigenschaften aufweisen. Manche Annäherung sind im Gegensatz zu der analytischen Lösung stark diffusiv, andere stark oszillierend. Um Letzteres entgegenzuwirken wird in Kapitel \ref{sec:FCT} ein Stabilisierungsschema vorgestellt, welches durch eine Addition einer künstlichen Diffusion eine nicht-oszillierende Lösung der Differentialgleichung liefert. Hierzu wird dieses Schemata anhand der in Kapitel \ref{sec:RBF-FD} gelösten \textit{Transportgleichung} vorgestellt, da die Lösung dieses Differentialgleichungsproblem oszillierende Merkmale aufweist.\\
 Abschließend wird in Kapitel \ref{sec:NumVers} die gitterfreie Approximationsmethode und das Stabiliserungsschema durch numerische Versuche analysiert. In den Versuchen wird speziell auf die \textit{Transportgleichung} eingegangen und das Verhalten der Lösung mit und ohne Stabilisierung gegenübergestellt.
 \pagebreak
 \section{Transport-Gleichung}\label{sec:transglei}
+Die Aussagen dieses Kapitels gehen auf die Ausarbeitung von van Kan und Segal \cite{segal2013numerik} zurück.\\
 In der Mathematik gibt es viele unterschiedliche partielle Differentialgleichung, wobei der Großteil der partiellen Differentialgleichungen zweiter Ordnung sind. Diese sind hauptsächlich in elliptische, parabolische und hyperbolische Gleichungen klassifiziert. Einfache Beispiele wären hierfür die elliptische Laplace-Gleichung, parabolische Wärmegleichung und die hyperbolische Wellengleichung. Zu den Letzteren wird auch die sogenannte Transportgleichung gezählt, obwohl diese nicht exakt die Bedingungen für die hyperbolische Klassifizierung erfüllt. Dieses zeitabhängige Problem beschreibt den \grqq Transport\grqq~einer Funktion in einem bestimmten $n$-dimensionalen Gebiet $\Omega$.\\
-Die allgemeinste Form der Transportgleichung wird \textit{Erhaltungsform} genannt und lautet in einer Dimensionen
+Die allgemeinste Form der Transportgleichung wird \textit{Erhaltungsform} genannt und lautet in einer Dimension
 \begin{align}
  \frac{\partial u}{\partial t}+\frac{\partial f(u)}{\partial x}=g(u,x,t)\label{1d}.
 \end{align}
@@ -87,30 +88,30 @@ so kann man nun für den $Flussvektor$ $\textbf{f}(u)=\textbf{v} u$ einsetzen un
 \begin{align}
  \frac{\partial u}{\partial t}+\nabla \cdot (\textbf{v}u)=0.\label{2d}
 \end{align}
-$\textbf{v}$ repräsentiert hier nun den, nicht notwendig kontsanten, Geschwindigkeitsvektor und u die zu transportierende, skalare Lösung. Nun kann \eqref{2d} durch die Produktregel, bezüglich der Divergenz, geschrieben werden als
+Der Vektor $\textbf{v}$ repräsentiert hier nun den, nicht notwendig kontsanten, Geschwindigkeitsvektor und u die zu transportierende, skalare Lösung. Nun kann \eqref{2d} durch die Produktregel, bezüglich der Divergenz, geschrieben werden als
 \begin{align}
   \frac{\partial u}{\partial t}+\textbf{v}\cdot\nabla u + u \cdot \nabla \cdot\textbf{v}=0.
 \end{align}
 Wenn nun noch das Vektorfeld inkrompressibel ist (also $\nabla \cdot \textbf{v}=0$), folgt die Gleichung
 \begin{align}
- \frac{\partial u}{\partial t}+\textbf{v}\cdot\nabla u=0,
+ \frac{\partial u}{\partial t}+\textbf{v}\cdot\nabla u=0,\label{eq:transport3}
 \end{align}
 welche auch \textit{Advektions- oder Konvektions-Gleichung} genannt wird.\\
 Eine weitere nennenswerte Form, welche sich aus der \textit{Erhaltungsgleichung} ableiten lässt, ist die \textit{Kovenktions-Diffusions-Gleichung}:
 \begin{align}
  \frac{\partial u}{\partial t}+\nabla \cdot \textbf{v}u = \epsilon\Delta u\label{diffusionsgleichung}
 \end{align}
-Im Gegensatz zu der \textit{Konvektions-Gleichung} tritt in \eqref{diffusionsgleichung} auch Diffusion mit einem Diffusionskoeffizienten $\epsilon$ auf. Wenn nun $\epsilon$ sehr klein wird, dominiert das erste-Ordnung Glied die Gleichung und wird somit schwierig numerisch zu lösen.\cite{segal2013numerik}
+Im Gegensatz zu der \textit{Konvektions-Gleichung} tritt in \eqref{diffusionsgleichung} auch Diffusion mit einem Diffusionskoeffizienten $\epsilon$ auf. Wenn nun $\epsilon$ sehr klein wird, dominiert das erste-Ordnung Glied die Gleichung und wird somit schwierig numerisch zu lösen.
 \pagebreak
 \section{RBF-FD}\label{sec:RBF-FD}
-Die Radiale-Basisfunktion-Finite-Differenzen-Methode (RBF-FDM) behandelt die Approximation gewöhnlicher und partieller Differentialgleichungen. Im Gegensatz zu den klasischen Verfahren, wie zum Beispiel der allgemeinen Finite-Differenzen-Methode oder der Finiten-Elemente-Methode, wird bei dieser Methodik kein vorgeschriebenes Gitter benötigt und ist somit unabhängig von dem gegebenen Raum. Allgemein werden in diesem Kapitel die radialen Basisfunktionen vorgestellt und anhand der Interpolationsaufgabe mittels radialen Basisfunktionen näher erläutert. Abschließend wird das Verfahren erläutert, indem die Basisfunktionen im Zusammenhang mit dem Finiten-Differenzenverfahren gebracht werden. Als erstes wird nun die Finite-Differenzen-Methode vorgestellt.
-\subsection{Einführung in die Finite-Differenzenmethode}
+Die Radiale-Basisfunktion-Finite-Differenzen-Methode (RBF-FDM) behandelt die Approximation gewöhnlicher und partieller Differentialgleichungen. Im Gegensatz zu den klasischen Verfahren, wie zum Beispiel der allgemeinen Finite-Differenzen-Methode oder der Finiten-Elemente-Methode, wird bei dieser Methodik kein vorgeschriebenes Gitter benötigt und ist somit unabhängig von dem gegebenen Raum. Allgemein werden in diesem Kapitel die radialen Basisfunktionen vorgestellt und anhand der Interpolationsaufgabe mittels radialen Basisfunktionen näher erläutert. Dann wird das Verfahren erläutert, indem die Basisfunktionen im Zusammenhang mit dem Finiten-Differenzenverfahren gebracht werden. Abschließend wird die RBF-FD-Methode an das zugrunde liegende Problem der Transportgleichung angewendet und Vorbereitungen für die numerische Implementierung gegebene. Als erstes wird nun die Finite-Differenzen-Methode vorgestellt.
+\subsection{Einführung in die Finite-Differenzen-Methode}\label{sec:FD}
 Dieses Kapitel liegt den Arbeiten von Martin Burger \cite{burger2006numerik} und Dietrich Braess \cite{braess2013finite} zu Grunde.\\
 In der numerischen Mathematik ist das Approximieren gewöhnlicher und partieller Differentialgleichung ein Hauptforschungsgebiet. Hierzu sind im Laufe der Zeit viele verschiedene Verfahren entwickelt und weiterentwickelt worden. Einer der ältesten  und einfachsten Verfahren ist die sogenannte \textit{Finite-Differenzen-Methode} (FDM), welche zu der Klasse der Differenzenverfahren gehört. Bei diesem Verfahren nähert man die Ableitung einer Funktion $u(x)$ mittels Differenzenquotienten an:
 \begin{align}
  \frac{\partial u(x)}{x}=\lim\limits_{h \rightarrow 0} \frac{u(x+h)-u(x)}{h}
 \end{align}
-Wenn man nun $h$ klein genug wählt($h\ll1$), ist dies eine gute Approximition der Ableitung:
+Wenn man nun $h$ klein genug wählt($h\ll1$), ist dies eine gute Approximation der Ableitung:
 \begin{align}
  \frac{\partial u(x)}{x}\approx \frac{u(x+h)-u(x)}{h}\label{eq:vordiff}
 \end{align}
@@ -122,11 +123,11 @@ und der \textit{Zentrale Differenzenquotient}, welcher eine Linearkombination de
 \begin{align}
  D^cu=\frac{1}{2}(D^+u+D^-u)= \frac{u(x+h)-u(x-h)}{2h}
 \end{align}
-Zur Berechnung der Fehlerordnung verwendet man die \textit{Taylor-Entwicklung} (TE), welche allgemein lautet
+Zur Berechnung der Fehlerordnung verwendet man die \textit{Taylor-Entwicklung} (TE), welche allgemein
 \begin{align}
  u(x\pm h)=u(x)\pm hu^{(1)}(x)+\cdots+\frac{(\pm h)^n}{n!}u^{(n)}(x)+u^{(n+1)}(x+\theta h)
 \end{align}
-mit $\theta\in(0,1)$. Wendet man nun die Taylorentwicklung zur Bestimmung der Konsistenzordnung auf den Vorwärtsdifferenzenquotient an, so berechnet man:
+mit $\theta\in(0,1)$ lautet. Wendet man nun die Taylorentwicklung zur Bestimmung der Konsistenzordnung auf den Vorwärtsdifferenzenquotient an, so berechnet man:
 \begin{align}
  |u^{'}(x)-D^+u(x)|&=|u^{(1)}-\frac{u(x+h)-u(x)}{h}|\nonumber\\&\overset{TE}{=}|-\frac{h}{2}u^{(2)}(x+\theta h)|\le\frac{1}{2} h\|u^{(2)}\|_{\infty}
 \end{align}
@@ -145,13 +146,13 @@ welcher bei elliptischen Problemen häufig vorkommt. Dieser wird zum Beispiel du
  \Delta u=\frac{u(x+h,y)+u(x-h,y)+u(x,y+h)+u(x,y-h)-4u(x,y)}{h^2}+\mathcal{O}(h^2)\nonumber
 \end{align}
 \normalsize
-Dieser Operator setzt sich zusammen aus den zentralen Differnzenquotient zweiter Ordnung für beide Raumrichtungen und hat bezüglich dem Laplace-Operator eine Fehlerordnung von 2. Bei diesem Operator werden für die Berechnung eines einzelnen Funktionwertes fünf Auswertungen benötigt, somit spricht man hier auch von einem 5-Punkte-Stern-Operator.\\\\
+Dieser Operator setzt sich zusammen aus den zentralen Differnzenquotient zweiter Ordnung für beide Raumrichtungen und hat bezüglich dem Laplace-Operator eine Fehlerordnung von 2. Bei diesem Operator werden für die Berechnung eines einzelnen Funktionwertes fünf Auswertungen benötigt, sodass man hier auch von einem 5-Punkte-Stern-Operator spricht.\\\\
 \textbf{Diskretisierung}\\\\
 Für die FDM benötigt man Auswertungsstellen, um, wie oben gesehen, den Differentialoperator approximieren zu können. Hierbei legt man ein Gitter auf ein Gebiet $\Omega$, auf dem man die PDG lösen möchte. Verwendet man ein äquidistantes Gitter ist der Umgang der Differenzenquotienten leicht handhabbar und die Implementierung ist nicht sehr aufwändig. Der Nachteil einer solchen Gitterierung ist die Unflexibilität in Gebieten von $\Omega$, in denen eine genauere Auswertung erforderlich ist, um die dort gegebenen Eigenschaften bestmöglich approximieren zu können.\\
 Sei nun einfachheitshalber das Gebiet $\Omega\subset\mathbb{R}^2$. Wählt man eine äquidistante Gittergenerierung mit dem Abstand $h$, so erhält man einen diskretisierten Raum:
 \begin{align}
  \Omega_h&=\{(x,y)\in\Omega|x=kh,~y=lh~\text{mit}~k,l\in\mathbb{Z}\}\nonumber\\
- \partial\Omega_h&=\{(x,y)\in\partial\Omega|x=kh~\text{oder}~y=lh~\text{mit}~k,l\in\mathbb{Z}\}\nonumber~\cite{braess2013finite}
+ \partial\Omega_h&=\{(x,y)\in\partial\Omega|x=kh~\text{oder}~y=lh~\text{mit}~k,l\in\mathbb{Z}\}\nonumber
 \end{align}
 Eine Beispieldiskretisierung mit einem äquidistanten Gitter ist in Abbildung \ref{fig:diskGit} dargestellt.
 \begin{figure}[ht]
@@ -172,16 +173,16 @@ so gilt nach der Diskretisierung:
 \end{align}
 Nun sind die Approximationsmethoden, wie zum Beispiel der oben vorgestellte Vorwärtsdifferenzenquotient, anwendbar und man kann das Gleichungssystem \eqref{eq:allgGleich} schreiben als Linearkombination der Auswertungsstellen der Art:
 \begin{align}
- \sum_{i\in I}w_iu_{ij}=f_j~~~~\forall j\in I
+ \sum_{i\in I}w_iu_{ij}=f_j~~~~\forall j\in I\label{eq:fd-allge}
 \end{align}
-In dieser Linearkombination beschreibt $I$ die Indexmenge der Knoten, $u_{ij}$ die Knotenauswertungen und $f_j$ die Auswertung der rechten Seite. Mit $w_i$ werden die jeweiligen Gewichte beschrieben, welche sich aus dem FD-Verfahren bestimmen lassen. Dies kann man nun in ein lineares Gleichungssystem der Form
+In dieser Linearkombination beschreibt $I$ die Indexmenge der Knoten, $u_{ij}$ die Knotenauswertungen und $f_j$ die Auswertung der rechten Seite. Mit $w_i$ werden die jeweiligen Gewichte beschrieben, welche sich aus dem FD-Verfahren bestimmen lassen. Die Gleichung~\eqref{eq:fd-allge} kann in ein lineares Gleichungssystem der Form
 \begin{align}
  A_hu_h=f_h
 \end{align}
-schreiben. Dieses System kann nun durch klassische iterative Verfahren, wie das \textit{Gauß-Seidel-} oder \textit{Jacobi-Verfahren}, oder durch Lösungsalgorithmen, welche speziell auf das Lösen partieller Differentialgleichungen entwickelt wurden, wie das \textit{Mehrgitter-Verfahren}, gelöst werden. Durch eine Interpolation des ermittellten Lösungsvektors kann nun eine Lösungsfunktion angegeben werden, welche somit auch graphisch anzeigbar wäre.
-\subsection{RBF-Interpolation}
+geschrieben werden. Dieses System kann nun durch klassische iterative Verfahren, wie das \textit{Gauß-Seidel-} oder \textit{Jacobi-Verfahren}, oder durch Lösungsalgorithmen, welche speziell auf das Lösen partieller Differentialgleichungen entwickelt wurden, wie das \textit{Mehrgitter-Verfahren}, gelöst werden. Durch eine Interpolation des ermittellten Lösungsvektors kann nun eine Lösungsfunktion angegeben werden, welche somit auch graphisch anzeigbar wäre. Somit wird nun im nächsten Kapitel eine Interpolationsaufgabe vorgestellt.
+\subsection{RBF-Interpolation}\label{sec:rbf_inter}
 Die Aussagen dieses Kapitels führen auf die Arbeit von Grady B. Wright \cite{wright2003radial} zurück, sodass  hier nur kurz die Thematik der radialen Basisfunktionen angeschnitten wird.\\
-In der Numerik ist die Interpolation eine wichtige Aufgabe, um aus einzelnen Funktionswerte die Zielfunktion zu approximieren. Hierbei haben sich schon viele Methoden, wie die \textit{Polynom-} oder \textit{Fourier-Interpolation}, für die eindimensioanle Interpolationsaufgabe in der Wissenschaft etabliert. Alle Verfahren basieren auf die gleiche Grundidee: Zu einer gegebenen Menge an Stützstellen $\{x_i\}_{i=1}^n$ und deren zugehörigen Funktionsauswertungen $\{f_i\}_{i=1}^n$ werden jeweilige Basisfunktionen $\{\phi_i(x)\}_{i=1}^n$ so gewählt, dass die Interpolierende die lineare Form
+In der Numerik ist die Interpolation eine wichtige Aufgabe, um aus einzelnen Funktionswerten die Zielfunktion zu approximieren. Hierbei haben sich schon viele Methoden, wie die \textit{Polynom-} oder \textit{Fourier-Interpolation}, für die eindimensioanle Interpolationsaufgabe in der Wissenschaft etabliert. Alle Verfahren basieren auf die gleiche Grundidee: Zu einer gegebenen Menge an Stützstellen $\{x_i\}_{i=1}^n$ und deren zugehörigen Funktionsauswertungen $\{f_i\}_{i=1}^n$ werden jeweilige Basisfunktionen $\{\phi_i(x)\}_{i=1}^n$ so gewählt, dass die Interpolierende die lineare Form
 \begin{align}
  s(x)=\sum_{i=1}^n\lambda_i\phi_i(x)
 \end{align}
@@ -199,7 +200,7 @@ besitzt. In diesem Zusammenhang stellen die $\lambda_i$ die Interpolationskoeffi
 \end{bmatrix}}_{f}\label{eq:Intermatrix}
 \end{align}
 Im eindimensioanlen Fall gilt für viele Basisfunktionen, dass die Basisfunktionsmatrix regulär ist, wenn die einzelnen Knotenpunkte $\{x_i\}_{i=1}^n$ disjunkt zueinander sind. Daraus folgt die eindeutige Lösbarkeit des Gleichungssystems und somit die Eindeutigkeit der Koeffenzienten $\lambda_i$. Im mehrdimensionalen Fall kann die Koeffenzientenmatrix ihre Regularitätseigenschaft verlieren. Der Beweis der Nicht-Regularität liefert das \textit{Haar-Mairhuber-Curtis-Theorem}, welches in \cite{de2013four} beschrieben und bewiesen wird, sodass es hier nicht näher erläutert wird.\\
-Um die Regularität auch im Mehrdimensionialen zu gewährleisten, nutzt man die sogenannten radialen Basisfunktionen (RBF). Genauer wird, anstelle einer Linearkombination von einer Menge von Basisfunktion, welche unabhängig von ihren Stützstellen sind, eine Linearkombination von Translationen einer festvorgegebenen RBF verwendet. Diese RBF haben die Eigenschaften, dass sie (radial) symmetrisch zu ihren Zentren sind, welches bedeutet, dass sie invariant bezüglichen Rotationen sind. Das heißt, eine Funktion $\psi:\mathbb{R}^n\rightarrow\mathbb{R}$ ist genau dann eine RBF, wenn sie die Bedingung $\psi(x)=\psi(\|x\|)$ erfüllt. Einige Beispiele für unendlich glatte, radiale Basisfunktionen sind in Tabelle \ref{tbl:funktionstabelle} wiederzufinden.
+Um die Regularität auch im Mehrdimensionialen zu gewährleisten, nutzt man die sogenannten radialen Basisfunktionen (RBF). Genauer wird, anstelle einer Linearkombination von einer Menge von Basisfunktion, welche unabhängig von ihren Stützstellen sind, eine Linearkombination von Translationen einer festvorgegebenen RBF verwendet. Diese RBF haben die Eigenschaften, dass sie (radial) symmetrisch zu ihren Zentren sind, welches bedeutet, dass sie invariant bezüglichen Rotationen sind. Das heißt, eine Funktion $\psi:\mathbb{R}^n\rightarrow\mathbb{R}$ ist genau dann eine RBF, wenn sie die Bedingung $\psi(x)=\psi(\|x\|)~\forall x\in\mathbb{R}$ erfüllt. Einige Beispiele für unendlich glatte, radiale Basisfunktionen sind in Tabelle \ref{tbl:funktionstabelle} wiederzufinden.
 \begin{table}[H]
 \centering
 \begin{tabular}{|l|l|}
@@ -251,16 +252,17 @@ Nun erhält man nach einer Wahl der RBF die neue Interpolationsfunktion
 \begin{align}
  s(x)=\sum_{i=1}^n\lambda_i\psi(\|x-x_i\|).
 \end{align}
-Hierbei ist zu beachten, dass die Regularität der Koeffizientenmatrix nicht für alle RBF gewährleistet ist. Um diese Eigenschaft für alle RBF zu erhalten, wird die Interpolierende mit einer Linearkombination von Polynomen erweitert:
+Es ist zu beachten, dass die Regularität der Koeffizientenmatrix nicht für alle RBF gewährleistet ist. Um diese Eigenschaft für alle RBF zu erhalten, wird die Interpolierende mit einer Linearkombination von Polynomen erweitert:
 \begin{align}
  s(x)=\sum_{i=1}^n\lambda_i\psi(\|x-x_i\|)+\sum_{j=1}^M\gamma_jp_j(x)
 \end{align}
-Hierbei stellen die Polynome $\{p_k\}_{k=1}^M$ eine Basis des Raums $\mathbb{P}_m^d$ und $M=dim\{\mathbb{P}_m^d\}$ die obere Grenze der zweiten Summe dar. Dabei repräsentiert $\mathbb{P}_m^d$ den Raum aller d-variaten Polynome vom Grad kleiner als m. Durch diese Erweiterung treten nun weitere Freiheitsgrade auf, welche durch die folgende Bedingung definiert werden:
+Hierbei stellen die Polynome $\{p_k\}_{k=1}^M$ eine Basis des Raums $\mathbb{P}_m^d$ und $M=dim\{\mathbb{P}_m^d\}$ die obere Grenze der zweiten Summe dar. Dabei repräsentiert $\mathbb{P}_m^d$ den Raum aller d-variaten Polynome vom Grad kleiner als m.\col{variate Polynome?} Durch diese Erweiterung treten nun weitere Freiheitsgrade auf, welche durch die folgende Bedingung definiert werden:
 \begin{align}
  \sum_{j=1}^n\lambda_jp_k(x_j)~k=1,\dots,M
 \end{align}
-Somit erhält man eine Erweiterung zum Gleichungssystem aus Gleichung \eqref{eq:Intermatrix}:
+Somit kann das Gleichungssystem aus Gleichung \eqref{eq:Intermatrix} wie folgt erweitert werden:
 \begin{align}
+{\large
 \underbrace{\begin{bmatrix}
  A & P \\ P^T & 0
 \end{bmatrix}}_{\tilde A}
@@ -270,31 +272,136 @@ Somit erhält man eine Erweiterung zum Gleichungssystem aus Gleichung \eqref{eq:
 =
 \underbrace{\begin{bmatrix}
  f  \\ 0
-\end{bmatrix}}_{\tilde f}\label{eq:Inter}
+\end{bmatrix}}_{\tilde f}\label{eq:Inter}}
 \end{align}
-In diesem Zusammenhang sind die Matrizen $A\in\mathbb{R}^{n\times n}$ und $P\in\mathbb{R}^{n\times M}$. Die Elemente der Matrix $A$ und $P$ lauten $a_{ij}=\psi(\|x_i-x_j\|)$ und $p_{kl}=p_k(x_l)$ für $1\le i,j,l\le n$ und $1\le k\le M$. Der Beweis der Regularität für die erweiterte Koeffizientenmatrix $\tilde A$ liefert C.A.Micchellini in seiner Ausarbeitung~\cite{micchelli1984interpolation}.
+In diesem Zusammenhang sind die Matrizen $A\in\mathbb{R}^{n\times n}$ und $P\in\mathbb{R}^{n\times M}$. Die Elemente der Matrix $A$ und $P$ lauten $a_{ij}=\psi(\|x_i-x_j\|)$ und $p_{kl}=p_k(x_l)$ für $1\le i,j,l\le n$ und $1\le k\le M$. Der Beweis der Regularität für die erweiterte Koeffizientenmatrix $\tilde A$ liefert C.A.Micchellini in seiner Ausarbeitung~\cite{micchelli1984interpolation}, sodass dieses speziell gewählte Gleichungssystem eine eindeutige Lösung liefert.
 \subsection{Das RBF-FD-Verfahren}
-In diesem Kapitel werden die Erkenntnisse der letzten beiden Kapitel zusammengebracht, um ein Verfahren zu erschaffen, welches die Simplizität des FD-Verfahrens und die Gitter-Unabhängigkeit der RBF-Interpolation verbindet und somit das RBF-FD-Verfahren formt. Einfachheitshalber wird hier diese Methodik für ein allgemeines Dirichlet-Randwertproblem erläutert. Die Aussagen dieses Abschnittes beziehen sich auf die Überlegungen von Dang Thi Oanh $\&$ co~\cite{oanh2017adaptive}.\\
-Sei nun die folgende Randwertaufgabe für eine Funktion $u:\Omega\rightarrow\mathbb{R}$ mit einem offenem Gebiet $\Omega$ gegeben:
+In diesem Kapitel werden die Erkenntnisse der letzten beiden Kapitel zusammengebracht, um ein Verfahren zu erschaffen, welches die Simplizität des FD-Verfahrens und die Gitter-Unabhängigkeit der RBF-Interpolation verbindet und somit das RBF-FD-Verfahren formt. Die Aussagen dieses Kapitels gehen auf die Arbeit von Bengt Fornberg und Natasha Flyer~\cite{fornberg2015primer} zurück.\\
+Das RBF-FD-Verfahren ist ein relativ junges Verfahren zur Approximation von Differentialgleichungen, welches ihre Anfänge erst in den 2000er Jahren hatte. Ein Vertreter der ersten Publizierungen war die Ausarbeitung~\cite{tolstykh2003using} von  A.I.Tolstykh und D.A.Shirobokov im Jahre 2003.\\
+Der Grundgedanke des RBF-FD-Verfahrens ist eine Kombination der Finiten-Differenzenmethode und der RBF-Interpolation, welches auf einem Gebiet mit zufällig ausgewählten, disjunkten Auswertungsknoten eine Differentialgleichung approximiert. Sei nun $\overline{\Omega}=\Omega\cup\partial\Omega$ das zugrunde liegende Gebiet zu der allgemeinen Problemstellung:
 \begin{align}
- L\{u\}&=f~~\text{in}~\Omega\nonumber\\
- u&=g~~\text{auf}~\partial\Omega\nonumber
+ L\{u(x)\}=f(x),~x\in\overline{\Omega}\label{eq:FD-allgemein}
 \end{align}
-Hierbei sei $L$ der Differentialoperator, $f$ eine Funktion in $\Omega$ und $g$ eine Funktion, welche auf $\partial\Omega$ definiert ist. Wendet man nun eine Diskretisierung des Gebietes an, bei der lediglich einzelne Punkte gewählt werden, so erhält man eine gitterfreie Diskretiesierung mit 
+Hierbei stellen $u:\overline{\Omega}\rightarrow\mathbb{R}$ die zu approximierende Lösung, $L$ einen linearen Differentialoperator und $f$ eine vordefinierte Funktion dar. Wendet man nun eine Diskretisierung des Gebietes an, bei der lediglich einzelne Punkte gewählt werden, so erhält man eine gitterfreie Diskretisierung mit 
+\begin{align*}
+ \overline{\Omega}_h=\{x_i\in\overline{\Omega}|i\in I\text{ und }x_i\neq x_j,\forall i\neq j\}\subset\overline{\Omega},
+\end{align*}
+welches die disjunkten Auswertungsknoten beinhaltet. Hierbei stellt $I=\{1,\dots,N\}$ mit $N\in\mathbb{N}$ eine Indexmenge dar. Da im späteren Verlauf des Verfahrens diese diskreten Punkte $x_i$ die Zentren der radialen Baissfunktionen darstellen, wird die Menge $\overline{\Omega}_h$ neu definiert
+\begin{align*}
+ \overline{\mathcal{Z}}=\{z_i|i\in I\text{ und }z_i\neq z_j,\forall i\neq j\}:=\overline{\Omega}_h
+\end{align*}
+und nun als Menge aller Zentren bezeichnet.\\
+Sei nun $L_h$ der diskrete Differentialoperator, welcher mittels einem Finiten-Differenzen-Ansatz, wie im Kapitel \ref{sec:FD} erläutert wurde, approximiert wird. Somit kann \eqref{eq:FD-allgemein} an einem Auswertungsknoten $z_i$ wie folgt diskretisiert werden:
 \begin{align}
-\overline{\Omega}_h=\{z_i\in\overline{\Omega}|i=1,\dots,N~\text{und}~z_i\neq z_j~\forall~i\neq j\}.
+ L_h\{u(z_i)\}=\sum_{j\in J}w_{ij}u(z_j)=f(z_i)~\forall i\label{eq:rbffd-1}
 \end{align}
-Hierbei stellen die paarweise verschiedenen Punkte die Zentren der radialen Basisfunktion dar, welche für die RBF-Interpolation gewählt wurden. Wendet man nun eine geeignete Finite-Differenzen-Methode an, so erhält man für jeden Auswertungsknoten
+Dabei stellt $J=\{i,i_1,\dots,i_M\}\subset I$ mit $M\in\mathbb{N}_0$ die Indexmenge der von dem Zentrum $z_i$ induzierten Stern-Menge und $w_{ij}\in\mathbb{R}$ die unbekannten FD-Gewichte dar. Wegen der zufälligen Positionierung der Auswertungsknoten sind diese Gewichte von vornherein nicht bekannt. Somit ist die Hauptaufgabe des RBF-FD-Verfahrens die Berechnung dieser Gewichte. Bei der Bestimmung dieser Gewichte wird nun die Funktion $u$ durch eine Interpolierende ersetzt. Hier kommt nun die in Kapitel \ref{sec:rbf_inter} vorgestellte RBF-Interpolation zum Einsatz. Sei nun
 \begin{align}
- \sum_{\zeta\in\overline{\mathcal{Z}}}w_{z,\zeta}u_h(\zeta)=f(z)~~\text{für}~\forall z\in\Omega_h~\text{und}~u_h(z)=g(z)~\text{für}~z\in\partial\Omega_h\label{eq:rfsum}
+ s(x)=\sum_{k=1}^N\lambda_k\psi(\|x-x_k\|)\approx u(x)
 \end{align}
-In dieser Summe stellt $\mathcal{\overline{Z}}\subset\overline{\Omega}_h$ die Stern-Menge des Differentialoperators dar. Folglich sind die Gewichte $w$ nur für Punkte aus $\mathcal{\overline{Z}}$ ungleich Null und somit kann die Summe über alle Auswertungsstellen auf eine Summe, welche nur über die Elemente $\zeta\in\mathcal{\overline{Z}}$ geht, reduziert werden.\\
-Angenommen die RBF-Interpolierende $s(x)$ ist eine gute Approximation der Funktion $u(x)$, so werden die Gewichte $w_{z,\zeta}$ aus Gleichung \eqref{eq:rfsum} durch die Interpolation definiert.\\
-Wendet man nun die Überlegungen aus dem vorherigen Kapitel auf die Transportgleichung aus dem Kapitel \ref{sec:transglei} an, so erhält man das folgende algebraische Gleichungssystem:
+die Interpolierende zu der Funktion $u$. Dabei seien $\lambda_k\in\mathbb{R}$ die Interpolationskoeffizienten und $\psi(\cdot)$ die radialen Basisfunktionen, welche mit einer Norm $\|\cdot\|$ definiert sind. Setzt man nun die Interpolierende in die Gleichung \eqref{eq:rbffd-1} ein und definiert übersichtshalber $\zeta:=z_i$, so erhält man die folgenden Äquivalenzumformungen:
 \begin{align}
- M\frac{\partial u}{\partial t}=K^Hu\label{eq:algTrans}
+  L_h\{u(\zeta)\}&=\sum_{j\in J}w_{ij}u(z_j)\\
+\Leftrightarrow L_h\{\sum_{k=1}^N\lambda_i\psi(\|\zeta-z_k\|)\}&=\sum_{j\in J}w_{ij}\sum_{k=1}^N\lambda_k\psi(\|z_j-z_k\|)\\
+\Leftrightarrow \sum_{k=1}^N\lambda_iL_h\{\psi(\|\zeta-z_k\|)\}&=\sum_{k=1}^N\lambda_k\sum_{j\in J}w_{ij}\psi(\|z_j-z_k\|)\\
+\Leftrightarrow~~~~~~~ \underbrace{L_h\{\psi(\|\zeta-z_k\|)\}}_{R_i(L_h)}&=\sum_{j\in J}\underbrace{w_{ij}}_{w_i}\underbrace{\psi(\|z_j-z_k\|)}_{\Psi_i}
 \end{align}
-Hierbei stellt M die Einheitsmatrix dar.
+Aus der letzten Äquivalenzumformung geht hervor, dass die Gewichte $w_{ij}$ zur Berechnung der Lösung am Knoten $z_i$ durch das lineare Gleichungssystem
+\begin{align}
+ \Psi_i w_i=R_i(L_h)\label{eq:lgs-distanz}
+\end{align}
+definiert werden. Hierbei stellt $\Psi_i\in\mathbb{R}^{M\times M}$ die Distanzmatrix und $R_i(L_h)$ die rechte Seite des Gleichungssystems dar, welches abhängig von dem diskreten Differentialoperator ist. Das lineare Gleichungssystem in  Gleichung \eqref{eq:lgs-distanz} hat die Form:
+\begin{align*}
+ {\footnotesize
+\underbrace{\begin{bmatrix}
+  \psi(\|z_1-z_1\|) & \psi(\|z_2-z_1\|) & \cdots & \psi(\|z_M-z_1\|) \\
+ \psi(\|z_1-z_2\|) & \psi(\|z_2-z_2\|) & \cdots & \psi(\|z_M-z_2\|) \\
+ \vdots & \vdots & \ddots & \vdots \\
+ \psi(\|z_1-z_M\|) & \psi(\|z_2-z_M\|) & \cdots & \psi(\|z_M-z_M\|)
+\end{bmatrix}}_{\Psi_i}
+\underbrace{\begin{bmatrix}
+ w_{i1} \\
+ w_{i2} \\
+ \vdots \\
+ w_{iM}
+\end{bmatrix}}_{w_i}
+=
+\underbrace{\begin{bmatrix}
+ L_h\{\psi(\|\zeta-z_1\|)\} \\
+ L_h\{\psi(\|\zeta-z_2\|)\} \\
+ \vdots \\
+ L_h\{\psi(\|\zeta-z_M\|)\}
+\end{bmatrix}}_{R_i(L_h)}
+}
+\end{align*}
+Nach der Berechnung der FD-Gewichte können die einzelnen Werte an den Auswertungsknoten, wie in einem klassischen FD-Verfahren, ermittelt werden.
+\subsection{RBF-FD angewendet auf die Transportgleichung}
+Um nun die im vorherigen Kapitel beschriebenen, theoretischen Überlegungen anzuwenden, wird die RBF-FD-Methode in dieser Arbeit auf die inkompressible Transportgleichung der Form \eqref{eq:transport3} angewendet. Hierzu wird die Metrik
+\begin{align}
+ s:=\frac{\|x-y\|_2^2}{2},
+\end{align}
+welche zur Berechnung der Distanzen zwischen den einzelnen Knoten eingesetzt wird, verwendet. Dabei stellen $x,y\in\mathbb{R}^d$  Vektoren und $\|\cdot\|_2$ die euklidische Norm dar. Somit folgt, dass der Differentialoperator $L\{\cdot\}$ aus dem vorherigen Kapitel die Form
+\begin{align}
+ L\{u\}=\textbf{v}\cdot\nabla u
+\end{align}
+besitzt. Demnach kann das Gleichungssystem aus \eqref{eq:lgs-distanz} geschrieben werden als:
+\begin{align*}
+\renewcommand\arraystretch{1.57}
+{\footnotesize
+\begin{bmatrix}
+  \psi\left(\frac{\|z_1-z_1\|_2^2}{2}\right) & \psi\left(\frac{\|z_2-z_1\|_2^2}{2}\right) & \cdots & \psi\left(\frac{\|z_M-z_1\|_2^2}{2}\right) \\
+ \psi\left(\frac{\|z_1-z_2\|_2^2}{2}\right) & \psi\left(\frac{\|z_2-z_2\|_2^2}{2}\right) & \cdots & \psi\left(\frac{\|z_M-z_2\|_2^2}{2}\right) \\
+ \vdots & \vdots & \ddots & \vdots \\
+ \psi\left(\frac{\|z_1-z_M\|_2^2}{2}\right) & \psi\left(\frac{\|z_2-z_M\|_2^2}{2}\right) & \cdots & \psi\left(\frac{\|z_M-z_M\|_2^2}{2}\right)
+\end{bmatrix}
+\begin{bmatrix}
+ w_{i1} \\
+ w_{i2} \\
+ \vdots \\
+ w_{iM}
+\end{bmatrix}
+=
+\begin{bmatrix}
+ \textbf{v}\cdot\nabla\psi\left(\frac{\|\zeta-z_1\|_2^2}{2}\right) \\
+ \textbf{v}\cdot\nabla\psi\left(\frac{\|\zeta-z_2\|_2^2}{2}\right) \\
+ \vdots \\
+ \textbf{v}\cdot\nabla\psi\left(\frac{\|\zeta-z_M\|_2^2}{2}\right)
+\end{bmatrix}
+}
+\end{align*}
+Um dieses Gleichungssystem lösen zu können, wird im Folgendem ein genauerer Blick auf die Berechnung der rechten Seite, beziehungsweise auf die Berechnung der Ableitungen von den radialen Basisfunktionen, geworfen. 
+Die skalaren Ableitungen der Metrik $s$ haben die Form:
+\begin{align}
+ \frac{\partial s}{\partial x_i}&=\frac{2(x_i-y_i)}{2}=x_i-y_i\\
+ \frac{\partial s}{\partial y_i}&=\frac{-2(x_i-y_i)}{2}=y_i-x_i
+\end{align}
+Somit gilt unter Anwendung der Kettenregel für die Ableitungen für radiale Basisfunktionen mit dieser Metrik:
+\begin{align}
+  \frac{\partial}{\partial x_i}\psi(s)&= \psi'(s)\frac{\partial s}{\partial x_i}=\psi'(s)(x_i-y_i)\\
+ \frac{\partial}{\partial y_i}\psi(s)&= \psi'(s)\frac{\partial s}{\partial y_i}=\psi'(s)(y_i-x_i)
+\end{align}
+Mit diesen Ableitungen lautet die i-te Zeile der rechten Seite des Gleichungssystems
+\begin{align}
+\textbf{v}\cdot\nabla\psi\left(\frac{\|\zeta-z_i\|_2^2}{2}\right)
+ =
+\textbf{v}\cdot
+\begin{bmatrix}
+\frac{\partial}{\partial x_i}\psi\left(\frac{\|\zeta-z_i\|_2^2}{2}\right)\\
+\frac{\partial}{\partial y_i}\psi\left(\frac{\|\zeta-z_i\|_2^2}{2}\right) 
+\end{bmatrix}
+=
+\textbf{v}\cdot
+\begin{bmatrix}
+\psi'\left(\frac{\|\zeta-z_i\|_2^2}{2}\right)(x_i-y_i) \\
+\psi'\left(\frac{\|\zeta-z_i\|_2^2}{2}\right)(y_i-x_i)
+\end{bmatrix}\nonumber
+\end{align}
+mit $z_i=(x_i,y_i)^T$.\\
+Nach der Berechnung der Gewichte, kann nun die Differentialgleichung durch die Finite-Differenzen-Methode approximiert werden. Somit kann die Gleichung \eqref{eq:transport3} in den algebraischen Fall umgeschrieben werden zu
+\begin{align}
+ M\frac{\partial u}{\partial t}=K^Hu\label{eq:algTrans},
+\end{align}
+wobei $M$ die Einheitsmatrix dar und $K^H$ die Steifigkeitsmatrix aus der RBF-FD-Methode dar.
 \pagebreak
 \section{Flux Correction Tools - FCT}\label{sec:FCT}
 Dieses Kapitel bezieht sich hauptsächlich auf den Artikel~\cite{kuzmin2002flux} und erläutert ein Vorgehen zur Stabilisierung von numerischen Approximationsverfahren von partiellen Differentialgleichungen.\\
@@ -443,9 +550,9 @@ Abschließend kann man das FCT-Schema durch folgenden Algorithmus zusammenfassen
 Zusammenfassend bekommt man durch das Anwenden des FCT-Schema eine stabilisierte Lösung heraus, als das reine high-order-Verfahren. Die FCT-Methoden sind allgemein auf explizite und implizite Zeitdiskretisierungen anwendbar und sind nicht auf die Raumdimension beschränkt~\cite{kuzmin2002flux}.\\ Numerische Beispiele zur praktischen Analyse werden im folgenden Kapitel~\ref{sec:NumVers} vorgestellt. 
 \pagebreak
 \section{Numerische Versuche}\label{sec:NumVers}
-In diesem Kapitel wird das RBF-FD-Verfahren und die FCT-Stabilisation, welche in den vorherigen Kapiteln vorgestellt wurden, anhand numerischer Beispiele graphisch erläutert. Hierzu werden numerische Fehleranalysen der verschiedenen Lösungen betrachtet und am Ende ein Fazit gezogen. Für die Auswertungen wurde eine Matlab-Implementierung der Version \textit{R2016a} von Herrn Dr. Sokolov verwendet.
+In diesem Kapitel wird das RBF-FD-Verfahren und die FCT-Stabilisation, welche in den vorherigen Kapiteln vorgestellt wurden, anhand numerischer Beispiele graphisch erläutert. Hierzu werden numerische Fehleranalysen der verschiedenen Lösungen betrachtet und am Ende ein Fazit gezogen. Für die Auswertungen wurde eine Matlab-Implementierung der Version \textit{R2016a} von Herrn Dr. Sokolov \& Co. verwendet.
 \subsection{Numerische Resultate der RBF-FD-Methode}
-\subsection{Numerische Resultate der FCT-Stabilisation}
+\subsection{Numerische Resultate der FCT-Stabilisation}\label{sec:num_res_FCT}
 In diesem Unterabschnitt wird ein genauerer Blick auf die FCT-Stabilisation geworfen. Genauer wird erst das vorgegebene Problem mittels der RBF-FD-Methode gelöst und dann durch das FCT-Verfahren stabilisiert. Der allgemeinene Simulationsalgorithmus ist in Abbildung \ref{fig:algorithmus} in einem Pfeildiagramm graphisch dargestellt. Hierbei sei $u_{initial}$  die Anfangsbedingung, $u_{pure}$ die Lösung des Verfahrens höherer Ordnung, $u_{diff}$ die Lösung nach der Addition der künstlichen Diffusion und $u_{stab}$ die stabilisierte Lösung am Ende des FCT-Schema. In der Zeitschleife wird somit pro Zeitschritt die Lösungen $u_{pure}$, $u_{diff}$ und $u_{stab}$ nacheinander errechnet.
 \begin{figure}[H]
 \centering
@@ -553,29 +660,30 @@ Zuerst wird die Anzahl der Unbekannten für eine feste Rotation $\alpha=\pi$ ver
 \end{minipage}
 \hspace{1.4cm}
 \begin{minipage}{0.4\textwidth}
-\includegraphics[width=1.2\textwidth]{figures/T_pi/numerical_solution_stab_high_n_100.png}
+\includegraphics[width=1.2\textwidth]{figures/T_pi/numerical_solution_stab_high_n_100_pi.png}
 \end{minipage}
-\caption{Lösung $u_{stab}$ für $N=3600$ und $N=1000$, $\alpha=\pi$}
+\caption{Lösung $u_{stab}$ für $N=3600$ und $N=10000$, $\alpha=\pi$}
 \label{fig:stab_80_100_pi}
 \end{figure}
 \noindent
 \begin{table}[H]
 \centering
-\begin{tabular}[\textwidth]{|c|c|}
+\begin{tabular}[\textwidth]{|c|c|c|}
 \hline
-  & $\|u_{ana}-u_{stab}\|_{\infty}$\\
+  & $\|u_{ana}-u_{stab}\|_{l^2(\Omega)}
+$ & $\|u_{ana}-u_{pure}\|_{l^2(\Omega)}$\\
 \hline
-$N=5^2$ & $226.370914354391e-003$\\
+$N=5^2$ & $226.370914354391e-003$ & $193.016969143063e-003$\\
 %\hline
-$N=10^2$ & $175.779056969637e-003$\\
+$N=10^2$ & $175.779056969637e-003$ & $218.622664823324e-003$\\
 %\hline
-$N=20^2$ & $154.026021594423e-003$\\
+$N=20^2$ & $154.026021594423e-003$ & $207.422627092587e-003$\\
 \hline
-$N=40^2$ & $118.716820522281e-003$\\
+$N=40^2$ & $118.716820522281e-003$ & $163.790991728737e-003$\\
 %\hline
-$N=80^2$ & $103.237909256097e-003$\\
+$N=80^2$ & $103.237909256097e-003$ & $119.284504788009e-003$\\
 %\hline
-$N=100^2$ & $95.2290159199564e-003$\\
+$N=100^2$ & $95.2290159199564e-003$ & $109.636614814776e-003$\\
 \hline
 \end{tabular}
 \caption{Fehlerwerte für beliebiges $N$ und festem $\alpha=\pi$}
@@ -586,7 +694,7 @@ Betrachtet wird nun der Versuch, indem die Rotation variabel und die Nummer der 
 \begin{figure}[H]
 \hspace{0.1cm}
 \begin{minipage}{0.4\textwidth}
-\includegraphics[width=1.2\textwidth]{figures/n_80_pi_variable/T_pi_2/numerical_solution_stab_high.png}
+\includegraphics[width=1.2\textwidth]{figures/n_80_pi_variable/T_pi_2/numerical_solution_stab_high_n_80_pi_2.png}
 \end{minipage}
 \hspace{1.4cm}
 \begin{minipage}{0.4\textwidth}
@@ -610,65 +718,69 @@ Betrachtet wird nun der Versuch, indem die Rotation variabel und die Nummer der 
 \noindent
 \begin{table}[H]
 \centering
-\begin{tabular}[\textwidth]{|c|c|}
+\begin{tabular}[\textwidth]{|c|c|c|}
 \hline
-  & $\|u_{ana}-u_{stab}\|_{l^2(\Omega)}$\\
+  & $\|u_{ana}-u_{stab}\|_{l^2(\Omega)}$ & $\|u_{ana}-u_{pure}\|_{l^2(\Omega)}$\\
 \hline
-$\frac{\pi}{2}$ & $90.1222673276692e-003$\\
+$\frac{\pi}{2}$ & $90.1222673276692e-003$ & $114.640811859429e-003$\\
 %\hline
-$\pi$ & $103.237909256097e-003$\\
+$\pi$ & $103.237909256097e-003$ & $119.284504788009e-003$\\
 \hline
-$\frac{3\pi}{2}$ & $111.479510855035e-003$\\
+$\frac{3\pi}{2}$ & $111.479510855035e-003$ & $124.691327025648e-003$\\
 %\hline
-$2\pi$ & $117.832000511267e-003$\\
+$2\pi$ & $117.832000511267e-003$ & $133.401777622865e-003$\\
 \hline
 \end{tabular}
 \caption{Fehlerwerte für beliebiges $\alpha$ und festem $N=6400$}
 \label{tab:fehler_N_rotation}
 \end{table}
 \noindent
-Abschließend wird nun ein letzter Tets durchgeführt, um die universelle Anwendbarkeit des Verfahrens hervorzuheben. Bei der RBF-FD-Methode mit FCT-Stabilisation gibt es allgemein keine Anfangswerteinschränkungen. Um dies graphisch zu verifizieren wird im Folgenden das Gesicht von Carl Friedrich Gauß geplottet und dann um den Punkt $(0.5,0.5)$ mittels dem zugrundeliegenden Verfahren rotiert.\\
-Die Anfangsbedingung von vorne und von oben betrachtet sind in Abbildung \ref{fig:init_gauss} für $10000$ Unbekannten visualisiert. Man erkennt keine klare Struktur der Anfangsbedingung und ist somit willkürlich ausgewählt worden. Nun wird das Potrait von Gauß um $2\pi$ rotiert und die Zwischenergebnisse sind in Abbildung \ref{fig:gauss_pi} und \ref{fig:gauss_2pi} abgebildet. Nach der Simulation kann man nicht mehr das komplette Gesicht erkennen, doch signifikante Stellen, wie beispielsweise die Augen oder die Nase, sind noch erkennbar. Dies zeigt nun, dass durch diese stabiliserte Methodik jegliche Probleme beziehungswiese Anfangsbedingungen approximierbar sind. 
+Abschließend wird nun ein letzter Test durchgeführt, um die universelle Anwendbarkeit des Verfahrens hervorzuheben. Bei der RBF-FD-Methode mit FCT-Stabilisation gibt es allgemein keine Anfangswerteinschränkungen. Um dies graphisch zu verifizieren wird im Folgenden das Gesicht von Carl Friedrich Gauß geplottet und dann um den Punkt $(0.5,0.5)$ mittels dem zugrundeliegenden Verfahren rotiert.\\
+Die Anfangsbedingung von vorne und von oben betrachtet sind in Abbildung \ref{fig:init_gauss} für $10000$ Unbekannten visualisiert. Man erkennt keine klare Struktur der Anfangsbedingung und ist somit willkürlich ausgewählt worden. Nun wird das Potrait von Gauß um $2\pi$ rotiert und die Zwischenergebnisse in Abbildung \ref{fig:gauss_pi} und \ref{fig:gauss_2pi} abgebildet. Nach der Simulation kann man nicht mehr das komplette Gesicht erkennen, doch signifikante Stellen, wie beispielsweise die Augen oder die Nase, sind noch erkennbar. Dies zeigt nun, dass durch diese stabilisierte Methodik jegliche Probleme, beziehungsweise jegliche Anfangsbedingungen, approximierbar sind.
 \begin{figure}[H]
 \begin{minipage}{0.4\textwidth}
-\includegraphics[width=1.2\textwidth]{figures/Gesicht/n_100/1_Pi/initial_solution.png}
+\includegraphics[width=1.2\textwidth]{figures/Gesicht/n_100/Pi_2/initial_solution_n_100.png}
 \end{minipage}
 \hspace{1.4cm}
 \begin{minipage}{0.4\textwidth}
-\includegraphics[width=1.2\textwidth]{figures/Gesicht/n_100/1_Pi/initial_solution_top.png}
+\includegraphics[width=1.2\textwidth]{figures/Gesicht/n_100/Pi_2/initial_solution_n_100_top.png}
 \end{minipage}
-\caption{Anfangsbedingung $u_{initial}$, $N=1000$}
+\caption{Anfangsbedingung $u_{initial}$, $N=10000$}
 \label{fig:init_gauss}
 \end{figure}
 \begin{figure}[H]
 \begin{minipage}{0.45\textwidth}
- \includegraphics[width=1.2\textwidth]{figures/Gesicht/n_100/Pi_2/numerical_solution_stab_high_top.png}
+ \includegraphics[width=1.2\textwidth]{figures/Gesicht/n_100/Pi_2/numerical_solution_stab_high_gesicht_n_100_pi_2.png}
 \vspace{-0.4cm}
 \end{minipage}
 \begin{minipage}{0.45\textwidth}
- \includegraphics[width=1.2\textwidth]{figures/Gesicht/n_100/1_Pi/numerical_solution_stab_high_top.png}
+ \includegraphics[width=1.2\textwidth]{figures/Gesicht/n_100/1_Pi/numerical_solution_stab_high_gesicht_n_100_pi.png}
 \vspace{-0.4cm}
 \end{minipage}
-\caption{Lösung: $u_{stab}$ für $\alpha=\frac{\pi}{2}$ und $\alpha=\pi$, $N=1000$}
+\caption{Lösung: $u_{stab}$ für $\alpha=\frac{\pi}{2}$ und $\alpha=\pi$, $N=10000$}
 \label{fig:gauss_pi}
 \end{figure}
 \vspace{-0.4cm}
 \begin{figure}[H]
 \begin{minipage}{0.45\textwidth}
- \includegraphics[width=1.2\textwidth]{figures/Gesicht/n_100/3_Pi_2/numerical_solution_stab_high_top.png}
+ \includegraphics[width=1.2\textwidth]{figures/Gesicht/n_100/3_Pi_2/numerical_solution_stab_high_top2.png}
 \vspace{-0.4cm}
 \end{minipage}
 \begin{minipage}{0.45\textwidth}
- \includegraphics[width=1.2\textwidth]{figures/Gesicht/n_100/2_Pi/numerical_solution_stab_high_top.png}
+ \includegraphics[width=1.2\textwidth]{figures/Gesicht/n_100/2_Pi/numerical_solution_stab_high_gesicht_n_100_2_pi.png}
 \vspace{-0.4cm}
 \end{minipage}
-\caption{Lösung: $u_{stab}$ für $\alpha=\frac{3\pi}{2}$ und $\alpha=2\pi$, $N=1000$}
+\caption{Lösung: $u_{stab}$ für $\alpha=\frac{3\pi}{2}$ und $\alpha=2\pi$, $N=10000$}
 \label{fig:gauss_2pi}
 \end{figure}
 \pagebreak
 \section{Zusammenfassung und Ausblick}
-\pagebreak
+In dieser Arbeit wurden allgemein zwei numerische Konzepte vorgestellt: die RBF-FD-Methode und die FCT-Stabilisierung. Beide Verfahren wurden jeweils theoretisch analysiert und dann anhand der Transportgleichung numerisch getestet.\\
+Mit der RBF-FD-Methodik können partielle Differentialgleichung ohne ein fest vorgegebenes Gitter gelöst werden, sodass durch dieses Verfahren komplexere Gebiete besser approximiert werden können.\col{bla}\\
+Als zweites wurde im Kapitel \ref{sec:FCT} ein genauerer Blick auf das FCT-Stabilisationsverfahren geworfen. Hierbei stellte sich heraus, dass durch Anwendung dieses Schemas die Approximation der Lösung durch ein numerisches Verfahren stark stabilisiert wurde und alle künstlichen Oszillationen stark gedämpft wurden. Des Weiteren kann durch dieses Verfahren die Positivität der Lösung sichergestellt werden, welches für viele physikalische Beispiele von hoher Relevanz ist. In Kapitel \ref{sec:num_res_FCT} wurde dieses Verfahren anhand der numerische Approximation durch das RBF-FD-Verfahren vorgestellt und unterschiedliche Resultate vorgestellt. An dieser Stelle wurde mit unterschiedlichen Bedingungen das FCT-Verfahren getestet und man erkennt, dass dieses Verfahren schon für eine niedrige Anzahl von Unbekannten von 10000 schon eine gute Näherung der analytischen Lösung liefert. Dennoch ist der verwendete Zahlenbereich von 25-10000 Unbekannten für heutige Problemstellungen viel zu niedrig. Deswegen  sollte man das Verfahren für eine effizientere Programmiersprache, wie C++, implementieren, um eine höhere Anzahl von Unebkannten realisieren zu können und somit eine höhere Genauigkeit zur analytischen Lösung zubekommen.
+\newpage
 \pagenumbering{Roman}
+\setcounter{page}{3}
 \appendix
 \bibliography{Bachlorarbeit}
 \bibliographystyle{unsrt}
