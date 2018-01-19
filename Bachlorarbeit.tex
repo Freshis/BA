@@ -77,12 +77,12 @@ Die Aussagen dieses Kapitels gehen auf die Ausarbeitung von van Kan und Segal \c
 In der Mathematik gibt es viele unterschiedliche partielle Differentialgleichung, wobei der Großteil der partiellen Differentialgleichungen zweiter Ordnung sind. Diese sind hauptsächlich in elliptische, parabolische und hyperbolische Gleichungen klassifiziert. Einfache Beispiele wären hierfür die elliptische Laplace-Gleichung, parabolische Wärmegleichung und die hyperbolische Wellengleichung. Zu den Letzteren wird auch die sogenannte Transportgleichung gezählt, obwohl diese nicht exakt die Bedingungen für die hyperbolische Klassifizierung erfüllt. Dieses zeitabhängige Problem beschreibt den \grqq Transport\grqq~einer Funktion in einem bestimmten $n$-dimensionalen Gebiet $\Omega$.\\
 Die allgemeinste Form der Transportgleichung wird \textit{Erhaltungsform} genannt und lautet in einer Dimension
 \begin{align}
- \frac{\partial u}{\partial t}+\frac{\partial f(u)}{\partial x}=g(u,x,t)\label{1d}.
+ \frac{\partial u}{\partial t}+\frac{\partial f(u)}{\partial x}=g(u,x,t).\nonumber
 \end{align}
 Hierbei stellen $u:\Omega\subset\mathbb{R}^d\to\mathbb{R}$ die zu transportierende Funktion und $f$ den sogenannten $Flussvektor$ dar. Die Funktion $g$ ist abhängig von der Funktion $u$, dem Standort $x$, und der Zeit $t$. Wenn die Abhängigkeit zum Standort und zur Zeit nicht vorhanden ist, nennt mann dieses Problem \textit{autonom}. Desweiteren bezeichnet man das Problem als \textit{homogen}, wenn $g(u,x,t)=0$ ist.\\
 Betrachtet man nun die mehrdimensionale, homogene $Erhaltungsgleichung$ der Art
 \begin{align}
- \frac{\partial u}{\partial t}+\nabla\cdot\textbf{f}(u)=0,
+ \frac{\partial u}{\partial t}+\nabla\cdot\textbf{f}(u)=0,\nonumber
 \end{align}
 so kann man nun für den $Flussvektor$ $\textbf{f}(u)=\textbf{v} u$ einsetzen und somit folgt die Gleichung
 \begin{align}
@@ -90,7 +90,7 @@ so kann man nun für den $Flussvektor$ $\textbf{f}(u)=\textbf{v} u$ einsetzen un
 \end{align}
 Der Vektor $\textbf{v}$ repräsentiert hier nun den, nicht notwendig kontsanten, Geschwindigkeitsvektor und u die zu transportierende, skalare Lösung. Nun kann \eqref{2d} durch die Produktregel, bezüglich der Divergenz, geschrieben werden als
 \begin{align}
-  \frac{\partial u}{\partial t}+\textbf{v}\cdot\nabla u + u \cdot \nabla \cdot\textbf{v}=0.
+  \frac{\partial u}{\partial t}+\textbf{v}\cdot\nabla u + u \cdot \nabla \cdot\textbf{v}=0.\nonumber
 \end{align}
 Wenn nun noch das Vektorfeld inkrompressibel ist (also $\nabla \cdot \textbf{v}=0$), folgt die Gleichung
 \begin{align}
@@ -109,7 +109,7 @@ Die Radiale-Basisfunktion-Finite-Differenzen-Methode (RBF-FDM) behandelt die App
 Dieses Kapitel liegt den Arbeiten von Martin Burger \cite{burger2006numerik} und Dietrich Braess \cite{braess2013finite} zu Grunde.\\
 In der numerischen Mathematik ist das Approximieren gewöhnlicher und partieller Differentialgleichung ein Hauptforschungsgebiet. Hierzu sind im Laufe der Zeit viele verschiedene Verfahren entwickelt und weiterentwickelt worden. Einer der ältesten  und einfachsten Verfahren ist die sogenannte \textit{Finite-Differenzen-Methode} (FDM), welche zu der Klasse der Differenzenverfahren gehört. Bei diesem Verfahren nähert man die Ableitung einer Funktion $u(x)$ mittels Differenzenquotienten an:
 \begin{align}
- \frac{\partial u(x)}{x}=\lim\limits_{h \rightarrow 0} \frac{u(x+h)-u(x)}{h}
+ \frac{\partial u(x)}{x}=\lim\limits_{h \rightarrow 0} \frac{u(x+h)-u(x)}{h}\nonumber
 \end{align}
 Wenn man nun $h$ klein genug wählt($h\ll1$), ist dies eine gute Approximation der Ableitung:
 \begin{align}
@@ -117,19 +117,19 @@ Wenn man nun $h$ klein genug wählt($h\ll1$), ist dies eine gute Approximation d
 \end{align}
 Die Gleichung \eqref{eq:vordiff} wird in der Literatur als \textit{Vorwärtsdifferenzenquotient} bezeichnet und wird durch das Zeichen $D^+u$ abgekürzt. Bei diesem Operator spricht man von einem Differnzenquotient 1. Ordnung, da dieser die erste Ableitung approximiert. Weitere geläufige Arten 1. Ordnung sind der \textit{Rückwärtsdifferenzenquotient}
 \begin{align}
- D^-u= \frac{u(x)-u(x-h)}{h}
+ D^-u= \frac{u(x)-u(x-h)}{h}\nonumber
 \end{align}
 und der \textit{Zentrale Differenzenquotient}, welcher eine Linearkombination des Vorwärts- und Rückwärtsdifferenzenquotienten darstellt:
 \begin{align}
- D^cu=\frac{1}{2}(D^+u+D^-u)= \frac{u(x+h)-u(x-h)}{2h}
+ D^cu=\frac{1}{2}(D^+u+D^-u)= \frac{u(x+h)-u(x-h)}{2h}\nonumber
 \end{align}
 Zur Berechnung der Fehlerordnung verwendet man die \textit{Taylor-Entwicklung} (TE), welche allgemein
 \begin{align}
- u(x\pm h)=u(x)\pm hu^{(1)}(x)+\cdots+\frac{(\pm h)^n}{n!}u^{(n)}(x)+u^{(n+1)}(x+\theta h)
+ u(x\pm h)=u(x)\pm hu^{(1)}(x)+\cdots+\frac{(\pm h)^n}{n!}u^{(n)}(x)+u^{(n+1)}(x+\theta h)\nonumber
 \end{align}
 mit $\theta\in(0,1)$ lautet. Wendet man nun die Taylorentwicklung zur Bestimmung der Konsistenzordnung auf den Vorwärtsdifferenzenquotient an, so berechnet man:
 \begin{align}
- |u^{'}(x)-D^+u(x)|&=|u^{(1)}-\frac{u(x+h)-u(x)}{h}|\nonumber\\&\overset{TE}{=}|-\frac{h}{2}u^{(2)}(x+\theta h)|\le\frac{1}{2} h\|u^{(2)}\|_{\infty}
+ |u^{'}(x)-D^+u(x)|&=|u^{(1)}-\frac{u(x+h)-u(x)}{h}|\nonumber\\&\overset{TE}{=}|-\frac{h}{2}u^{(2)}(x+\theta h)|\le\frac{1}{2} h\|u^{(2)}\|_{\infty}\nonumber
 \end{align}
 Hierbei stellt $\|\cdot\|_{\infty}$ die Maximumsnorm einer Funktion dar, welche definiert wird als
 \begin{align}
@@ -138,7 +138,7 @@ Hierbei stellt $\|\cdot\|_{\infty}$ die Maximumsnorm einer Funktion dar, welche 
 Somit ist der Vorwärtsdifferenzenquotient $\mathcal{O}(h)$ und besitzt eine Fehler von 1. Ordnung. Mit der gleichen Methode berechnet man auch die Fehlerordnungen der anderen beiden Verfahren und bekommt heraus, dass der Fehler des Rückwärtsdifferenzenquotient auch $\mathcal{O}(h)$ und der Fehler vom Zentralen-Differenzenquotienten sogar $\mathcal{O}(h^2)$ und folglich eine Fehlerordnung von 2 besitzt.\\
 Im mehrdimensionalen Fall werden somit Ableitungen in jeder Dimension durch solche Differenzenquotienten angenähert. Ein Beispiel im Zweidimensionalen ist die Approximation des zweidimensionalen Laplace-Operators
 \begin{align}
- \Delta u(x,y)=\nabla\cdot\nabla u(x,y)=\frac{\partial^2u}{\partial x^2}+\frac{\partial^2u}{\partial y^2},
+ \Delta u(x,y)=\nabla\cdot\nabla u(x,y)=\frac{\partial^2u}{\partial x^2}+\frac{\partial^2u}{\partial y^2},\nonumber
 \end{align}
 welcher bei elliptischen Problemen häufig vorkommt. Dieser wird zum Beispiel durch den folgenden Differenzenquotienten mit äquidistanter Gitterweite in beiden Richtungen angenähert:
  \small
@@ -177,14 +177,14 @@ Nun sind die Approximationsmethoden, wie zum Beispiel der oben vorgestellte Vorw
 \end{align}
 In dieser Linearkombination beschreibt $I$ die Indexmenge der Knoten, $u_{ij}$ die Knotenauswertungen und $f_j$ die Auswertung der rechten Seite. Mit $w_i$ werden die jeweiligen Gewichte beschrieben, welche sich aus dem FD-Verfahren bestimmen lassen. Die Gleichung~\eqref{eq:fd-allge} kann in ein lineares Gleichungssystem der Form
 \begin{align}
- A_hu_h=f_h
+ A_hu_h=f_h\nonumber
 \end{align}
 geschrieben werden. Dieses System kann nun durch klassische iterative Verfahren, wie das \textit{Gauß-Seidel-} oder \textit{Jacobi-Verfahren}, oder durch Lösungsalgorithmen, welche speziell auf das Lösen partieller Differentialgleichungen entwickelt wurden, wie das \textit{Mehrgitter-Verfahren}, gelöst werden. Durch eine Interpolation des ermittellten Lösungsvektors kann nun eine Lösungsfunktion angegeben werden, welche somit auch graphisch anzeigbar wäre. Somit wird nun im nächsten Kapitel eine Interpolationsaufgabe vorgestellt.
 \subsection{RBF-Interpolation}\label{sec:rbf_inter}
 Die Aussagen dieses Kapitels führen auf die Arbeit von Grady B. Wright \cite{wright2003radial} zurück, sodass  hier nur kurz die Thematik der radialen Basisfunktionen angeschnitten wird.\\
 In der Numerik ist die Interpolation eine wichtige Aufgabe, um aus einzelnen Funktionswerten die Zielfunktion zu approximieren. Hierbei haben sich schon viele Methoden, wie die \textit{Polynom-} oder \textit{Fourier-Interpolation}, für die eindimensioanle Interpolationsaufgabe in der Wissenschaft etabliert. Alle Verfahren basieren auf die gleiche Grundidee: Zu einer gegebenen Menge an Stützstellen $\{x_i\}_{i=1}^n$ und deren zugehörigen Funktionsauswertungen $\{f_i\}_{i=1}^n$ werden jeweilige Basisfunktionen $\{\phi_i(x)\}_{i=1}^n$ so gewählt, dass die Interpolierende die lineare Form
 \begin{align}
- s(x)=\sum_{i=1}^n\lambda_i\phi_i(x)
+ s(x)=\sum_{i=1}^n\lambda_i\phi_i(x)\nonumber
 \end{align}
 besitzt. In diesem Zusammenhang stellen die $\lambda_i$ die Interpolationskoeffizienten dar, welche errechnet werden müssen. Diese Koeffizienten werden durch die Bedingung definiert, dass $s(x_i)\overset{!}{=}f_i~\forall i$ gelten muss. Aus dieser Bedingung erhält man ein zu lösendes Gleichungssystem, welches in der folgenden Gleichung dargestellt ist.
 \begin{align}
@@ -250,15 +250,15 @@ Der freiwählbare Faktor $k$ stellt in den Funktionen den Glättungsparameter da
 \noindent
 Nun erhält man nach einer Wahl der RBF die neue Interpolationsfunktion
 \begin{align}
- s(x)=\sum_{i=1}^n\lambda_i\psi(\|x-x_i\|).
+ s(x)=\sum_{i=1}^n\lambda_i\psi(\|x-x_i\|).\nonumber
 \end{align}
 Es ist zu beachten, dass die Regularität der Koeffizientenmatrix nicht für alle RBF gewährleistet ist. Um diese Eigenschaft für alle RBF zu erhalten, wird die Interpolierende mit einer Linearkombination von Polynomen erweitert:
 \begin{align}
- s(x)=\sum_{i=1}^n\lambda_i\psi(\|x-x_i\|)+\sum_{j=1}^M\gamma_jp_j(x)
+ s(x)=\sum_{i=1}^n\lambda_i\psi(\|x-x_i\|)+\sum_{j=1}^M\gamma_jp_j(x)\nonumber
 \end{align}
-Hierbei stellen die Polynome $\{p_k\}_{k=1}^M$ eine Basis des Raums $\mathbb{P}_m^d$ und $M=dim\{\mathbb{P}_m^d\}$ die obere Grenze der zweiten Summe dar. Dabei repräsentiert $\mathbb{P}_m^d$ den Raum aller d-variaten Polynome vom Grad kleiner als m.\col{variate Polynome?} Durch diese Erweiterung treten nun weitere Freiheitsgrade auf, welche durch die folgende Bedingung definiert werden:
+Hierbei stellen die Polynome $\{p_k\}_{k=1}^M$ eine Basis des Raums $\mathbb{P}_m^d$ und $M=dim\{\mathbb{P}_m^d\}$ die obere Grenze der zweiten Summe dar. Dabei repräsentiert $\mathbb{P}_m^d$ den Raum aller d-variaten Polynome vom Grad kleiner als m. Durch diese Erweiterung treten nun weitere Freiheitsgrade auf, welche durch die folgende Bedingung definiert werden:
 \begin{align}
- \sum_{j=1}^n\lambda_jp_k(x_j)~k=1,\dots,M
+ \sum_{j=1}^n\lambda_jp_k(x_j)~k=1,\dots,M\nonumber
 \end{align}
 Somit kann das Gleichungssystem aus Gleichung \eqref{eq:Intermatrix} wie folgt erweitert werden:
 \begin{align}
@@ -272,7 +272,7 @@ Somit kann das Gleichungssystem aus Gleichung \eqref{eq:Intermatrix} wie folgt e
 =
 \underbrace{\begin{bmatrix}
  f  \\ 0
-\end{bmatrix}}_{\tilde f}\label{eq:Inter}}
+\end{bmatrix}}_{\tilde f}}\nonumber
 \end{align}
 In diesem Zusammenhang sind die Matrizen $A\in\mathbb{R}^{n\times n}$ und $P\in\mathbb{R}^{n\times M}$. Die Elemente der Matrix $A$ und $P$ lauten $a_{ij}=\psi(\|x_i-x_j\|)$ und $p_{kl}=p_k(x_l)$ für $1\le i,j,l\le n$ und $1\le k\le M$. Der Beweis der Regularität für die erweiterte Koeffizientenmatrix $\tilde A$ liefert C.A.Micchellini in seiner Ausarbeitung~\cite{micchelli1984interpolation}, sodass dieses speziell gewählte Gleichungssystem eine eindeutige Lösung liefert.
 \subsection{Das RBF-FD-Verfahren}
@@ -286,7 +286,7 @@ Hierbei stellen $u:\overline{\Omega}\rightarrow\mathbb{R}$ die zu approximierend
 \begin{align*}
  \overline{\Omega}_h=\{x_i\in\overline{\Omega}|i\in I\text{ und }x_i\neq x_j,\forall i\neq j\}\subset\overline{\Omega},
 \end{align*}
-welches die disjunkten Auswertungsknoten beinhaltet. Hierbei stellt $I=\{1,\dots,N\}$ mit $N\in\mathbb{N}$ eine Indexmenge dar. Da im späteren Verlauf des Verfahrens diese diskreten Punkte $x_i$ die Zentren der radialen Baissfunktionen darstellen, wird die Menge $\overline{\Omega}_h$ neu definiert
+welches die disjunkten Auswertungsknoten beinhaltet. Hierbei stellt $I=\{1,\dots,N\}$ mit $N\in\mathbb{N}$ eine Indexmenge dar. Da im späteren Verlauf des Verfahrens diese diskreten Punkte $x_i$ die Zentren der radialen Basisfunktionen darstellen, wird die Menge $\overline{\Omega}_h$ neu definiert mit
 \begin{align*}
  \overline{\mathcal{Z}}=\{z_i|i\in I\text{ und }z_i\neq z_j,\forall i\neq j\}:=\overline{\Omega}_h
 \end{align*}
@@ -297,20 +297,20 @@ Sei nun $L_h$ der diskrete Differentialoperator, welcher mittels einem Finiten-D
 \end{align}
 Dabei stellt $J=\{i,i_1,\dots,i_M\}\subset I$ mit $M\in\mathbb{N}_0$ die Indexmenge der von dem Zentrum $z_i$ induzierten Stern-Menge und $w_{ij}\in\mathbb{R}$ die unbekannten FD-Gewichte dar. Wegen der zufälligen Positionierung der Auswertungsknoten sind diese Gewichte von vornherein nicht bekannt. Somit ist die Hauptaufgabe des RBF-FD-Verfahrens die Berechnung dieser Gewichte. Bei der Bestimmung dieser Gewichte wird nun die Funktion $u$ durch eine Interpolierende ersetzt. Hier kommt nun die in Kapitel \ref{sec:rbf_inter} vorgestellte RBF-Interpolation zum Einsatz. Sei nun
 \begin{align}
- s(x)=\sum_{k=1}^N\lambda_k\psi(\|x-x_k\|)\approx u(x)
+ s(x)=\sum_{k=1}^N\lambda_k\psi(\|x-x_k\|)\approx u(x)\nonumber
 \end{align}
-die Interpolierende zu der Funktion $u$. Dabei seien $\lambda_k\in\mathbb{R}$ die Interpolationskoeffizienten und $\psi(\cdot)$ die radialen Basisfunktionen, welche mit einer Norm $\|\cdot\|$ definiert sind. Setzt man nun die Interpolierende in die Gleichung \eqref{eq:rbffd-1} ein und definiert übersichtshalber $\zeta:=z_i$, so erhält man die folgenden Äquivalenzumformungen:
+die Interpolierende zu der Funktion $u$. Dabei seien $\lambda_k\in\mathbb{R}$ die Interpolationskoeffizienten und $\psi(\cdot)$ die radiale Basisfunktion, welche mit einer Norm $\|\cdot\|$ definiert ist. Setzt man nun die Interpolierende in die Gleichung \eqref{eq:rbffd-1} ein und definiert übersichtshalber das Zentrum $\zeta:=z_i$, so erhält man die folgenden Äquivalenzumformungen:
 \begin{align}
-  L_h\{u(\zeta)\}&=\sum_{j\in J}w_{ij}u(z_j)\\
-\Leftrightarrow L_h\{\sum_{k=1}^N\lambda_i\psi(\|\zeta-z_k\|)\}&=\sum_{j\in J}w_{ij}\sum_{k=1}^N\lambda_k\psi(\|z_j-z_k\|)\\
-\Leftrightarrow \sum_{k=1}^N\lambda_iL_h\{\psi(\|\zeta-z_k\|)\}&=\sum_{k=1}^N\lambda_k\sum_{j\in J}w_{ij}\psi(\|z_j-z_k\|)\\
-\Leftrightarrow~~~~~~~ \underbrace{L_h\{\psi(\|\zeta-z_k\|)\}}_{R_i(L_h)}&=\sum_{j\in J}\underbrace{w_{ij}}_{w_i}\underbrace{\psi(\|z_j-z_k\|)}_{\Psi_i}
+  L_h\{u(\zeta)\}&=\sum_{j\in J}w_{ij}u(z_j)\nonumber\\
+\Leftrightarrow L_h\{\sum_{k=1}^N\lambda_k\psi(\|\zeta-z_k\|)\}&=\sum_{j\in J}w_{ij}\sum_{k=1}^N\lambda_k\psi(\|z_j-z_k\|)\nonumber\\
+\Leftrightarrow \sum_{k=1}^N\lambda_kL_h\{\psi(\|\zeta-z_k\|)\}&=\sum_{k=1}^N\lambda_k\sum_{j\in J}w_{ij}\psi(\|z_j-z_k\|)\nonumber\\
+\Leftrightarrow~~~~~~~ \underbrace{L_h\{\psi(\|\zeta-z_k\|)\}}_{R_i(L_h)}&=\sum_{j\in J}\underbrace{w_{ij}}_{w_i}\underbrace{\psi(\|z_j-z_k\|)}_{\Psi_i}\nonumber
 \end{align}
 Aus der letzten Äquivalenzumformung geht hervor, dass die Gewichte $w_{ij}$ zur Berechnung der Lösung am Knoten $z_i$ durch das lineare Gleichungssystem
 \begin{align}
  \Psi_i w_i=R_i(L_h)\label{eq:lgs-distanz}
 \end{align}
-definiert werden. Hierbei stellt $\Psi_i\in\mathbb{R}^{M\times M}$ die Distanzmatrix und $R_i(L_h)$ die rechte Seite des Gleichungssystems dar, welches abhängig von dem diskreten Differentialoperator ist. Das lineare Gleichungssystem in  Gleichung \eqref{eq:lgs-distanz} hat die Form:
+definiert werden. Hierbei stellt $\Psi_i\in\mathbb{R}^{M\times M}$ die sogenannte Distanzmatrix und $R_i(L_h)$ die rechte Seite des Gleichungssystems dar, welches abhängig von dem diskreten Differentialoperator ist. Das lineare Gleichungssystem in  Gleichung \eqref{eq:lgs-distanz} hat die explizite Form:
 \begin{align*}
  {\footnotesize
 \underbrace{\begin{bmatrix}
@@ -338,11 +338,11 @@ Nach der Berechnung der FD-Gewichte können die einzelnen Werte an den Auswertun
 \subsection{RBF-FD angewendet auf die Transportgleichung}
 Um nun die im vorherigen Kapitel beschriebenen, theoretischen Überlegungen anzuwenden, wird die RBF-FD-Methode in dieser Arbeit auf die inkompressible Transportgleichung der Form \eqref{eq:transport3} angewendet. Hierzu wird die Metrik
 \begin{align}
- s:=\frac{\|x-y\|_2^2}{2},
+ s:=\frac{\|x-y\|_2^2}{2},\nonumber
 \end{align}
 welche zur Berechnung der Distanzen zwischen den einzelnen Knoten eingesetzt wird, verwendet. Dabei stellen $x,y\in\mathbb{R}^d$  Vektoren und $\|\cdot\|_2$ die euklidische Norm dar. Somit folgt, dass der Differentialoperator $L\{\cdot\}$ aus dem vorherigen Kapitel die Form
 \begin{align}
- L\{u\}=\textbf{v}\cdot\nabla u
+ L\{u\}=\textbf{v}\cdot\nabla u\nonumber
 \end{align}
 besitzt. Demnach kann das Gleichungssystem aus \eqref{eq:lgs-distanz} geschrieben werden als:
 \begin{align*}
@@ -372,13 +372,13 @@ besitzt. Demnach kann das Gleichungssystem aus \eqref{eq:lgs-distanz} geschriebe
 Um dieses Gleichungssystem lösen zu können, wird im Folgendem ein genauerer Blick auf die Berechnung der rechten Seite, beziehungsweise auf die Berechnung der Ableitungen von den radialen Basisfunktionen, geworfen. 
 Die skalaren Ableitungen der Metrik $s$ haben die Form:
 \begin{align}
- \frac{\partial s}{\partial x_i}&=\frac{2(x_i-y_i)}{2}=x_i-y_i\\
- \frac{\partial s}{\partial y_i}&=\frac{-2(x_i-y_i)}{2}=y_i-x_i
+ \frac{\partial s}{\partial x_i}&=\frac{2(x_i-y_i)}{2}=x_i-y_i\nonumber\\
+ \frac{\partial s}{\partial y_i}&=\frac{-2(x_i-y_i)}{2}=y_i-x_i\nonumber
 \end{align}
-Somit gilt unter Anwendung der Kettenregel für die Ableitungen für radiale Basisfunktionen mit dieser Metrik:
+Somit gilt unter Anwendung der Kettenregel für die Ableitungen der radialen Basisfunktion mit dieser Metrik:
 \begin{align}
-  \frac{\partial}{\partial x_i}\psi(s)&= \psi'(s)\frac{\partial s}{\partial x_i}=\psi'(s)(x_i-y_i)\\
- \frac{\partial}{\partial y_i}\psi(s)&= \psi'(s)\frac{\partial s}{\partial y_i}=\psi'(s)(y_i-x_i)
+  \frac{\partial}{\partial x_i}\psi(s)&= \psi'(s)\frac{\partial s}{\partial x_i}=\psi'(s)(x_i-y_i)\nonumber\\
+ \frac{\partial}{\partial y_i}\psi(s)&= \psi'(s)\frac{\partial s}{\partial y_i}=\psi'(s)(y_i-x_i)\nonumber
 \end{align}
 Mit diesen Ableitungen lautet die i-te Zeile der rechten Seite des Gleichungssystems
 \begin{align}
@@ -394,14 +394,14 @@ Mit diesen Ableitungen lautet die i-te Zeile der rechten Seite des Gleichungssys
 \begin{bmatrix}
 \psi'\left(\frac{\|\zeta-z_i\|_2^2}{2}\right)(x_i-y_i) \\
 \psi'\left(\frac{\|\zeta-z_i\|_2^2}{2}\right)(y_i-x_i)
-\end{bmatrix}\nonumber
+\end{bmatrix},\nonumber
 \end{align}
-mit $z_i=(x_i,y_i)^T$.\\
+wobei $z_i=(x_i,y_i)^T$ gilt.\\
 Nach der Berechnung der Gewichte, kann nun die Differentialgleichung durch die Finite-Differenzen-Methode approximiert werden. Somit kann die Gleichung \eqref{eq:transport3} in den algebraischen Fall umgeschrieben werden zu
 \begin{align}
  M\frac{\partial u}{\partial t}=K^Hu\label{eq:algTrans},
 \end{align}
-wobei $M$ die Einheitsmatrix dar und $K^H$ die Steifigkeitsmatrix aus der RBF-FD-Methode dar.
+wobei $M$ die Einheitsmatrix und $K^H$ die Steifigkeitsmatrix aus der RBF-FD-Methode darstellt.
 \pagebreak
 \section{Flux Correction Tools - FCT}\label{sec:FCT}
 Dieses Kapitel bezieht sich hauptsächlich auf den Artikel~\cite{kuzmin2002flux} und erläutert ein Vorgehen zur Stabilisierung von numerischen Approximationsverfahren von partiellen Differentialgleichungen.\\
@@ -413,7 +413,7 @@ Viele Anwendungsbereiche für partielle Differentialgleichungen und somit auch f
 \end{enumerate}
 Der erste Schritt kann durch unterschiedliche High-order-Methoden durchgeführt werden. Beispiele hierfür wären die \textit{Finite-Elemente-Methode} oder der \textit{RBF-FD-Methode}, welche im Kapitel \ref{sec:RBF-FD} vorgestellt wurde. Im Folgenden werden die letzten beiden Schritte anhand der in Kapitel \ref{sec:RBF-FD} aufgeführten \textit{algebraischen Transportgleichung} \eqref{eq:algTrans} genauer erläutert. Zur Erinnerung, $M$ ist die Massenmatrix, $K^H$ die Matrix, welche den diskreten Transport-Operator darstellt und $u$ die Lösung des Verfahrens höherer Ordnung. Wie oben schon erwähnt, muss die Lösung $u$ die Positivitätseigenschaften erfüllen. Um dies in jedem Zeitschritt zu gewährleisten, diskretisieren wir die Zeitdifferentation mittels dem allgemeinen \textit{Theta-Schema}:
 \begin{align}
- \frac{u^{n+1}-u^n}{\Delta t}=(1-\Theta)F(t_n,u^n)+\Theta F(t_{n+1},u^{n+1})~~~,0\le\Theta\le1
+ \frac{u^{n+1}-u^n}{\Delta t}=(1-\Theta)F(t_n,u^n)+\Theta F(t_{n+1},u^{n+1})~~~,0\le\Theta\le1\nonumber
 \end{align}
 Hierbei bezeichnet $F(t_n,u^n)$ die rechte Seite der Differentialgleichung zum Zeitpunkt $t_n$. Im Fall der Transportgleichung ist $F(t_n,u^n)=K^Hu^n$, sodass nun die Gleichung \eqref{eq:algTrans} geschrieben werden kann als:
 \begin{align}
@@ -456,7 +456,7 @@ Sind diese Kriterien erfüllt gilt
 \end{defi}
  Die Matrix $[M-\Delta tK^H]$ muss somit so modifiziert werden, dass alle Nebendiagonalelemente kleiner gleich Null sind. Hierbei ist zu beachten, dass die Nebendiagonalelemente nur von $K^H$ abhängen, da $M$ eine Diagonalmatrix ist. Somit addieren wir nun zu der Transport-Operator-Matrix eine Matrix so hinzu, dass sichergestellt werden kann, dass alle Nichtdiagonalelemente positiv werden:
 \begin{align}
- K^L=K^H+D\label{eq:AddDif}
+ K^L=K^H+D\nonumber
 \end{align}
 Physikalisch betrachtet, fügen wir mit der Matrix $D$ eine künstliche Diffusion hinzu, sodass die Lösung $u$ nun diffusivere Merkmale aufweisen könnte~\cite{kuzmin2002flux}. Somit bezeichnet man diese Lösung als $u_{Low}$ bzw. $u_L$.\\
 Weiterhin ist zu beachten, dass eine Addition mit zu starker Diffusion die Folge einer Absenkung der Stabilitätsgrenzen hat~\cite{kuzmin2002flux}. Andererseits führt eine zu schwache Diffusionsaddition zu falschen Extrema. Somit könnte man überall die gleiche Menge an Diffuion hinzuaddieren. Diese Methode ist zwar recheneffizient, aber nicht genauigkeitseffizient~\cite{kuzmin2002flux}. Um die obengenannten Eigenschaften nicht zu erhalten, werden die einzelnen Matrixeinträge für jeden Knoten wie folgt definiert:
@@ -466,21 +466,21 @@ Weiterhin ist zu beachten, dass eine Addition mit zu starker Diffusion die Folge
 Bei dieser Definition fällt auf, dass die Zeilen- und Spaltensumme von $D$ gleich Null sind. Somit gilt insgesamt für die Zeilensumme von $K^L$, dass diese gleich Null ist. Zu beachten ist hier, dass, wenn die nichtdiagonal Elemente von $K^H$ von vornherein positiv sind, keine Addition künstlicher Diffusion notwendig ist und $D$ gleich der Nullmatrix ist. So folgt $K^H=K^L$. Dieser Fall tritt auf, wenn die physikalische Diffusion von Anfang an stark genug ist.\\
 Setzt man nun die Matrix $K^L$ in die Gleichung \eqref{eq:LGS_H} ein, folgt:
 \begin{align}
- [M-\Delta tK^L]u_L^{n+1}=Mu^n
+ [M-\Delta tK^L]u_L^{n+1}=Mu^n\nonumber
 \end{align}
 Substituiere nun $\widehat{K}:=[M-\Delta tK^L]$. Durch die Addition der künstlichen Diffusion gilt nun $\widehat{k}_{ij}=-\Delta tk_{ij}^L\le0~\forall i\neq j$. Durch die künstliche Diffusion sind somit auch die Nebendiagonalelemente von $\widehat{K}$ negativ und erfüllt somit Punkt 1 der Definition \ref{def:MMatrix}.\\
 Um den Punkt 2 zu beweisen, zeigen wir zunächst, dass die Zeilensumme von $K^L$ gleich Null ist. Diese Eigenschaft ergibt sich aus den Zeilensummeneigenschaften von $K^H$ und $D$. Durch die Annahme eines inkompressiblen Vektorfeldes gilt für die Koeffenzientenmatrix $K^H$ die Zeilensummeneigenschaften $(K^Hu)_i=\sum_{j}k_{ij}^Hu_j=0$~\cite{kuzmin2005algebraic}. Diese Eigenschaft gilt auch für die Matrix $D$, welches man anhand der Definition in Gleichung~\eqref{eq:D} erkennen kann. Somit gilt nun für die Matrix $K^L$:
 \begin{align}
- (K^Lu)_i=\sum_{j}k_{ij}^Lu_j=[\underbrace{\sum_{j}k_{ij}^H+d_{ij}}_{=0}]u_j=0
+ (K^Lu)_i=\sum_{j}k_{ij}^Lu_j=[\underbrace{\sum_{j}k_{ij}^H+d_{ij}}_{=0}]u_j=0\nonumber
 \end{align}
 Wähle nun den Vektor $v=(1,\dots,1)^T>0$. Somit folgt mit der oben gezeigten Zeilsummeneigenschaft von $K^L$:
 \begin{align}
- \sum_j \widehat{k}_{ij} v_j=m_{ii} - \Delta t\underbrace{\sum_j k_{ij}^L}_{=0}=m_{ii}>0~~\forall i
+ \sum_j \widehat{k}_{ij} v_j=m_{ii} - \Delta t\underbrace{\sum_j k_{ij}^L}_{=0}=m_{ii}>0~~\forall i\nonumber
 \end{align}
-Die Regularität der Matrix $\widehat{K}$ folgt aus den Überlegungen aus Kapitel \ref{sec:RBF-FD}. Somit folgt die Eigenschaft der \textit{M-Matrix}, welche die Positivitätseigenschaft für $u^{n+1}$ impliziert.\\\\
+Die Regularität der Matrix $\widehat{K}$ folgt aus den Überlegungen aus Kapitel \ref{sec:RBF-FD}. Somit folgt die Eigenschaft der \textit{M-Matrix}, welche die Positivitätseigenschaft für $u^{n+1}$ impliziert.\\
 Das Vorgehen der Addition einer künstlichen Diffusion ist auch in den Fällen für $\theta\in[0,1)$ anwendbar. Somit erhalten wir mit den gleichen Überlegungen wie im Beweis der Positivität der Lösung für das \textit{implizite Eulerverfahren} die Gleichung
 \begin{align}
- [M-\Theta\Delta t\underbrace{K^L}_{\scriptscriptstyle=K^H+D}]u^{n+1}&=[M+(1-\Theta)\Delta t\underbrace{K^L}_{\scriptscriptstyle=K^H+D}]u^n.
+ [M-\Theta\Delta t\underbrace{K^L}_{\scriptscriptstyle=K^H+D}]u^{n+1}&=[M+(1-\Theta)\Delta t\underbrace{K^L}_{\scriptscriptstyle=K^H+D}]u^n.\nonumber
 \end{align}
 Als nächsten Schritt muss die Addition der künstlichen Diffusion wieder ausgeglichen werden. Hierzu wird der Additionsschritt auf der rechten Seite wieder abgezogen und man erhält die Gleichung
 \begin{align}
@@ -501,43 +501,43 @@ Durch die geeignete Wahl der Antidiffusion ist nun die Gleichung~\eqref{eq:zwisc
 \end{align}
 Im Allgemeinen besitzen die Koeffizienten von $\alpha$ Werte im Intervall $[0,1]$. Wenn beispielsweise $\alpha\approx0$ ist, dann muss die künstliche Diffusion nicht ausgeglichen werden und es gilt:
 \begin{align}
- [M-\Theta\Delta tK^L]u^{n+1}&=[M+(1-\Theta)\Delta tK^L]u^n
+ [M-\Theta\Delta tK^L]u^{n+1}&=[M+(1-\Theta)\Delta tK^L]u^n\nonumber
 \end{align}
 Im Gegensatz dazu gilt für $\alpha\approx1$, dass $u^{n+1}$ gleich der anfänglichen Lösung der Gleichung~\eqref{eq:thetaGleich} ist.\\
-Im Folgenden wird die genaue Herleitung der Koeffizienten von $\alpha$ erläutert. Hierzu werden die Überlegungen von Zalesaks multidimensionalen FCT-Algorithmus verwendet\cite{zalesak1979fully}. Man betrachte die Gleichung~\eqref{eq:alphaGleich} für einen Knoten $i$. Dann kann die rechte Seite umgeschrieben werden in:
+Im Folgenden wird die genaue Herleitung der Koeffizienten von $\alpha$ erläutert. Hierzu werden die Überlegungen von Zalesaks multidimensionalen FCT-Algorithmus verwendet\cite{zalesak1979fully}. Man betrachte die Gleichung~\eqref{eq:alphaGleich} für einen Knoten $i$. Somit kann die rechte Seite umgeschrieben werden in:
 \begin{align}
- RHS=m_{ii}u_i^{n+\Theta}+\Delta t\sum\limits_{j\neq i}\alpha_{ij}f_{ij},~~~\alpha_{ij}=\alpha_{ji}
+ RHS=m_{ii}u_i^{n+\Theta}+\Delta t\sum\limits_{j\neq i}\alpha_{ij}f_{ij},~~~\alpha_{ij}=\alpha_{ji}\nonumber
 \end{align}
 Um die Positivitätseigenschaft der limitierten Lösung zu gewährleisten muss die Lösung $u^{n+\Theta}$ positiv sein und die Diffusionskoeffizienten entsprechend gewählt werden. Die Positivitätseigenschaft der Zwischenlösung wird im zugrundeliegenden Artikel~\cite{kuzmin2002flux} bewiesen. Somit hängt die Positivität der Gesamtlösung von der expliziten Wahl der Diffusionskoeffizienten $\alpha_{ij}$ ab. In den Überlegungen von Zalesak wird ein 4 Schritt-Algorithmus zur Berechnung der Diffusionskoeffizienten verwendet, welcher im Folgenden vorgestellt wird:
 \begin{enumerate}
- \item Berechnung der Flüsse im Knoten $i$ und Aufteilung in positiv und negativ:
+ \item Berechnung der gewichteten Summe von positiven und negativen Flüssen im Knoten $i$:
 \begin{align}
-P_i^+=\frac{1}{m_{ii}}\sum\limits_{j\neq i}max\{0,f_{ij}\},~~~~P_i^-=\frac{1}{m_{ii}}\sum\limits_{j\neq i}min\{0,f_{ij}\}
+P_i^+=\frac{1}{m_{ii}}\sum\limits_{j\neq i}max\{0,f_{ij}\},~~~~P_i^-=\frac{1}{m_{ii}}\sum\limits_{j\neq i}min\{0,f_{ij}\}\nonumber
 \end{align}
  \item Berechnung der maximalen Distanz zum lokalen Extremum um den Knoten $i$:
  \begin{align}
 Q_i^+&=max\left\{0,\smash{\displaystyle\max_{j\neq i}}(u_j^{n+\Theta}-u_i^{n+\Theta})\right\}\nonumber\\
-Q_i^-&=min\left\{0,\smash{\displaystyle\min_{j\neq i}}(u_j^{n+\Theta}-u_i^{n+\Theta})\right\}
+Q_i^-&=min\left\{0,\smash{\displaystyle\min_{j\neq i}}(u_j^{n+\Theta}-u_i^{n+\Theta})\right\}\nonumber
 \end{align}
  \item Berechnung des Knotenfaktors, um die Positivität zu gewährleisten:
 \begin{align}
-R_i^+=min\left\{1,\frac{Q_i^+}{\Delta tP_i^+}\right\},~~~~R_i^-=min\left\{1,\frac{Q_i^+}{\Delta tP_i^+}\right\}
+R_i^+=min\left\{1,\frac{Q_i^+}{\Delta tP_i^+}\right\},~~~~R_i^-=min\left\{1,\frac{Q_i^+}{\Delta tP_i^+}\right\}\nonumber
 \end{align}
- \item Limitierung der Flüssen mittels den Minimum aus $R_i^+$ und $R_i^-$:
+ \item Limitierung der Flüsse mittels dem Minimum aus $R_i^+$ und $R_i^-$:
 \begin{align}
 \alpha_{ij}=   \begin{cases}
      min\{R_i^+,R_j^-\}, & \text{wenn } f_{ij}>0 \\
      min\{R_i^-,R_j^+\}, & \text{sonst} 
-   \end{cases}
+   \end{cases}\nonumber
 \end{align}
 \end{enumerate}
 Mit dieser Definition der Diffusionskoeffizienten folgt die Beschränktheit der rechten Seite, denn es gilt:
 \begin{align}
- min\{u_i^{n+\Theta}\}=u_i^{n+\Theta}+Q_i^-\le\frac{RHS}{m_{ii}}\le u_i^{n+\Theta}+Q_i^+=max\{u_i^{n+\Theta}\}
+ min\{u_i^{n+\Theta}\}=u_i^{n+\Theta}+Q_i^-\le\frac{RHS}{m_{ii}}\le u_i^{n+\Theta}+Q_i^+=max\{u_i^{n+\Theta}\}\nonumber
 \end{align}
 Des Weiteren verstärkt die limitierte Antidiffusion nicht lokale Extrema, da in diesem Fall
 \begin{align}
- Q_i^\pm=0~\Rightarrow~ R_i^\pm=0~\Rightarrow~\alpha_{ij}=0
+ Q_i^\pm=0~\Rightarrow~ R_i^\pm=0~\Rightarrow~\alpha_{ij}=0\nonumber
 \end{align}
 gilt und somit die limitierte Antidiffuion wegfällt.\\
 Abschließend kann man das FCT-Schema durch folgenden Algorithmus zusammenfassen:
@@ -545,13 +545,14 @@ Abschließend kann man das FCT-Schema durch folgenden Algorithmus zusammenfassen
  \item Berechnung der Lösung $u^{n+1}$ aus dem Verfahren höherer Ordnung
  \item Berechnung der Zwischenlösung $u^{n+\Theta}=[M+(1-\Theta)\Delta tK^L]u^n$
  \item Berechnung von $f(u^n,u^{n+1})$ und der Koeffizienten von $\alpha$
- \item Berechnung der stabilisierten High-order-Lösung $u_H^{n+1}$ mit der Gleichung $[M-\Theta\Delta tK^L]u_H^{n+1}=u^{n+\Theta}+\Delta t\alpha f(u^n,u^{n+1})$
+ \item Berechnung der stabilisierten high-order-Lösung $u_H^{n+1}$ mit der Gleichung $[M-\Theta\Delta tK^L]u_H^{n+1}=u^{n+\Theta}+\Delta t\alpha f(u^n,u^{n+1})$
 \end{enumerate}
-Zusammenfassend bekommt man durch das Anwenden des FCT-Schema eine stabilisierte Lösung heraus, als das reine high-order-Verfahren. Die FCT-Methoden sind allgemein auf explizite und implizite Zeitdiskretisierungen anwendbar und sind nicht auf die Raumdimension beschränkt~\cite{kuzmin2002flux}.\\ Numerische Beispiele zur praktischen Analyse werden im folgenden Kapitel~\ref{sec:NumVers} vorgestellt. 
+Zusammenfassend bekommt man durch das Anwenden des FCT-Schemas eine stabilisierte Lösung heraus, als das reine high-order-Verfahren. Die FCT-Methoden sind allgemein auf explizite und implizite Zeitdiskretisierungen anwendbar und sind nicht auf die Raumdimension beschränkt~\cite{kuzmin2002flux}.\\ Numerische Beispiele zur praktischen Analyse werden im folgenden Kapitel~\ref{sec:NumVers} vorgestellt. 
 \pagebreak
 \section{Numerische Versuche}\label{sec:NumVers}
 In diesem Kapitel wird das RBF-FD-Verfahren und die FCT-Stabilisation, welche in den vorherigen Kapiteln vorgestellt wurden, anhand numerischer Beispiele graphisch erläutert. Hierzu werden numerische Fehleranalysen der verschiedenen Lösungen betrachtet und am Ende ein Fazit gezogen. Für die Auswertungen wurde eine Matlab-Implementierung der Version \textit{R2016a} von Herrn Dr. Sokolov \& Co. verwendet.
 \subsection{Numerische Resultate der RBF-FD-Methode}
+Die RBF-FD-Methode zeichnet sich durch ihre Gitterunabhängigkeit aus. Somit wird in diesem Kapitel einen genaueren Blick auf unterschiedliche KNotenpositionierungen geworfen. Hierzu werden die unterscheidlichen Positionierungen mit einem äquidistanten Gitter verglichen, sodass man einen Vergleich zu den klassichen Approximationsverfahren, wie FEM oder FD, ziehen kann.
 \subsection{Numerische Resultate der FCT-Stabilisation}\label{sec:num_res_FCT}
 In diesem Unterabschnitt wird ein genauerer Blick auf die FCT-Stabilisation geworfen. Genauer wird erst das vorgegebene Problem mittels der RBF-FD-Methode gelöst und dann durch das FCT-Verfahren stabilisiert. Der allgemeinene Simulationsalgorithmus ist in Abbildung \ref{fig:algorithmus} in einem Pfeildiagramm graphisch dargestellt. Hierbei sei $u_{initial}$  die Anfangsbedingung, $u_{pure}$ die Lösung des Verfahrens höherer Ordnung, $u_{diff}$ die Lösung nach der Addition der künstlichen Diffusion und $u_{stab}$ die stabilisierte Lösung am Ende des FCT-Schema. In der Zeitschleife wird somit pro Zeitschritt die Lösungen $u_{pure}$, $u_{diff}$ und $u_{stab}$ nacheinander errechnet.
 \begin{figure}[H]
@@ -624,8 +625,9 @@ $\|u_{ana}-u_{stab}\|_{l^2(\Omega)}$ & $144.092770573993e-003$\\
 \label{tab:fehler_20_pi/2}
 \end{table}
 \noindent
-Man erkennt, dass der Fehler für das Verfahren mit FCT-Stabilisation mit einem Fehlerwert von $144.092770573993e-003$ niedriger ist als der Fehlerwert ohne Stabilisation mit $205.649439898788e-003$. Dies liegt an den Oszillationen der RBF-FD-Lösung, wodurch mehr Summanden in der Normberechnung ungleich Null sind und somit die gesamte Summe größer wird. Des Weiteren erkennt man, das der Fehler der diffusiven Lösung minimal besser ist als der Fehler des Verfahrens höherer Ordnung, obwohl die Maximalwerte in diesem Beispiel mit $N=400$ stark sinken.\\
-Um das allgemeine Verhalten und die allgemeine Konvergenz der stabilisierten Lösung graphisch zu zeigen werden im Folgenden die Parameter $N$ und $\alpha$ jeweils variiert.\\
+Man erkennt, dass der Fehler für das Verfahren mit FCT-Stabilisation mit einem Fehlerwert von $144.092770573993e-003$ niedriger ist als der Fehlerwert ohne Stabilisation mit $205.649439898788e-003$. Dies liegt an den Oszillationen der RBF-FD-Lösung, wodurch mehr Summanden in der Normberechnung ungleich Null sind und somit die gesamte Summe größer wird. Des Weiteren erkennt man, das der Fehler der diffusiven Lösung minimal besser ist als der Fehler des Verfahrens höherer Ordnung, obwohl die Maximalwerte in diesem Beispiel mit $N=400$ stark sinken.\\\\
+\textbf{2. Versuch}\\\\
+Um das allgemeine Verhalten und die allgemeine Konvergenz der stabilisierten Lösung graphisch zu zeigen, werden im Folgenden die Parameter $N$ und $\alpha$ jeweils variiert.\\
 Zuerst wird die Anzahl der Unbekannten für eine feste Rotation $\alpha=\pi$ verändert. Hierzu wird die stabilisierte Lösung $u_{stab}$ in den Abbildungen \ref{fig:stab_5_10_pi} - \ref{fig:stab_80_100_pi} für eine Anzahl von Unbekannten $N$ von 25 bis 10000 gegenübergestellt. Man erkennt eine grahische Konvergenz der stabiliserten Lösung ohne Oszillationen. Um diese Hypothese mathematisch zu verifizieren, sind die Fehlerwerte der Fehlerfunktion $u_{ana}-u_{stab}$ in der diskrete L2-Norm~\eqref{eq:discretel2norm} ermittelt und in der Tabelle \ref{tab:fehler_N_pi}  eingetragen worden. Man erkennt ein Konvergenzverhalten des Fehlers gegen 0, welches mit der graphischen Auswertung übereinstimmt.
 \begin{figure}[H]
 \hspace{0.1cm}
@@ -735,8 +737,8 @@ $2\pi$ & $117.832000511267e-003$ & $133.401777622865e-003$\\
 \label{tab:fehler_N_rotation}
 \end{table}
 \noindent
-Abschließend wird nun ein letzter Test durchgeführt, um die universelle Anwendbarkeit des Verfahrens hervorzuheben. Bei der RBF-FD-Methode mit FCT-Stabilisation gibt es allgemein keine Anfangswerteinschränkungen. Um dies graphisch zu verifizieren wird im Folgenden das Gesicht von Carl Friedrich Gauß geplottet und dann um den Punkt $(0.5,0.5)$ mittels dem zugrundeliegenden Verfahren rotiert.\\
-Die Anfangsbedingung von vorne und von oben betrachtet sind in Abbildung \ref{fig:init_gauss} für $10000$ Unbekannten visualisiert. Man erkennt keine klare Struktur der Anfangsbedingung und ist somit willkürlich ausgewählt worden. Nun wird das Potrait von Gauß um $2\pi$ rotiert und die Zwischenergebnisse in Abbildung \ref{fig:gauss_pi} und \ref{fig:gauss_2pi} abgebildet. Nach der Simulation kann man nicht mehr das komplette Gesicht erkennen, doch signifikante Stellen, wie beispielsweise die Augen oder die Nase, sind noch erkennbar. Dies zeigt nun, dass durch diese stabilisierte Methodik jegliche Probleme, beziehungsweise jegliche Anfangsbedingungen, approximierbar sind.
+\textbf{3. Versuch}\\\\
+Abschließend wird nun ein letzter Test durchgeführt, um die universelle Anwendbarkeit des Verfahrens hervorzuheben. Bei der RBF-FD-Methode mit FCT-Stabilisation gibt es allgemein keine Anfangswerteinschränkungen. Um dies graphisch zu verifizieren wird im Folgenden das Gesicht von Carl Friedrich Gauß geplottet und dann um den Punkt $(0.5,0.5)$ mittels dem zugrundeliegenden Verfahren rotiert.
 \begin{figure}[H]
 \begin{minipage}{0.4\textwidth}
 \includegraphics[width=1.2\textwidth]{figures/Gesicht/n_100/Pi_2/initial_solution_n_100.png}
@@ -748,25 +750,30 @@ Die Anfangsbedingung von vorne und von oben betrachtet sind in Abbildung \ref{fi
 \caption{Anfangsbedingung $u_{initial}$, $N=10000$}
 \label{fig:init_gauss}
 \end{figure}
+\noindent
+Die Anfangsbedingung von vorne und von oben betrachtet sind in Abbildung \ref{fig:init_gauss} für $10000$ Unbekannten visualisiert. Man erkennt keine klare Struktur der Anfangsbedingung und ist somit willkürlich ausgewählt worden. Nun wird das Potrait von Gauß um $2\pi$ rotiert und die Zwischenergebnisse in Abbildung \ref{fig:gauss_pi} und \ref{fig:gauss_2pi} abgebildet.
 \begin{figure}[H]
-\begin{minipage}{0.45\textwidth}
+\begin{minipage}{0.4\textwidth}
  \includegraphics[width=1.2\textwidth]{figures/Gesicht/n_100/Pi_2/numerical_solution_stab_high_gesicht_n_100_pi_2.png}
 \vspace{-0.4cm}
 \end{minipage}
-\begin{minipage}{0.45\textwidth}
+\hspace{1.4cm}
+\begin{minipage}{0.4\textwidth}
  \includegraphics[width=1.2\textwidth]{figures/Gesicht/n_100/1_Pi/numerical_solution_stab_high_gesicht_n_100_pi.png}
 \vspace{-0.4cm}
 \end{minipage}
 \caption{Lösung: $u_{stab}$ für $\alpha=\frac{\pi}{2}$ und $\alpha=\pi$, $N=10000$}
 \label{fig:gauss_pi}
 \end{figure}
-\vspace{-0.4cm}
+\noindent
+Nach der Simulation kann man nicht mehr das komplette Gesicht erkennen, doch signifikante Stellen, wie beispielsweise die Augen oder die Nase, sind noch erkennbar. Dies zeigt nun, dass durch diese stabilisierte Methodik jegliche Probleme, beziehungsweise jegliche Anfangsbedingungen, approximierbar sind.
 \begin{figure}[H]
-\begin{minipage}{0.45\textwidth}
+\begin{minipage}{0.4\textwidth}
  \includegraphics[width=1.2\textwidth]{figures/Gesicht/n_100/3_Pi_2/numerical_solution_stab_high_top2.png}
 \vspace{-0.4cm}
 \end{minipage}
-\begin{minipage}{0.45\textwidth}
+\hspace{1.4cm}
+\begin{minipage}{0.4\textwidth}
  \includegraphics[width=1.2\textwidth]{figures/Gesicht/n_100/2_Pi/numerical_solution_stab_high_gesicht_n_100_2_pi.png}
 \vspace{-0.4cm}
 \end{minipage}
